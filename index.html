@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LinkVault">
+<meta name="theme-color" content="#0d0d14">
+<link rel="manifest" href="manifest.json">
+<title>LinkVault — مكتبة الروابط</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d14;
+  --surface: #13131f;
+  --card: #1a1a2e;
+  --card2: #1f1f35;
+  --border: #2a2a45;
+  --border2: #363660;
+  --accent: #7c6aff;
+  --accent2: #a855f7;
+  --gold: #f5c842;
+  --red: #e8365d;
+  --green: #22d3a5;
+  --blue: #38bdf8;
+  --text: #e8e8f5;
+  --muted: #6b6b90;
+  --muted2: #9090b8;
+  --radius: 14px;
+  --radius-sm: 9px;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; overflow:hidden; }
+body {
+  font-family:'Tajawal',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex; flex-direction:column;
+}
+
+/* ── HEADER ── */
+.header {
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:14px 18px 12px;
+  display:flex; align-items:center; gap:12px;
+  flex-shrink:0;
+}
+.header-logo {
+  width:36px; height:36px; border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.header-title { font-size:1.15rem; font-weight:900; flex:1; }
+.header-title span { color:var(--accent); }
+.btn-add {
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none; border-radius:10px;
+  width:38px; height:38px; font-size:22px; color:#fff;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 15px rgba(124,106,255,.35);
+  transition:transform .15s, box-shadow .15s;
+}
+.btn-add:hover { transform:scale(1.08); box-shadow:0 6px 20px rgba(124,106,255,.5); }
+
+/* ── TABS (categories) ── */
+.tabs-bar {
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:0;
+  overflow-x:auto; flex-shrink:0;
+  scrollbar-width:none; padding:0 8px;
+}
+.tabs-bar::-webkit-scrollbar { display:none; }
+.tab {
+  padding:10px 14px; font-size:.85rem; font-weight:700;
+  border:none; background:none; color:var(--muted2);
+  cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent;
+  transition:color .2s, border-color .2s;
+  font-family:'Tajawal',sans-serif;
+}
+.tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.tab-add-cat {
+  padding:10px 12px; background:none; border:none;
+  color:var(--muted); font-size:20px; cursor:pointer;
+  display:flex; align-items:center;
+}
+
+/* ── SEARCH ── */
+.search-bar {
+  padding:10px 16px; flex-shrink:0;
+}
+.search-wrap {
+  display:flex; align-items:center; gap:8px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:10px; padding:0 12px;
+}
+.search-wrap input {
+  flex:1; border:none; background:none; color:var(--text);
+  font-family:'Tajawal',sans-serif; font-size:.9rem;
+  padding:10px 0; outline:none;
+}
+.search-wrap input::placeholder { color:var(--muted); }
+.search-icon { color:var(--muted); font-size:16px; }
+
+/* ── MAIN LIST ── */
+.main { flex:1; overflow-y:auto; padding:12px 14px 80px; }
+.main::-webkit-scrollbar { width:4px; }
+.main::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
+
+.empty-state {
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:center; padding:60px 20px; gap:14px; color:var(--muted);
+  text-align:center;
+}
+.empty-icon { font-size:52px; opacity:.5; }
+.empty-state h3 { font-size:1.1rem; color:var(--muted2); }
+.empty-state p { font-size:.85rem; line-height:1.6; }
+
+/* ── CARD ── */
+.link-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin-bottom:10px;
+  overflow:hidden;
+  transition:border-color .2s, transform .15s;
+  position:relative;
+}
+.link-card:hover { border-color:var(--border2); transform:translateY(-1px); }
+.card-accent { height:3px; width:100%; }
+.card-body { padding:13px 14px; }
+.card-top { display:flex; align-items:flex-start; gap:11px; }
+.platform-logo {
+  width:38px; height:38px; border-radius:9px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; overflow:hidden;
+}
+.platform-logo svg { width:28px; height:28px; }
+.platform-logo img { width:38px; height:38px; object-fit:contain; }
+.card-info { flex:1; min-width:0; }
+.card-title {
+  font-size:.95rem; font-weight:700; line-height:1.35;
+  margin-bottom:3px; word-break:break-word;
+}
+.card-url {
+  font-size:.72rem; color:var(--muted); white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis; direction:ltr; text-align:right;
+}
+.card-actions {
+  display:flex; gap:6px; flex-shrink:0; margin-top:2px;
+}
+.card-btn {
+  background:var(--card2); border:1px solid var(--border);
+  border-radius:7px; padding:5px 9px; font-size:13px;
+  cursor:pointer; color:var(--muted2); transition:all .15s;
+  display:flex; align-items:center; gap:4px;
+}
+.card-btn:hover { color:var(--text); border-color:var(--border2); }
+.card-btn.open { color:var(--accent); }
+.card-btn.trailer { color:var(--gold); }
+.card-btn.edit { color:var(--blue); }
+.card-btn.del { color:var(--red); }
+
+.card-meta {
+  display:flex; align-items:center; gap:8px;
+  margin-top:10px; padding-top:8px;
+  border-top:1px solid var(--border);
+  flex-wrap:wrap; gap:6px;
+}
+.cat-badge {
+  font-size:.7rem; font-weight:700;
+  padding:3px 9px; border-radius:20px;
+  background:rgba(124,106,255,.15); color:var(--accent);
+}
+.card-date { font-size:.7rem; color:var(--muted); margin-right:auto; }
+.card-note {
+  margin-top:9px; padding:9px 11px;
+  background:rgba(255,255,255,.03);
+  border-right:2px solid var(--accent);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  font-size:.8rem; color:var(--muted2); line-height:1.5;
+}
+.trailer-row {
+  display:flex; align-items:center; gap:8px;
+  margin-top:9px; padding:8px 11px;
+  background:rgba(245,200,66,.07);
+  border-radius:var(--radius-sm);
+  border:1px solid rgba(245,200,66,.2);
+}
+.trailer-row .t-icon { font-size:18px; }
+.trailer-row .t-info { flex:1; min-width:0; }
+.trailer-row .t-title { font-size:.78rem; color:var(--gold); font-weight:700; }
+.trailer-row .t-url { font-size:.68rem; color:var(--muted); direction:ltr; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.trailer-row a { color:var(--gold); font-size:11px; white-space:nowrap; text-decoration:none; border:1px solid rgba(245,200,66,.4); border-radius:6px; padding:3px 7px; }
+
+/* ── MODAL ── */
+.overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.7);
+  z-index:100; display:flex; align-items:flex-end;
+  opacity:0; pointer-events:none; transition:opacity .25s;
+  backdrop-filter:blur(4px);
+}
+.overlay.open { opacity:1; pointer-events:all; }
+.sheet {
+  background:var(--surface);
+  border-radius:20px 20px 0 0;
+  width:100%; padding:20px 20px 30px;
+  border-top:1px solid var(--border);
+  transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+  max-height:92vh; overflow-y:auto;
+}
+.overlay.open .sheet { transform:translateY(0); }
+.sheet-handle {
+  width:40px; height:4px; background:var(--border2);
+  border-radius:2px; margin:0 auto 18px;
+}
+.sheet-title { font-size:1.1rem; font-weight:900; margin-bottom:18px; }
+.field-label {
+  font-size:.78rem; color:var(--muted2); font-weight:700;
+  margin-bottom:5px; margin-top:14px; text-transform:uppercase; letter-spacing:.04em;
+}
+.field-label:first-of-type { margin-top:0; }
+.inp {
+  width:100%; background:var(--card);
+  border:1px solid var(--border); border-radius:10px;
+  color:var(--text); font-family:'Tajawal',sans-serif;
+  font-size:.92rem; padding:11px 13px; outline:none;
+  transition:border-color .2s;
+}
+.inp:focus { border-color:var(--accent); }
+.inp::placeholder { color:var(--muted); }
+textarea.inp { resize:vertical; min-height:72px; }
+.select-inp {
+  width:100%; background:var(--card);
+  border:1px solid var(--border); border-radius:10px;
+  color:var(--text); font-family:'Tajawal',sans-serif;
+  font-size:.92rem; padding:11px 13px; outline:none;
+  appearance:none; cursor:pointer;
+}
+.select-inp:focus { border-color:var(--accent); }
+.ai-row {
+  display:flex; gap:8px; margin-top:8px;
+}
+.btn-ai {
+  flex:1; background:linear-gradient(135deg,rgba(124,106,255,.2),rgba(168,85,247,.2));
+  border:1px solid rgba(124,106,255,.4); border-radius:10px;
+  color:var(--accent); font-family:'Tajawal',sans-serif;
+  font-size:.85rem; font-weight:700; padding:10px;
+  cursor:pointer; transition:all .2s;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.btn-ai:hover { background:linear-gradient(135deg,rgba(124,106,255,.35),rgba(168,85,247,.35)); }
+.btn-ai:disabled { opacity:.5; cursor:not-allowed; }
+.btn-save {
+  width:100%; margin-top:18px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none; border-radius:12px; color:#fff;
+  font-family:'Tajawal',sans-serif; font-size:1rem; font-weight:900;
+  padding:14px; cursor:pointer;
+  box-shadow:0 4px 20px rgba(124,106,255,.4);
+  transition:transform .15s, box-shadow .15s;
+}
+.btn-save:hover { transform:translateY(-1px); box-shadow:0 6px 25px rgba(124,106,255,.55); }
+.btn-cancel {
+  width:100%; margin-top:8px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:12px; color:var(--muted2);
+  font-family:'Tajawal',sans-serif; font-size:.9rem; font-weight:700;
+  padding:12px; cursor:pointer;
+}
+.spinner {
+  display:inline-block; width:14px; height:14px;
+  border:2px solid rgba(124,106,255,.3);
+  border-top-color:var(--accent);
+  border-radius:50%; animation:spin .6s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.ai-status {
+  font-size:.78rem; color:var(--muted2);
+  margin-top:6px; min-height:18px; text-align:center;
+}
+
+/* category modal */
+.cat-modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.6);
+  z-index:200; display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .2s;
+  backdrop-filter:blur(4px);
+}
+.cat-modal-overlay.open { opacity:1; pointer-events:all; }
+.cat-modal {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:22px 20px;
+  width:min(320px,90vw);
+}
+.cat-modal h3 { font-size:1rem; font-weight:900; margin-bottom:14px; }
+.cat-modal .inp { margin-bottom:12px; }
+.cat-actions { display:flex; gap:8px; }
+.cat-actions button { flex:1; padding:10px; border-radius:9px; border:none; font-family:'Tajawal',sans-serif; font-weight:700; font-size:.9rem; cursor:pointer; }
+.cat-actions .confirm { background:var(--accent); color:#fff; }
+.cat-actions .cancel2 { background:var(--card); color:var(--muted2); border:1px solid var(--border); }
+
+/* toast */
+.toast {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
+  background:var(--card2); border:1px solid var(--border2);
+  border-radius:10px; padding:10px 18px;
+  font-size:.85rem; font-weight:700; color:var(--text);
+  z-index:999; transition:transform .3s cubic-bezier(.4,0,.2,1);
+  white-space:nowrap;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+/* PWA install banner */
+.install-bar {
+  position:fixed; bottom:0; left:0; right:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  padding:12px 18px; display:flex; align-items:center; gap:12px;
+  z-index:50; transform:translateY(100%); transition:transform .4s;
+}
+.install-bar.show { transform:translateY(0); }
+.install-bar span { flex:1; font-size:.85rem; font-weight:700; }
+.install-bar button { background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.4); border-radius:8px; color:#fff; font-family:'Tajawal',sans-serif; font-size:.8rem; font-weight:700; padding:7px 14px; cursor:pointer; }
+.install-bar .close-install { background:none; border:none; font-size:18px; cursor:pointer; color:#fff; padding:0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">🔗</div>
+  <div class="header-title">Link<span>Vault</span></div>
+  <button class="btn-add" id="btnAdd" title="إضافة رابط">＋</button>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="tabs-bar" id="tabsBar">
+  <button class="tab active" data-cat="all">الكل</button>
+  <button class="tab-add-cat" id="btnAddCat" title="فئة جديدة">＋</button>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="search" id="searchInp" placeholder="ابحث عن رابط أو عنوان...">
+  </div>
+</div>
+
+<!-- MAIN LIST -->
+<div class="main" id="mainList"></div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="sheetTitle">إضافة رابط جديد</div>
+
+    <div class="field-label">🔗 الرابط</div>
+    <input class="inp" id="inpUrl" type="url" placeholder="الصق الرابط هنا...">
+    <div class="ai-row">
+      <button class="btn-ai" id="btnFetch">✨ جلب المعلومات تلقائياً</button>
+    </div>
+    <div class="ai-status" id="aiStatus"></div>
+
+    <div class="field-label">📝 العنوان</div>
+    <input class="inp" id="inpTitle" placeholder="اكتب عنواناً للرابط...">
+
+    <div class="field-label">🗂️ الفئة</div>
+    <select class="select-inp" id="inpCat"></select>
+
+    <div class="field-label">🎬 رابط التريلر (اختياري)</div>
+    <input class="inp" id="inpTrailer" type="url" placeholder="https://youtube.com/watch?v=...">
+    <div class="ai-row">
+      <button class="btn-ai" id="btnTrailer">🎬 البحث عن تريلر تلقائياً</button>
+    </div>
+
+    <div class="field-label">📌 ملاحظات</div>
+    <textarea class="inp" id="inpNote" placeholder="أي ملاحظات تريد إضافتها..."></textarea>
+
+    <button class="btn-save" id="btnSave">💾 حفظ</button>
+    <button class="btn-cancel" id="btnCancel">إلغاء</button>
+  </div>
+</div>
+
+<!-- ADD CATEGORY MODAL -->
+<div class="cat-modal-overlay" id="catOverlay">
+  <div class="cat-modal">
+    <h3>➕ إضافة فئة جديدة</h3>
+    <input class="inp" id="inpNewCat" placeholder="اسم الفئة (مثال: أفلام، طبخ...)">
+    <div class="cat-actions">
+      <button class="confirm" id="btnConfirmCat">إضافة</button>
+      <button class="cancel2" id="btnCancelCat">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════
+//  STORAGE
+// ══════════════════════════════════
+const STORE = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)) }catch(e){ return null } },
+  set(k,v){ localStorage.setItem(k, JSON.stringify(v)) }
+};
+
+let links = STORE.get('lv_links') || [];
+let cats  = STORE.get('lv_cats')  || ['أفلام','مسلسلات','يوتيوب','تعليم','طبخ','أخرى'];
+let editId = null;
+let currentCat = 'all';
+
+function save(){ STORE.set('lv_links', links); STORE.set('lv_cats', cats); }
+
+// ══════════════════════════════════
+//  PLATFORM DETECTION
+// ══════════════════════════════════
+const PLATFORMS = [
+  { id:'youtube',   test: u => /youtube\.com|youtu\.be/.test(u),   color:'#FF0000', label:'YouTube' },
+  { id:'instagram', test: u => /instagram\.com/.test(u),           color:'ig',      label:'Instagram' },
+  { id:'facebook',  test: u => /facebook\.com|fb\.com/.test(u),    color:'#1877F2', label:'Facebook' },
+  { id:'tiktok',    test: u => /tiktok\.com/.test(u),              color:'#010101', label:'TikTok' },
+  { id:'twitter',   test: u => /twitter\.com|x\.com/.test(u),      color:'#1DA1F2', label:'X / Twitter' },
+  { id:'reddit',    test: u => /reddit\.com/.test(u),              color:'#FF4500', label:'Reddit' },
+  { id:'web',       test: () => true,                               color:'#6b6b90', label:'Web' },
+];
+
+function detectPlatform(url){
+  return PLATFORMS.find(p => p.test(url)) || PLATFORMS.at(-1);
+}
+
+function platformLogo(url){
+  const p = detectPlatform(url);
+  if(p.id === 'instagram') return `
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="ig2" cx="30%" cy="107%" r="130%">
+        <stop offset="0%" stop-color="#fdf497"/>
+        <stop offset="45%" stop-color="#fd5949"/>
+        <stop offset="60%" stop-color="#d6249f"/>
+        <stop offset="90%" stop-color="#285AEB"/>
+      </radialGradient></defs>
+      <rect width="24" height="24" rx="6" fill="url(#ig2)"/>
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="none" stroke="white" stroke-width="1.8"/>
+      <circle cx="12" cy="12" r="4.5" fill="none" stroke="white" stroke-width="1.8"/>
+      <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+    </svg>`;
+  if(p.id === 'youtube') return `
+    <svg viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="6" fill="#FF0000"/>
+      <path d="M20.5 7.5s-.2-1.2-.8-1.7c-.7-.8-1.5-.8-1.9-.9C15.3 4.8 12 4.8 12 4.8s-3.3 0-5.8.1c-.4.1-1.2.1-1.9.9-.6.5-.8 1.7-.8 1.7S3.3 9 3.3 10.4v1.2c0 1.4.2 2.9.2 2.9s.2 1.2.8 1.7c.7.8 1.7.7 2.1.8C7.8 17.2 12 17.2 12 17.2s3.3 0 5.8-.2c.4-.1 1.2-.1 1.9-.9.6-.5.8-1.7.8-1.7s.2-1.5.2-2.9v-1.2C20.7 9 20.5 7.5 20.5 7.5zM10 14.2V9.8l4.9 2.2-4.9 2.2z" fill="white"/>
+    </svg>`;
+  if(p.id === 'facebook') return `
+    <svg viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="6" fill="#1877F2"/>
+      <path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.5c0-.8.4-1.5 1.5-1.5h1.5V4.2S15.3 4 14 4c-2.8 0-4.5 1.7-4.5 4.5V10.5H7v3h2.5V21h4z" fill="white"/>
+    </svg>`;
+  if(p.id === 'tiktok') return `
+    <svg viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="6" fill="#010101"/>
+      <path d="M19 3h-1.7c-.2 2.4-1.9 4.3-4.3 4.6v1.9c1 0 2-.3 2.8-.8V17a4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4v-2a6 6 0 0 0-6 6 6 6 0 0 0 6 6 6 6 0 0 0 6-6V3z" fill="white"/>
+    </svg>`;
+  if(p.id === 'twitter') return `
+    <svg viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="6" fill="#000"/>
+      <path d="M4 4l6.5 8.7L4 20h2l5-5.7 4 5.7h4.5L13 11l6.2-7h-2l-4.7 5.3L8.5 4H4z" fill="white"/>
+    </svg>`;
+  if(p.id === 'reddit') return `
+    <svg viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="6" fill="#FF4500"/>
+      <circle cx="12" cy="13" r="5" fill="white"/>
+      <circle cx="12" cy="13" r="3.5" fill="#FF4500"/>
+      <circle cx="10.5" cy="13" r=".8" fill="white"/>
+      <circle cx="13.5" cy="13" r=".8" fill="white"/>
+      <path d="M10.5 15.5 Q12 16.5 13.5 15.5" stroke="white" stroke-width=".6" fill="none"/>
+      <circle cx="19" cy="8" r="2" fill="white"/>
+      <path d="M14.5 7 Q17 5 19 8" stroke="white" stroke-width=".8" fill="none"/>
+    </svg>`;
+  // web fallback with domain initial
+  const domain = (() => { try{ return new URL(url).hostname.replace('www.',''); }catch(e){ return '?'; } })();
+  const initials = domain.slice(0,2).toUpperCase();
+  return `<svg viewBox="0 0 38 38">
+    <rect width="38" height="38" rx="9" fill="${p.color}"/>
+    <text x="19" y="25" font-size="13" font-weight="bold" text-anchor="middle" fill="white" font-family="Arial">${initials}</text>
+  </svg>`;
+}
+
+function accentColor(url){
+  const p = detectPlatform(url);
+  if(p.id==='instagram') return 'linear-gradient(90deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)';
+  if(p.id==='youtube')   return 'linear-gradient(90deg,#ff0000,#cc0000)';
+  if(p.id==='facebook')  return 'linear-gradient(90deg,#1877F2,#0d5dbf)';
+  if(p.id==='tiktok')    return 'linear-gradient(90deg,#69C9D0,#EE1D52)';
+  if(p.id==='twitter')   return 'linear-gradient(90deg,#1DA1F2,#0d8fdd)';
+  return 'linear-gradient(90deg,var(--accent),var(--accent2))';
+}
+
+// ══════════════════════════════════
+//  RENDER
+// ══════════════════════════════════
+function renderTabs(){
+  const bar = document.getElementById('tabsBar');
+  bar.innerHTML = `<button class="tab ${currentCat==='all'?'active':''}" data-cat="all">الكل</button>`;
+  cats.forEach(c => {
+    bar.innerHTML += `<button class="tab ${currentCat===c?'active':''}" data-cat="${c}">${c}</button>`;
+  });
+  bar.innerHTML += `<button class="tab-add-cat" id="btnAddCat" title="فئة جديدة">＋</button>`;
+  bar.querySelectorAll('.tab').forEach(t => t.addEventListener('click', ()=>{
+    currentCat = t.dataset.cat; renderTabs(); renderList();
+  }));
+  document.getElementById('btnAddCat').addEventListener('click', openCatModal);
+}
+
+function renderList(){
+  const q = document.getElementById('searchInp').value.trim().toLowerCase();
+  let data = [...links].sort((a,b) => b.ts - a.ts);
+  if(currentCat !== 'all') data = data.filter(l => l.cat === currentCat);
+  if(q) data = data.filter(l =>
+    l.title.toLowerCase().includes(q) ||
+    l.url.toLowerCase().includes(q) ||
+    (l.note||'').toLowerCase().includes(q)
+  );
+
+  const el = document.getElementById('mainList');
+  if(!data.length){
+    el.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🔗</div>
+      <h3>${q ? 'لا نتائج' : 'لا يوجد روابط بعد'}</h3>
+      <p>${q ? 'جرب كلمة بحث مختلفة' : 'اضغط + لإضافة رابط جديد\nأو شاركه من أي تطبيق آخر'}</p>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = data.map(l => `
+    <div class="link-card" data-id="${l.id}">
+      <div class="card-accent" style="background:${accentColor(l.url)}"></div>
+      <div class="card-body">
+        <div class="card-top">
+          <div class="platform-logo">${platformLogo(l.url)}</div>
+          <div class="card-info">
+            <div class="card-title">${l.title}</div>
+            <div class="card-url">${l.url}</div>
+          </div>
+          <div class="card-actions">
+            <button class="card-btn open" data-id="${l.id}" data-action="open" title="فتح">↗</button>
+            <button class="card-btn edit" data-id="${l.id}" data-action="edit" title="تعديل">✏️</button>
+            <button class="card-btn del"  data-id="${l.id}" data-action="del"  title="حذف">🗑</button>
+          </div>
+        </div>
+        ${l.note ? `<div class="card-note">📌 ${l.note}</div>` : ''}
+        ${l.trailer ? `
+        <div class="trailer-row">
+          <div class="t-icon">🎬</div>
+          <div class="t-info">
+            <div class="t-title">تريلر</div>
+            <div class="t-url">${l.trailer}</div>
+          </div>
+          <a href="${l.trailer}" target="_blank">▶ شاهد</a>
+        </div>` : ''}
+        <div class="card-meta">
+          <span class="cat-badge">${l.cat}</span>
+          <span class="card-date">${new Date(l.ts).toLocaleDateString('ar-KW',{day:'numeric',month:'short'})}</span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  el.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+      if(action==='open'){
+        const l = links.find(x=>x.id===id);
+        if(l) window.open(l.url,'_blank');
+      } else if(action==='edit'){
+        openEdit(id);
+      } else if(action==='del'){
+        if(confirm('حذف هذا الرابط؟')){
+          links = links.filter(x=>x.id!==id);
+          save(); renderList(); toast('تم الحذف');
+        }
+      }
+    });
+  });
+}
+
+// ══════════════════════════════════
+//  MODAL (ADD / EDIT)
+// ══════════════════════════════════
+function openAddModal(){
+  editId = null;
+  document.getElementById('sheetTitle').textContent = '➕ إضافة رابط جديد';
+  document.getElementById('inpUrl').value = '';
+  document.getElementById('inpTitle').value = '';
+  document.getElementById('inpTrailer').value = '';
+  document.getElementById('inpNote').value = '';
+  document.getElementById('aiStatus').textContent = '';
+  populateCatSelect();
+  document.getElementById('overlay').classList.add('open');
+}
+
+function openEdit(id){
+  const l = links.find(x=>x.id===id);
+  if(!l) return;
+  editId = id;
+  document.getElementById('sheetTitle').textContent = '✏️ تعديل الرابط';
+  document.getElementById('inpUrl').value = l.url;
+  document.getElementById('inpTitle').value = l.title;
+  document.getElementById('inpTrailer').value = l.trailer||'';
+  document.getElementById('inpNote').value = l.note||'';
+  document.getElementById('aiStatus').textContent = '';
+  populateCatSelect(l.cat);
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function populateCatSelect(selected){
+  const sel = document.getElementById('inpCat');
+  sel.innerHTML = cats.map(c=>`<option value="${c}" ${c===selected?'selected':''}>${c}</option>`).join('');
+}
+
+document.getElementById('btnAdd').addEventListener('click', openAddModal);
+document.getElementById('btnCancel').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', e => {
+  if(e.target === document.getElementById('overlay')) closeModal();
+});
+
+// SAVE
+document.getElementById('btnSave').addEventListener('click', ()=>{
+  const url   = document.getElementById('inpUrl').value.trim();
+  const title = document.getElementById('inpTitle').value.trim();
+  const cat   = document.getElementById('inpCat').value;
+  const trailer = document.getElementById('inpTrailer').value.trim();
+  const note  = document.getElementById('inpNote').value.trim();
+
+  if(!url || !title){ toast('⚠️ الرابط والعنوان مطلوبان'); return; }
+
+  if(editId){
+    const idx = links.findIndex(x=>x.id===editId);
+    if(idx!==-1) links[idx] = { ...links[idx], url, title, cat, trailer, note };
+    toast('✅ تم التعديل');
+  } else {
+    links.unshift({ id: Date.now().toString(36)+Math.random().toString(36).slice(2), url, title, cat, trailer, note, ts: Date.now() });
+    toast('✅ تم الحفظ');
+  }
+  save(); closeModal(); renderTabs(); renderList();
+});
+
+// ══════════════════════════════════
+//  AI AUTO-FETCH (title via Anthropic)
+// ══════════════════════════════════
+document.getElementById('btnFetch').addEventListener('click', async ()=>{
+  const url = document.getElementById('inpUrl').value.trim();
+  if(!url){ toast('⚠️ أدخل الرابط أولاً'); return; }
+
+  const btn = document.getElementById('btnFetch');
+  const statusEl = document.getElementById('aiStatus');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري الجلب...';
+  statusEl.textContent = '';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 300,
+        messages:[{ role:'user', content:`
+هذا رابط: ${url}
+بناءً على الرابط فقط (بدون الوصول للإنترنت)، حدد:
+1. اسم/عنوان المحتوى بالعربي أو الإنجليزي (قصير، وصفي)
+2. نوعه: فيلم، مسلسل، فيديو، بوست، وصفة، تعليم، أخرى
+
+أجب بـ JSON فقط بهذا الشكل:
+{"title":"...","type":"..."}
+        ` }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.find(c=>c.type==='text')?.text || '';
+    const clean = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    document.getElementById('inpTitle').value = parsed.title || '';
+    statusEl.textContent = `✅ النوع المكتشف: ${parsed.type}`;
+  } catch(e) {
+    statusEl.textContent = '⚠️ لم يتم الجلب — أدخل العنوان يدوياً';
+  }
+  btn.disabled = false;
+  btn.innerHTML = '✨ جلب المعلومات تلقائياً';
+});
+
+// ══════════════════════════════════
+//  AI TRAILER SEARCH
+// ══════════════════════════════════
+document.getElementById('btnTrailer').addEventListener('click', async ()=>{
+  const title = document.getElementById('inpTitle').value.trim();
+  if(!title){ toast('⚠️ أدخل العنوان أولاً'); return; }
+
+  const btn = document.getElementById('btnTrailer');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري البحث...';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 200,
+        tools:[{ type:'web_search_20250305', name:'web_search' }],
+        messages:[{ role:'user', content:`ابحث عن رابط تريلر يوتيوب رسمي لـ: "${title}". أعطني رابط YouTube فقط بدون أي كلام إضافي.` }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.filter(c=>c.type==='text').map(c=>c.text).join('') || '';
+    const match = text.match(/https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]+|https?:\/\/youtu\.be\/[\w-]+/);
+    if(match){
+      document.getElementById('inpTrailer').value = match[0];
+      toast('🎬 تم العثور على التريلر');
+    } else {
+      toast('⚠️ لم يُعثر على تريلر');
+    }
+  } catch(e){
+    toast('⚠️ خطأ في البحث');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '🎬 البحث عن تريلر تلقائياً';
+});
+
+// ══════════════════════════════════
+//  CATEGORY MODAL
+// ══════════════════════════════════
+function openCatModal(){
+  document.getElementById('inpNewCat').value='';
+  document.getElementById('catOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('inpNewCat').focus(),100);
+}
+document.getElementById('btnCancelCat').addEventListener('click',()=>document.getElementById('catOverlay').classList.remove('open'));
+document.getElementById('btnConfirmCat').addEventListener('click',()=>{
+  const v = document.getElementById('inpNewCat').value.trim();
+  if(!v){ toast('⚠️ أدخل اسم الفئة'); return; }
+  if(!cats.includes(v)){ cats.push(v); save(); }
+  document.getElementById('catOverlay').classList.remove('open');
+  renderTabs();
+  toast(`✅ تمت إضافة "${v}"`);
+});
+document.getElementById('inpNewCat').addEventListener('keydown',e=>{
+  if(e.key==='Enter') document.getElementById('btnConfirmCat').click();
+});
+
+// ══════════════════════════════════
+//  SEARCH
+// ══════════════════════════════════
+document.getElementById('searchInp').addEventListener('input', renderList);
+
+// ══════════════════════════════════
+//  SHARE TARGET (Web Share Target)
+// ══════════════════════════════════
+function checkShareTarget(){
+  const params = new URLSearchParams(window.location.search);
+  const sharedUrl = params.get('url') || params.get('text') || '';
+  const sharedTitle = params.get('title') || '';
+  if(sharedUrl){
+    setTimeout(()=>{
+      openAddModal();
+      document.getElementById('inpUrl').value = sharedUrl;
+      document.getElementById('inpTitle').value = sharedTitle;
+      window.history.replaceState({}, '', '/');
+    }, 400);
+  }
+}
+
+// ══════════════════════════════════
+//  TOAST
+// ══════════════════════════════════
+let toastTimer;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════
+//  PWA INSTALL
+// ══════════════════════════════════
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); deferredPrompt = e;
+  // show custom bar after 3s
+  setTimeout(()=>{
+    const bar = document.createElement('div');
+    bar.className = 'install-bar';
+    bar.innerHTML = `<span>📲 ثبّت التطبيق على هاتفك</span>
+      <button id="doInstall">تثبيت</button>
+      <button class="close-install" id="closeInstall">✕</button>`;
+    document.body.appendChild(bar);
+    setTimeout(()=>bar.classList.add('show'),100);
+    document.getElementById('doInstall').addEventListener('click',()=>{
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(()=>bar.remove());
+    });
+    document.getElementById('closeInstall').addEventListener('click',()=>bar.remove());
+  }, 3000);
+});
+
+// ══════════════════════════════════
+//  INIT
+// ══════════════════════════════════
+renderTabs();
+renderList();
+checkShareTarget();
+
+// Register SW
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
