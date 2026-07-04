@@ -1,4 +1,4 @@
-const CACHE_NAME = 'linkvault-v2';
+const CACHE_NAME = 'linkvault-v3-configured';
 const APP_SHELL = [
   './',
   './index.html',

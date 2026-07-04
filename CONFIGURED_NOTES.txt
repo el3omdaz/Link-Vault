@@ -1,0 +1,10 @@
+LinkVault configured build
+
+تم تجهيز هذه النسخة بحيث تعمل من GitHub Pages مباشرة من /root.
+
+القيم المضافة في app-config.js:
+- SUPABASE_URL: Project URL فقط بدون /rest/v1
+- SUPABASE_ANON_KEY: Publishable key
+- BACKEND_URL: Railway backend URL بدون /api/health
+
+ملاحظة: إذا كان التطبيق مثبتاً على شاشة الآيفون الرئيسية، احذف الاختصار القديم ثم افتح رابط GitHub Pages من Safari وأضفه من جديد بعد رفع هذه النسخة.
