@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LinkVault">
+<meta name="theme-color" content="#0d0d14">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>LinkVault — مكتبة الروابط</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="app-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg:#0d0d14; --surface:#13131f; --card:#1a1a2e; --card2:#1f1f35;
+  --border:#2a2a45; --border2:#3b3b68; --accent:#7c6aff; --accent2:#a855f7;
+  --gold:#f5c842; --red:#ef476f; --green:#22d3a5; --blue:#38bdf8;
+  --text:#eeeeff; --muted:#74749c; --muted2:#a1a1c7; --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --radius:16px; --radius-sm:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text)}
+body{font-family:'Tajawal',sans-serif;display:flex;flex-direction:column}
+button,input,textarea,select{font-family:'Tajawal',sans-serif}
+button{cursor:pointer}
+.header{background:rgba(19,19,31,.96);border-bottom:1px solid var(--border);padding:calc(12px + env(safe-area-inset-top,0px)) 16px 11px;display:flex;align-items:center;gap:10px;flex-shrink:0;backdrop-filter:blur(12px)}
+.header-logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 8px 28px rgba(124,106,255,.3);flex-shrink:0}
+.header-title{font-size:1.18rem;font-weight:900;line-height:1}.header-title span{color:var(--accent)}
+.header-sub{font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:700}.header-spacer{flex:1}
+.icon-btn{background:var(--card);border:1px solid var(--border);color:var(--muted2);width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:.18s}
+.icon-btn:hover{border-color:var(--border2);color:var(--text);transform:translateY(-1px)}
+.btn-add{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:white;box-shadow:0 8px 28px rgba(124,106,255,.35);font-size:24px}.btn-add:hover{box-shadow:0 10px 32px rgba(124,106,255,.5)}
+.status-pill{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:7px 10px;font-size:.72rem;color:var(--muted2);font-weight:700;max-width:135px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);box-shadow:0 0 0 3px rgba(116,116,156,.08);flex-shrink:0}.status-pill.online .status-dot{background:var(--green);box-shadow:0 0 0 3px rgba(34,211,165,.12)}.status-pill.warn .status-dot{background:var(--gold)}
+.tabs-bar{background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;padding:8px 12px}.tabs-bar::-webkit-scrollbar{display:none}
+.tab{padding:8px 13px;border:1px solid var(--border);background:var(--card);color:var(--muted2);border-radius:999px;font-size:.82rem;font-weight:800;white-space:nowrap;transition:.18s}.tab.active{color:#fff;border-color:rgba(124,106,255,.75);background:linear-gradient(135deg,rgba(124,106,255,.28),rgba(168,85,247,.2))}.tab-add-cat{width:36px;height:36px;border-radius:999px;border:1px dashed var(--border2);background:transparent;color:var(--muted2);font-size:20px;flex-shrink:0}
+.search-bar{padding:10px 14px;flex-shrink:0}.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:13px;padding:0 12px}.search-wrap input{flex:1;border:none;background:none;color:var(--text);font-size:.92rem;padding:11px 0;outline:none}.search-wrap input::placeholder{color:var(--muted)}.search-icon{font-size:16px;color:var(--muted)}
+.main{flex:1;overflow-y:auto;padding:8px 14px calc(92px + var(--safe-bottom));scrollbar-width:thin;scrollbar-color:var(--border2) transparent}.main::-webkit-scrollbar{width:4px}.main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.stat-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:10px 11px}.stat-num{font-size:1rem;font-weight:900;color:var(--text)}.stat-label{font-size:.68rem;color:var(--muted);font-weight:800;margin-top:3px}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:66px 22px;gap:13px;text-align:center;color:var(--muted)}.empty-icon{font-size:54px;opacity:.55}.empty-state h3{font-size:1.1rem;color:var(--muted2)}.empty-state p{font-size:.86rem;line-height:1.65;white-space:pre-line}
+.link-card{background:linear-gradient(180deg,var(--card),rgba(26,26,46,.96));border:1px solid var(--border);border-radius:var(--radius);margin-bottom:11px;overflow:hidden;transition:.18s;position:relative}.link-card:hover{border-color:var(--border2);transform:translateY(-1px)}.card-accent{height:3px;width:100%}.card-body{padding:13px 14px}.card-top{display:flex;gap:11px;align-items:flex-start}.platform-logo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}.platform-logo svg{width:42px;height:42px}.platform-logo img{width:42px;height:42px;object-fit:cover}.card-info{flex:1;min-width:0}.card-title{font-size:.98rem;font-weight:900;line-height:1.35;margin-bottom:4px;word-break:break-word}.card-url{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:right}.card-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}.card-btn{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:6px 8px;font-size:13px;color:var(--muted2);display:flex;align-items:center;gap:4px;transition:.15s}.card-btn:hover{color:var(--text);border-color:var(--border2)}.card-btn.open{color:var(--accent)}.card-btn.trailer{color:var(--gold)}.card-btn.edit{color:var(--blue)}.card-btn.del{color:var(--red)}.card-meta{display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:9px;border-top:1px solid var(--border);flex-wrap:wrap}.cat-badge,.platform-badge{font-size:.7rem;font-weight:900;padding:4px 9px;border-radius:999px;background:rgba(124,106,255,.14);color:var(--accent)}.platform-badge{background:rgba(255,255,255,.04);color:var(--muted2)}.card-date{font-size:.7rem;color:var(--muted);margin-right:auto}.card-note{margin-top:9px;padding:9px 11px;background:rgba(255,255,255,.035);border-right:2px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.82rem;color:var(--muted2);line-height:1.55;white-space:pre-wrap}.thumb-row{display:flex;align-items:center;gap:10px;margin-top:10px}.thumb-row img{width:82px;height:46px;object-fit:cover;border-radius:9px;border:1px solid var(--border)}.trailer-row{display:flex;align-items:center;gap:9px;margin-top:9px;padding:9px 11px;background:rgba(245,200,66,.07);border-radius:var(--radius-sm);border:1px solid rgba(245,200,66,.2)}.trailer-row .t-icon{font-size:18px}.trailer-row .t-info{flex:1;min-width:0}.trailer-row .t-title{font-size:.78rem;color:var(--gold);font-weight:900}.trailer-row .t-url{font-size:.68rem;color:var(--muted);direction:ltr;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trailer-row a{color:var(--gold);font-size:11px;white-space:nowrap;text-decoration:none;border:1px solid rgba(245,200,66,.4);border-radius:7px;padding:4px 8px;font-weight:900}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(5px)}.overlay.open{opacity:1;pointer-events:all}.sheet{background:var(--surface);border-radius:22px 22px 0 0;width:100%;padding:18px 20px calc(22px + var(--safe-bottom));border-top:1px solid var(--border);transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:92vh;overflow-y:auto}.overlay.open .sheet{transform:translateY(0)}.sheet-handle{width:44px;height:4px;background:var(--border2);border-radius:4px;margin:0 auto 16px}.sheet-title{font-size:1.12rem;font-weight:900;margin-bottom:16px}.field-label{font-size:.78rem;color:var(--muted2);font-weight:900;margin-bottom:6px;margin-top:14px;text-transform:uppercase;letter-spacing:.035em}.field-label:first-of-type{margin-top:0}.inp,.select-inp{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:.94rem;padding:12px 13px;outline:none;transition:.18s}.inp:focus,.select-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,106,255,.12)}.inp::placeholder{color:var(--muted)}textarea.inp{resize:vertical;min-height:76px}.select-inp{appearance:none;cursor:pointer}.row{display:flex;gap:8px}.row>*{flex:1}.ai-row{display:flex;gap:8px;margin-top:8px}.btn-ai{flex:1;background:linear-gradient(135deg,rgba(124,106,255,.20),rgba(168,85,247,.18));border:1px solid rgba(124,106,255,.4);border-radius:11px;color:var(--accent);font-size:.85rem;font-weight:900;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px}.btn-ai:disabled{opacity:.55;cursor:not-allowed}.btn-save{width:100%;margin-top:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:13px;color:#fff;font-size:1rem;font-weight:900;padding:14px;box-shadow:0 8px 28px rgba(124,106,255,.35)}.btn-cancel{width:100%;margin-top:8px;background:var(--card);border:1px solid var(--border);border-radius:13px;color:var(--muted2);font-size:.92rem;font-weight:900;padding:12px}.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(124,106,255,.3);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.ai-status{font-size:.78rem;color:var(--muted2);margin-top:7px;min-height:20px;text-align:center;line-height:1.45}.hint{font-size:.77rem;color:var(--muted);line-height:1.5;margin-top:7px}.divider{height:1px;background:var(--border);margin:16px 0}.settings-grid{display:grid;gap:10px}.settings-status{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:12px;padding:11px;font-size:.82rem;color:var(--muted2);line-height:1.55}.danger-text{color:var(--red)}.success-text{color:var(--green)}.warning-text{color:var(--gold)}
+.cat-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;backdrop-filter:blur(5px)}.cat-modal-overlay.open{opacity:1;pointer-events:all}.cat-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px;width:min(350px,90vw)}.cat-modal h3{font-size:1.03rem;font-weight:900;margin-bottom:14px}.cat-actions{display:flex;gap:8px;margin-top:12px}.cat-actions button{flex:1;padding:11px;border-radius:10px;border:none;font-weight:900;font-size:.9rem}.cat-actions .confirm{background:var(--accent);color:#fff}.cat-actions .cancel2{background:var(--card);color:var(--muted2);border:1px solid var(--border)}.cat-list{margin-top:14px;display:grid;gap:7px;max-height:220px;overflow:auto}.cat-item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 10px}.cat-item span{flex:1;font-size:.86rem;font-weight:800}.cat-item button{border:1px solid rgba(239,71,111,.35);background:rgba(239,71,111,.08);color:var(--red);border-radius:8px;padding:5px 8px;font-size:.76rem;font-weight:900}
+.toast{position:fixed;bottom:calc(22px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(90px);background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:11px 18px;font-size:.86rem;font-weight:900;color:var(--text);z-index:999;transition:transform .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}.toast.show{transform:translateX(-50%) translateY(0)}.install-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:12px 18px calc(12px + var(--safe-bottom));display:flex;align-items:center;gap:12px;z-index:50;transform:translateY(100%);transition:.35s}.install-bar.show{transform:translateY(0)}.install-bar span{flex:1;font-size:.85rem;font-weight:900}.install-bar button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:9px;color:#fff;font-size:.8rem;font-weight:900;padding:7px 13px}.install-bar .close-install{background:none;border:none;font-size:18px;padding:0}.hidden{display:none!important}
+@media(max-width:560px){.header{gap:8px;padding-right:12px;padding-left:12px}.status-pill{max-width:46px;padding:7px}.status-pill span:last-child{display:none}.summary-row{grid-template-columns:repeat(3,1fr)}.card-actions{width:100%;margin-top:8px}.card-top{flex-wrap:wrap}.card-info{min-width:calc(100% - 56px)}.row{flex-direction:column}.sheet{padding-left:16px;padding-right:16px}.card-btn{flex:1;justify-content:center}.thumb-row{display:block}.thumb-row img{width:100%;height:150px;margin-top:4px}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">🔗</div>
+  <div>
+    <div class="header-title">Link<span>Vault</span></div>
+    <div class="header-sub">مكتبة روابطك الذكية</div>
+  </div>
+  <div class="header-spacer"></div>
+  <button class="icon-btn" id="btnSettings" title="الإعدادات">⚙️</button>
+  <div class="status-pill" id="cloudStatus" title="حالة المزامنة"><span class="status-dot"></span><span>محلي</span></div>
+  <button class="icon-btn btn-add" id="btnAdd" title="إضافة رابط">＋</button>
+</div>
+
+<div class="tabs-bar" id="tabsBar"></div>
+
+<div class="search-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="search" id="searchInp" placeholder="ابحث عن رابط أو عنوان أو ملاحظة...">
+  </div>
+</div>
+
+<div class="main" id="mainList"></div>
+
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="sheetTitle">إضافة رابط جديد</div>
+
+    <div class="field-label">🔗 الرابط</div>
+    <input class="inp" id="inpUrl" type="url" placeholder="الصق الرابط هنا...">
+    <div class="ai-row"><button class="btn-ai" id="btnFetch">✨ جلب العنوان والصورة</button></div>
+    <div class="ai-status" id="aiStatus"></div>
+
+    <div class="field-label">📝 العنوان</div>
+    <input class="inp" id="inpTitle" placeholder="اكتب عنواناً للرابط...">
+
+    <div class="row">
+      <div>
+        <div class="field-label">🗂️ التصنيف</div>
+        <select class="select-inp" id="inpCat"></select>
+      </div>
+      <div>
+        <div class="field-label">🏷️ المنصة</div>
+        <input class="inp" id="inpPlatform" placeholder="تلقائي" disabled>
+      </div>
+    </div>
+
+    <div class="field-label">🖼️ صورة مصغرة (اختياري)</div>
+    <input class="inp" id="inpThumb" type="url" placeholder="https://...">
+
+    <div class="field-label">🎬 رابط التريلر (اختياري)</div>
+    <input class="inp" id="inpTrailer" type="url" placeholder="https://youtube.com/watch?v=...">
+    <div class="ai-row"><button class="btn-ai" id="btnTrailer">🎬 جلب/بحث عن التريلر</button></div>
+
+    <div class="field-label">📌 ملاحظات</div>
+    <textarea class="inp" id="inpNote" placeholder="أي ملاحظات تريد إضافتها... مثل: شفته، مهم، للرجوع لاحقًا..."></textarea>
+
+    <button class="btn-save" id="btnSave">💾 حفظ</button>
+    <button class="btn-cancel" id="btnCancel">إلغاء</button>
+  </div>
+</div>
+
+<div class="overlay" id="settingsOverlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">⚙️ الإعدادات والمزامنة</div>
+
+    <div class="settings-status" id="settingsStatus">الوضع الحالي: حفظ محلي على الجهاز.</div>
+
+    <div class="divider"></div>
+    <div class="field-label">☁️ Supabase URL</div>
+    <input class="inp" id="setSupabaseUrl" placeholder="https://xxxx.supabase.co">
+    <div class="field-label">🔑 Supabase Anon Key</div>
+    <input class="inp" id="setSupabaseAnon" placeholder="anon public key">
+    <div class="field-label">🚂 Backend URL من Railway</div>
+    <input class="inp" id="setBackendUrl" placeholder="https://your-backend.up.railway.app">
+    <div class="hint">لا تضع Service Role Key هنا أبدًا. المفتاح المسموح هو anon public فقط.</div>
+    <div class="ai-row"><button class="btn-ai" id="btnSaveSettings">💾 حفظ إعدادات الربط</button></div>
+
+    <div class="divider"></div>
+    <div class="field-label">📧 البريد الإلكتروني</div>
+    <input class="inp" id="authEmail" type="email" placeholder="you@example.com">
+    <div class="field-label">🔒 كلمة المرور</div>
+    <input class="inp" id="authPassword" type="password" placeholder="كلمة مرور Supabase Auth">
+    <div class="row" style="margin-top:10px">
+      <button class="btn-ai" id="btnLogin">تسجيل دخول</button>
+      <button class="btn-ai" id="btnSignup">إنشاء حساب</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn-ai" id="btnSyncNow">مزامنة الآن</button>
+      <button class="btn-ai" id="btnLogout">تسجيل خروج</button>
+    </div>
+    <button class="btn-cancel" id="btnCloseSettings">إغلاق</button>
+  </div>
+</div>
+
+<div class="cat-modal-overlay" id="catOverlay">
+  <div class="cat-modal">
+    <h3>🗂️ التصنيفات</h3>
+    <input class="inp" id="inpNewCat" placeholder="اسم التصنيف: أفلام، طبخ، تعليم...">
+    <div class="cat-actions">
+      <button class="confirm" id="btnConfirmCat">إضافة</button>
+      <button class="cancel2" id="btnCancelCat">إلغاء</button>
+    </div>
+    <div class="cat-list" id="catList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE = {
+  get(k, fallback=null){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch(e){ return fallback; } },
+  set(k, v){ localStorage.setItem(k, JSON.stringify(v)); },
+  remove(k){ localStorage.removeItem(k); }
+};
+
+const DEFAULT_CATS = ['أفلام','مسلسلات','يوتيوب','تعليم','طبخ','مشتريات','أفكار','أخرى'];
+const LS_LINKS = 'lv_links_v2';
+const LS_CATS = 'lv_cats_v2';
+const LS_SETTINGS = 'lv_settings_v2';
+
+let legacyLinks = STORE.get('lv_links', []);
+let legacyCats = STORE.get('lv_cats', null);
+let links = normalizeLinks(STORE.get(LS_LINKS, legacyLinks || []));
+let cats = STORE.get(LS_CATS, legacyCats || DEFAULT_CATS);
+let editId = null;
+let currentCat = 'all';
+let sbClient = null;
+let cloudUser = null;
+let syncing = false;
+let toastTimer = null;
+
+function $(id){ return document.getElementById(id); }
+function uid(){ return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2)); }
+function nowIso(){ return new Date().toISOString(); }
+function escapeHtml(v){ return String(v ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch])); }
+function normalizeUrl(v){ const s = String(v || '').trim(); if(!s) return ''; if(/^https?:\/\//i.test(s)) return s; if(/^www\./i.test(s)) return 'https://' + s; return s; }
+function extractFirstUrl(text){ const m = String(text || '').match(/https?:\/\/[^\s]+/i); return m ? m[0].replace(/[\])}>,.]+$/,'') : ''; }
+function normalizeLinks(items){ return (items || []).map(x => ({ id:x.id || uid(), title:x.title || '', url:x.url || '', cat:x.cat || x.category_name || 'أخرى', note:x.note || x.notes || '', trailer:x.trailer || x.trailer_url || '', thumbnail:x.thumbnail || x.thumbnail_url || '', platform:x.platform || detectPlatform(x.url || '').label, ts:x.ts || (x.created_at ? new Date(x.created_at).getTime() : Date.now()), updatedAt:x.updatedAt || x.updated_at || nowIso() })).filter(x => x.url); }
+function saveLocal(){ STORE.set(LS_LINKS, links); STORE.set(LS_CATS, cats); }
+function getSettings(){ const fileCfg = window.LINKVAULT_CONFIG || {}; const local = STORE.get(LS_SETTINGS, {}); return { SUPABASE_URL: local.SUPABASE_URL || fileCfg.SUPABASE_URL || '', SUPABASE_ANON_KEY: local.SUPABASE_ANON_KEY || fileCfg.SUPABASE_ANON_KEY || '', BACKEND_URL: local.BACKEND_URL || fileCfg.BACKEND_URL || '' }; }
+function setSettings(v){ STORE.set(LS_SETTINGS, v); }
+
+const PLATFORMS = [
+  { id:'youtube', test:u=>/youtube\.com|youtu\.be/.test(u), color:'#FF0000', label:'YouTube' },
+  { id:'instagram', test:u=>/instagram\.com/.test(u), color:'ig', label:'Instagram' },
+  { id:'facebook', test:u=>/facebook\.com|fb\.com/.test(u), color:'#1877F2', label:'Facebook' },
+  { id:'tiktok', test:u=>/tiktok\.com/.test(u), color:'#010101', label:'TikTok' },
+  { id:'twitter', test:u=>/twitter\.com|x\.com/.test(u), color:'#000000', label:'X / Twitter' },
+  { id:'reddit', test:u=>/reddit\.com/.test(u), color:'#FF4500', label:'Reddit' },
+  { id:'vimeo', test:u=>/vimeo\.com/.test(u), color:'#1AB7EA', label:'Vimeo' },
+  { id:'web', test:()=>true, color:'#6b6b90', label:'Web' }
+];
+function detectPlatform(url){ const s = String(url || '').toLowerCase(); return PLATFORMS.find(p => p.test(s)) || PLATFORMS.at(-1); }
+function accentColor(url){ const p = detectPlatform(url); if(p.color === 'ig') return 'linear-gradient(90deg,#fdf497,#fd5949,#d6249f,#285AEB)'; return p.color; }
+function domainOf(url){ try { return new URL(url).hostname.replace(/^www\./,''); } catch(e){ return ''; } }
+function platformLogo(url){
+  const p = detectPlatform(url);
+  if(p.id === 'instagram') return `<svg viewBox="0 0 42 42"><defs><radialGradient id="ig" cx="30%" cy="107%" r="130%"><stop offset="0%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect width="42" height="42" rx="11" fill="url(#ig)"/><rect x="8" y="8" width="26" height="26" rx="8" fill="none" stroke="white" stroke-width="2.4"/><circle cx="21" cy="21" r="6.2" fill="none" stroke="white" stroke-width="2.4"/><circle cx="29" cy="13" r="1.8" fill="white"/></svg>`;
+  if(p.id === 'youtube') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#FF0000"/><path d="M33.5 15s-.3-2-1.2-2.9c-1.1-1.2-2.4-1.2-3-1.3-4.1-.3-10.3-.3-10.3-.3s-6.2 0-10.3.3c-.6.1-1.9.1-3 1.3C4.8 13 4.5 15 4.5 15s-.3 2.4-.3 4.8v2c0 2.4.3 4.8.3 4.8s.3 2 1.2 2.9c1.1 1.2 2.6 1.2 3.2 1.3 2.3.2 10.1.3 10.1.3s6.2 0 10.3-.3c.6-.1 1.9-.1 3-1.3.9-.9 1.2-2.9 1.2-2.9s.3-2.4.3-4.8v-2c0-2.4-.3-4.8-.3-4.8zM17.4 25.6v-9.3l8.8 4.7-8.8 4.6z" fill="white"/></svg>`;
+  if(p.id === 'facebook') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#1877F2"/><path d="M24 36V23.5h4.1l.7-5H24v-3.2c0-1.5.7-2.8 2.9-2.8h2.2V8.2S27.2 7.9 25.4 7.9c-4.4 0-7.3 2.7-7.3 7.5v3.1h-4.9v5h4.9V36H24z" fill="white"/></svg>`;
+  if(p.id === 'tiktok') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#010101"/><path d="M30.6 12.6c-2.3 0-4.1-1.7-4.4-4h-4.3v18.1a3.9 3.9 0 1 1-3.9-3.9c.4 0 .8.1 1.2.2v-4.4a8.3 8.3 0 1 0 7.1 8.2v-9.2c1.3.9 2.8 1.4 4.4 1.4v-6.4z" fill="white"/></svg>`;
+  if(p.id === 'twitter') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#000"/><path d="M9 9h7.4l6 8.2L29.4 9h3.1l-8.7 10.1L34 33h-7.4l-6.7-9.1L12.1 33H9l9.5-11.1L9 9zm5.4 2.4l13.4 19.2h1.8L16.2 11.4h-1.8z" fill="white"/></svg>`;
+  if(p.id === 'reddit') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#FF4500"/><circle cx="21" cy="22" r="10" fill="white"/><circle cx="17.5" cy="22" r="1.5" fill="#FF4500"/><circle cx="24.5" cy="22" r="1.5" fill="#FF4500"/><path d="M17.8 26.3c2 1.5 4.4 1.5 6.4 0" stroke="#FF4500" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="32" cy="15" r="3" fill="white"/><path d="M23.5 13.2c2.7-2 5.5-1.4 7.5.9" stroke="white" stroke-width="1.5" fill="none"/></svg>`;
+  const d = domainOf(url); const initials = (d || 'WEB').slice(0,2).toUpperCase();
+  return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="${p.color}"/><text x="21" y="27" font-size="13" font-weight="900" text-anchor="middle" fill="white">${escapeHtml(initials)}</text></svg>`;
+}
+
+function renderTabs(){
+  const bar = $('tabsBar');
+  bar.innerHTML = `<button class="tab ${currentCat==='all'?'active':''}" data-cat="all">الكل</button>` + cats.map(c => `<button class="tab ${currentCat===c?'active':''}" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('') + `<button class="tab-add-cat" id="btnAddCat" title="تصنيف جديد">＋</button>`;
+  bar.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { currentCat = t.dataset.cat; renderTabs(); renderList(); }));
+  $('btnAddCat').addEventListener('click', openCatModal);
+}
+function renderList(){
+  const q = $('searchInp').value.trim().toLowerCase();
+  let data = [...links].sort((a,b) => (b.ts || 0) - (a.ts || 0));
+  if(currentCat !== 'all') data = data.filter(l => l.cat === currentCat);
+  if(q) data = data.filter(l => [l.title,l.url,l.note,l.cat,l.platform].some(v => String(v||'').toLowerCase().includes(q)));
+  const el = $('mainList');
+  const stats = `<div class="summary-row"><div class="stat-card"><div class="stat-num">${links.length}</div><div class="stat-label">رابط</div></div><div class="stat-card"><div class="stat-num">${cats.length}</div><div class="stat-label">تصنيف</div></div><div class="stat-card"><div class="stat-num">${links.filter(x=>x.trailer).length}</div><div class="stat-label">تريلر</div></div></div>`;
+  if(!data.length){ el.innerHTML = stats + `<div class="empty-state"><div class="empty-icon">🔗</div><h3>${q ? 'لا نتائج' : 'لا يوجد روابط بعد'}</h3><p>${q ? 'جرب كلمة بحث مختلفة' : 'اضغط + لإضافة رابط جديد\nأو شاركه من أي تطبيق آخر'}</p></div>`; return; }
+  el.innerHTML = stats + data.map(l => {
+    const platform = detectPlatform(l.url);
+    return `<div class="link-card" data-id="${escapeHtml(l.id)}"><div class="card-accent" style="background:${accentColor(l.url)}"></div><div class="card-body"><div class="card-top"><div class="platform-logo">${platformLogo(l.url)}</div><div class="card-info"><div class="card-title">${escapeHtml(l.title)}</div><div class="card-url">${escapeHtml(l.url)}</div></div><div class="card-actions"><button class="card-btn open" data-id="${escapeHtml(l.id)}" data-action="open" title="فتح">↗ فتح</button><button class="card-btn trailer" data-id="${escapeHtml(l.id)}" data-action="trailer" title="التريلر">🎬</button><button class="card-btn edit" data-id="${escapeHtml(l.id)}" data-action="edit" title="تعديل">✏️</button><button class="card-btn del" data-id="${escapeHtml(l.id)}" data-action="del" title="حذف">🗑</button></div></div>${l.thumbnail ? `<div class="thumb-row"><img src="${escapeHtml(l.thumbnail)}" alt="صورة الرابط" loading="lazy"></div>` : ''}${l.note ? `<div class="card-note">📌 ${escapeHtml(l.note)}</div>` : ''}${l.trailer ? `<div class="trailer-row"><div class="t-icon">🎬</div><div class="t-info"><div class="t-title">تريلر</div><div class="t-url">${escapeHtml(l.trailer)}</div></div><a href="${escapeHtml(l.trailer)}" target="_blank" rel="noopener">▶ شاهد</a></div>` : ''}<div class="card-meta"><span class="cat-badge">${escapeHtml(l.cat)}</span><span class="platform-badge">${escapeHtml(platform.label)}</span><span class="card-date">${new Date(l.ts).toLocaleDateString('ar-KW',{day:'numeric',month:'short'})}</span></div></div></div>`;
+  }).join('');
+  el.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', async e => {
+    e.stopPropagation(); const id = btn.dataset.id; const action = btn.dataset.action; const l = links.find(x => x.id === id); if(!l) return;
+    if(action === 'open') window.open(l.url, '_blank');
+    if(action === 'trailer') { if(l.trailer) window.open(l.trailer, '_blank'); else { openEdit(id); setTimeout(()=>$('btnTrailer').click(), 150); } }
+    if(action === 'edit') openEdit(id);
+    if(action === 'del') await deleteLink(id);
+  }));
+}
+
+function openAddModal(prefill={}){
+  editId = null;
+  $('sheetTitle').textContent = '➕ إضافة رابط جديد';
+  $('inpUrl').value = prefill.url || '';
+  $('inpTitle').value = prefill.title || '';
+  $('inpTrailer').value = prefill.trailer || '';
+  $('inpThumb').value = prefill.thumbnail || '';
+  $('inpNote').value = prefill.note || '';
+  $('aiStatus').textContent = '';
+  populateCatSelect(prefill.cat || cats[0]);
+  updatePlatformField();
+  $('overlay').classList.add('open');
+  setTimeout(() => $('inpTitle').focus(), 150);
+}
+function openEdit(id){
+  const l = links.find(x => x.id === id); if(!l) return;
+  editId = id;
+  $('sheetTitle').textContent = '✏️ تعديل الرابط';
+  $('inpUrl').value = l.url; $('inpTitle').value = l.title; $('inpTrailer').value = l.trailer || ''; $('inpThumb').value = l.thumbnail || ''; $('inpNote').value = l.note || ''; $('aiStatus').textContent = '';
+  populateCatSelect(l.cat); updatePlatformField(); $('overlay').classList.add('open');
+}
+function closeModal(){ $('overlay').classList.remove('open'); }
+function populateCatSelect(selected){ $('inpCat').innerHTML = cats.map(c => `<option value="${escapeHtml(c)}" ${c===selected?'selected':''}>${escapeHtml(c)}</option>`).join(''); }
+function updatePlatformField(){ const p = detectPlatform($('inpUrl').value); $('inpPlatform').value = p.label; }
+
+async function saveLinkFromForm(){
+  const url = normalizeUrl($('inpUrl').value); const title = $('inpTitle').value.trim(); const cat = $('inpCat').value || 'أخرى'; const trailer = normalizeUrl($('inpTrailer').value); const note = $('inpNote').value.trim(); const thumbnail = normalizeUrl($('inpThumb').value); const platform = detectPlatform(url).label;
+  if(!url || !title){ toast('⚠️ الرابط والعنوان مطلوبان'); return; }
+  if(!/^https?:\/\//i.test(url)){ toast('⚠️ الرابط لازم يبدأ بـ http أو https'); return; }
+  if(editId){ const idx = links.findIndex(x => x.id === editId); if(idx !== -1) links[idx] = { ...links[idx], url, title, cat, trailer, note, thumbnail, platform, updatedAt: nowIso() }; await upsertLinkCloud(links[idx]); toast('✅ تم التعديل'); }
+  else { const item = { id: uid(), url, title, cat, trailer, note, thumbnail, platform, ts: Date.now(), updatedAt: nowIso() }; links.unshift(item); await upsertLinkCloud(item); toast('✅ تم الحفظ'); }
+  saveLocal(); closeModal(); renderTabs(); renderList();
+}
+async function deleteLink(id){
+  if(!confirm('حذف هذا الرابط؟')) return;
+  links = links.filter(x => x.id !== id); saveLocal(); await deleteLinkCloud(id); renderList(); toast('تم الحذف');
+}
+
+function openCatModal(){
+  $('inpNewCat').value = ''; renderCatList(); $('catOverlay').classList.add('open'); setTimeout(()=>$('inpNewCat').focus(), 100);
+}
+function renderCatList(){
+  $('catList').innerHTML = cats.map(c => `<div class="cat-item"><span>${escapeHtml(c)}</span><button data-cat="${escapeHtml(c)}">حذف</button></div>`).join('');
+  $('catList').querySelectorAll('button').forEach(btn => btn.addEventListener('click', async () => {
+    const c = btn.dataset.cat; if(links.some(l => l.cat === c)){ toast('⚠️ التصنيف مستخدم بروابط محفوظة'); return; }
+    if(cats.length <= 1){ toast('⚠️ لازم يبقى تصنيف واحد على الأقل'); return; }
+    if(!confirm(`حذف تصنيف ${c}؟`)) return;
+    cats = cats.filter(x => x !== c); saveLocal(); await deleteCategoryCloud(c); renderTabs(); renderCatList(); toast('تم حذف التصنيف');
+  }));
+}
+async function addCategory(){
+  const v = $('inpNewCat').value.trim(); if(!v){ toast('⚠️ أدخل اسم التصنيف'); return; }
+  if(!cats.includes(v)){ cats.push(v); saveLocal(); await upsertCategoryCloud(v); }
+  $('inpNewCat').value=''; renderTabs(); renderCatList(); toast(`✅ تمت إضافة ${v}`);
+}
+
+async function fetchMetadata(){
+  const url = normalizeUrl($('inpUrl').value); if(!url){ toast('⚠️ أدخل الرابط أولاً'); return; }
+  $('inpUrl').value = url; updatePlatformField();
+  const btn = $('btnFetch'); const status = $('aiStatus'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري الجلب...'; status.textContent = '';
+  try{
+    const data = await getMetadata(url);
+    if(data.title && !$('inpTitle').value.trim()) $('inpTitle').value = data.title;
+    if(data.image && !$('inpThumb').value.trim()) $('inpThumb').value = data.image;
+    status.textContent = data.title ? '✅ تم جلب العنوان والصورة' : 'ℹ️ لم أجد عنوان واضح، اكتب العنوان يدويًا';
+  }catch(e){ status.textContent = '⚠️ تعذر الجلب. لو الرابط من إنستغرام/تيك توك/فيسبوك اكتب العنوان يدويًا.'; }
+  btn.disabled = false; btn.innerHTML = '✨ جلب العنوان والصورة';
+}
+async function getMetadata(url){
+  const cfg = getSettings();
+  if(cfg.BACKEND_URL){
+    const res = await fetch(`${cfg.BACKEND_URL.replace(/\/$/,'')}/api/metadata?url=${encodeURIComponent(url)}`);
+    if(res.ok) return await res.json();
+  }
+  const p = detectPlatform(url);
+  if(p.id === 'youtube'){
+    const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`);
+    if(res.ok){ const d = await res.json(); return { title:d.title || '', image:d.thumbnail_url || '', author:d.author_name || '', platform:'YouTube' }; }
+  }
+  return { title:'', image:'', platform:p.label };
+}
+async function fetchTrailer(){
+  const title = $('inpTitle').value.trim(); if(!title){ toast('⚠️ أدخل العنوان أولاً'); return; }
+  const btn = $('btnTrailer'); const old = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري البحث...';
+  try{
+    const cfg = getSettings();
+    if(cfg.BACKEND_URL){
+      const res = await fetch(`${cfg.BACKEND_URL.replace(/\/$/,'')}/api/trailer?title=${encodeURIComponent(title)}`);
+      if(res.ok){ const d = await res.json(); if(d.trailerUrl){ $('inpTrailer').value = d.trailerUrl; toast('✅ تم جلب التريلر'); } else if(d.searchUrl){ window.open(d.searchUrl, '_blank'); toast('🎬 افتح النتيجة المناسبة وانسخ الرابط'); } }
+    } else {
+      window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' trailer official الإعلان الرسمي')}`, '_blank'); toast('🎬 افتح الفيديو المناسب وانسخ رابطه هنا');
+    }
+  }catch(e){ window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' trailer official')}`, '_blank'); }
+  btn.disabled = false; btn.innerHTML = old;
+}
+
+function updateCloudStatus(kind='local', text='محلي'){
+  const el = $('cloudStatus'); el.className = 'status-pill'; if(kind === 'online') el.classList.add('online'); if(kind === 'warn') el.classList.add('warn'); el.querySelector('span:last-child').textContent = text;
+}
+function updateSettingsStatus(msg, cls=''){
+  $('settingsStatus').className = 'settings-status' + (cls ? ' ' + cls : ''); $('settingsStatus').textContent = msg;
+}
+async function initSupabase(){
+  const cfg = getSettings();
+  $('setSupabaseUrl').value = cfg.SUPABASE_URL; $('setSupabaseAnon').value = cfg.SUPABASE_ANON_KEY; $('setBackendUrl').value = cfg.BACKEND_URL;
+  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي. أضف بيانات Supabase لتفعيل المزامنة.'); return; }
+  try{
+    sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true } });
+    const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null;
+    if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
+    else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم ربط Supabase، لكن تحتاج تسجيل دخول لتفعيل المزامنة.', 'warning-text'); }
+    sbClient.auth.onAuthStateChange(async (_event, session) => { cloudUser = session?.user || null; if(cloudUser){ updateCloudStatus('online','مزامن'); await loadCloudData(); } else updateCloudStatus('warn','غير مسجل'); });
+  }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر ربط Supabase. تأكد من URL و anon key.', 'danger-text'); }
+}
+function linkToRow(l){ return { id:l.id, user_id:cloudUser?.id, title:l.title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
+function rowToLink(r){ return { id:r.id, title:r.title || '', url:r.url || '', cat:r.category_name || 'أخرى', note:r.notes || '', trailer:r.trailer_url || '', thumbnail:r.thumbnail_url || '', platform:r.platform || detectPlatform(r.url || '').label, ts:r.created_at ? new Date(r.created_at).getTime() : Date.now(), updatedAt:r.updated_at || nowIso() }; }
+async function loadCloudData(){
+  if(!sbClient || !cloudUser || syncing) return; syncing = true;
+  try{
+    const [cr, lr] = await Promise.all([ sbClient.from('categories').select('name').order('created_at',{ascending:true}), sbClient.from('links').select('*').order('created_at',{ascending:false}) ]);
+    if(cr.error || lr.error) throw (cr.error || lr.error);
+    if((cr.data || []).length){ cats = cr.data.map(x => x.name).filter(Boolean); }
+    else { for(const c of cats) await upsertCategoryCloud(c); }
+    links = (lr.data || []).map(rowToLink);
+    saveLocal(); renderTabs(); renderList(); updateCloudStatus('online','مزامن');
+  }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل البيانات من Supabase. تأكد أنك شغلت ملف schema.sql.', 'danger-text'); }
+  syncing = false;
+}
+async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const row = linkToRow(l); const { error } = await sbClient.from('links').upsert(row, { onConflict:'id' }); if(error) console.warn(error); }
+async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; await sbClient.from('links').delete().eq('id', id); }
+async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; await sbClient.from('categories').upsert({ user_id:cloudUser.id, name }, { onConflict:'user_id,name' }); }
+async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; await sbClient.from('categories').delete().eq('name', name); }
+async function syncLocalToCloud(){
+  if(!sbClient || !cloudUser){ toast('⚠️ سجل دخول أولاً'); return; }
+  updateSettingsStatus('جاري رفع البيانات المحلية...', 'warning-text');
+  for(const c of cats) await upsertCategoryCloud(c);
+  for(const l of links) await upsertLinkCloud(l);
+  await loadCloudData(); updateSettingsStatus('✅ تمت المزامنة بنجاح', 'success-text'); toast('✅ تمت المزامنة');
+}
+async function login(){ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ أدخل بيانات Supabase أولاً'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } const { data, error } = await sbClient.auth.signInWithPassword({ email, password }); if(error){ updateSettingsStatus(error.message, 'danger-text'); toast('تعذر تسجيل الدخول'); return; } cloudUser = data.user; updateSettingsStatus('✅ تم تسجيل الدخول', 'success-text'); await syncLocalToCloud(); }
+async function signup(){ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ أدخل بيانات Supabase أولاً'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } const { data, error } = await sbClient.auth.signUp({ email, password }); if(error){ updateSettingsStatus(error.message, 'danger-text'); return; } cloudUser = data.user || cloudUser; updateSettingsStatus('✅ تم إنشاء الحساب. إذا كان تأكيد البريد مفعّل، افتح بريدك للتأكيد.', 'success-text'); if(cloudUser) await syncLocalToCloud(); }
+async function logout(){ if(sbClient) await sbClient.auth.signOut(); cloudUser = null; updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج'); }
+
+function openSettings(){ const cfg = getSettings(); $('setSupabaseUrl').value = cfg.SUPABASE_URL; $('setSupabaseAnon').value = cfg.SUPABASE_ANON_KEY; $('setBackendUrl').value = cfg.BACKEND_URL; $('settingsOverlay').classList.add('open'); }
+function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
+function saveSettingsFromForm(){ setSettings({ SUPABASE_URL:$('setSupabaseUrl').value.trim(), SUPABASE_ANON_KEY:$('setSupabaseAnon').value.trim(), BACKEND_URL:$('setBackendUrl').value.trim().replace(/\/$/,'') }); sbClient = null; cloudUser = null; initSupabase(); toast('✅ تم حفظ الإعدادات'); }
+
+function handleIncomingShareFromParams(params){
+  const rawUrl = params.get('url') || extractFirstUrl(params.get('text')) || '';
+  const title = params.get('title') || '';
+  const text = params.get('text') || '';
+  const sharedUrl = normalizeUrl(rawUrl || extractFirstUrl(text));
+  if(sharedUrl){ setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '' }), 280); return true; }
+  return false;
+}
+function checkShareTarget(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('action') === 'add') setTimeout(() => openAddModal(), 150);
+  const handled = handleIncomingShareFromParams(params);
+  if(handled || params.get('action')) window.history.replaceState({}, '', window.location.pathname || './');
+}
+function initNativeDeepLinks(){
+  const App = window.Capacitor?.Plugins?.App;
+  if(!App) return;
+  App.addListener('appUrlOpen', data => { try { const u = new URL(data.url); if(u.protocol === 'linkvault:'){ handleIncomingShareFromParams(u.searchParams); } } catch(e){} });
+  if(App.getLaunchUrl){ App.getLaunchUrl().then(res => { if(res?.url){ try { const u = new URL(res.url); if(u.protocol === 'linkvault:') handleIncomingShareFromParams(u.searchParams); } catch(e){} } }).catch(()=>{}); }
+}
+
+function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2500); }
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; setTimeout(() => { if(document.querySelector('.install-bar')) return; const bar = document.createElement('div'); bar.className='install-bar'; bar.innerHTML = `<span>📲 ثبّت LinkVault كتطبيق</span><button id="doInstall">تثبيت</button><button class="close-install" id="closeInstall">✕</button>`; document.body.appendChild(bar); setTimeout(()=>bar.classList.add('show'),100); $('doInstall').addEventListener('click',()=>{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>bar.remove()); }); $('closeInstall').addEventListener('click',()=>bar.remove()); }, 3000); });
+
+$('btnAdd').addEventListener('click', () => openAddModal());
+$('btnSettings').addEventListener('click', openSettings);
+$('btnCancel').addEventListener('click', closeModal);
+$('overlay').addEventListener('click', e => { if(e.target === $('overlay')) closeModal(); });
+$('btnSave').addEventListener('click', saveLinkFromForm);
+$('inpUrl').addEventListener('input', updatePlatformField);
+$('btnFetch').addEventListener('click', fetchMetadata);
+$('btnTrailer').addEventListener('click', fetchTrailer);
+$('searchInp').addEventListener('input', renderList);
+$('btnCancelCat').addEventListener('click', () => $('catOverlay').classList.remove('open'));
+$('btnConfirmCat').addEventListener('click', addCategory);
+$('inpNewCat').addEventListener('keydown', e => { if(e.key === 'Enter') addCategory(); });
+$('btnCloseSettings').addEventListener('click', closeSettings);
+$('settingsOverlay').addEventListener('click', e => { if(e.target === $('settingsOverlay')) closeSettings(); });
+$('btnSaveSettings').addEventListener('click', saveSettingsFromForm);
+$('btnLogin').addEventListener('click', login);
+$('btnSignup').addEventListener('click', signup);
+$('btnLogout').addEventListener('click', logout);
+$('btnSyncNow').addEventListener('click', syncLocalToCloud);
+
+saveLocal(); renderTabs(); renderList(); checkShareTarget(); initNativeDeepLinks(); initSupabase();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
