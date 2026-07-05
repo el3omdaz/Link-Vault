@@ -10,3 +10,8 @@ Important fix in this package:
 - App Group entitlements are disabled by default because the current Share Extension sends the link to the main app using linkvault:// and does not require App Groups. This avoids archive failures when App Store provisioning profiles do not include the App Groups capability.
 
 If you later decide to store shared data directly between the extension and app, enable App Groups in Apple Developer for both identifiers and set USE_APP_GROUPS=true in Codemagic environment variables.
+
+Runtime Share Extension UI fix:
+- Share Extension now shows a small native confirmation screen with Open and Close buttons.
+- It no longer tries to auto-open the app immediately on selection, which prevents host apps from appearing frozen.
+- User can always close the share extension safely.

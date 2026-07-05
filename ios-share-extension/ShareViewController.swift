@@ -2,10 +2,9 @@ import UIKit
 import UniformTypeIdentifiers
 
 final class ShareViewController: UIViewController {
-    private var didStartOpenFlow = false
-    private var didComplete = false
-    private var didFinishExtraction = false
     private let collectionQueue = DispatchQueue(label: "com.linkvaultq8.share.collection")
+    private var didStartExtraction = false
+    private var didComplete = false
 
     private struct SharedPayload {
         var url: String?
@@ -14,37 +13,111 @@ final class ShareViewController: UIViewController {
     }
 
     private var payload = SharedPayload()
-    private var statusLabel: UILabel?
+
+    private let cardView = UIView()
+    private let titleLabel = UILabel()
+    private let messageLabel = UILabel()
+    private let previewLabel = UILabel()
+    private let openButton = UIButton(type: .system)
+    private let cancelButton = UIButton(type: .system)
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.05, green: 0.05, blue: 0.08, alpha: 1.0)
-        showLoadingView()
-        extractSharedContent()
+        configureUI()
     }
 
-    private func showLoadingView() {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "جاري إرسال الرابط إلى LinkVault..."
-        label.textAlignment = .center
-        label.textColor = .white
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        view.addSubview(label)
-        statusLabel = label
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !didStartExtraction {
+            didStartExtraction = true
+            extractSharedContent()
+        }
+    }
+
+    private func configureUI() {
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.28)
+
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.backgroundColor = UIColor { trait in
+            trait.userInterfaceStyle == .dark ? UIColor(red: 0.10, green: 0.11, blue: 0.14, alpha: 1.0) : UIColor.white
+        }
+        cardView.layer.cornerRadius = 20
+        cardView.layer.masksToBounds = true
+        view.addSubview(cardView)
+
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "LinkVault Q8"
+        titleLabel.textAlignment = .center
+        titleLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        titleLabel.numberOfLines = 1
+
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.text = "جاري قراءة الرابط..."
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        messageLabel.numberOfLines = 0
+
+        previewLabel.translatesAutoresizingMaskIntoConstraints = false
+        previewLabel.text = ""
+        previewLabel.textAlignment = .center
+        previewLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        previewLabel.textColor = .secondaryLabel
+        previewLabel.numberOfLines = 3
+
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.startAnimating()
+
+        openButton.translatesAutoresizingMaskIntoConstraints = false
+        openButton.setTitle("فتح في LinkVault", for: .normal)
+        openButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        openButton.isEnabled = false
+        openButton.addTarget(self, action: #selector(openButtonTapped), for: .touchUpInside)
+
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.setTitle("إغلاق", for: .normal)
+        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+
+        let buttonStack = UIStackView(arrangedSubviews: [openButton, cancelButton])
+        buttonStack.translatesAutoresizingMaskIntoConstraints = false
+        buttonStack.axis = .vertical
+        buttonStack.spacing = 10
+        buttonStack.alignment = .fill
+
+        [titleLabel, messageLabel, previewLabel, activityIndicator, buttonStack].forEach { cardView.addSubview($0) }
 
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            cardView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
+            cardView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
+            cardView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
+            titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 24),
+            titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+
+            messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            messageLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            messageLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+
+            previewLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 10),
+            previewLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            previewLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+
+            activityIndicator.topAnchor.constraint(equalTo: previewLabel.bottomAnchor, constant: 16),
+            activityIndicator.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
+
+            buttonStack.topAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 18),
+            buttonStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            buttonStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+            buttonStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -22)
         ])
     }
 
     private func extractSharedContent() {
         let inputItems = extensionContext?.inputItems as? [NSExtensionItem] ?? []
         guard !inputItems.isEmpty else {
-            openContainingAppWithCurrentPayload()
+            showNoContentState()
             return
         }
 
@@ -57,6 +130,9 @@ final class ShareViewController: UIViewController {
 
             if let attributedText = item.attributedContentText?.string, !attributedText.isEmpty {
                 mergePayload(text: attributedText)
+                if let foundURL = Self.firstURL(in: attributedText) {
+                    mergePayload(url: foundURL)
+                }
             }
 
             for provider in item.attachments ?? [] {
@@ -66,13 +142,13 @@ final class ShareViewController: UIViewController {
         }
 
         group.notify(queue: .main) { [weak self] in
-            self?.finishExtractionAndOpen()
+            self?.finishExtractionAndUpdateUI()
         }
 
-        // Some host apps occasionally do not call one of the NSItemProvider callbacks.
-        // Never leave the host app stuck behind the share extension.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-            self?.finishExtractionAndOpen()
+        // Safety fallback: even if a host app never calls an NSItemProvider callback,
+        // keep the extension responsive and give the user a visible close button.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
+            self?.finishExtractionAndUpdateUI()
         }
     }
 
@@ -88,7 +164,11 @@ final class ShareViewController: UIViewController {
             } else if let nsurl = value as? NSURL {
                 self?.mergePayload(url: nsurl.absoluteString)
             } else if let text = value as? String {
-                self?.mergePayload(url: Self.firstURL(in: text) ?? text)
+                self?.mergePayload(text: text)
+                if let foundURL = Self.firstURL(in: text) { self?.mergePayload(url: foundURL) }
+            } else if let data = value as? Data, let text = String(data: data, encoding: .utf8) {
+                self?.mergePayload(text: text)
+                if let foundURL = Self.firstURL(in: text) { self?.mergePayload(url: foundURL) }
             }
         }
     }
@@ -103,14 +183,10 @@ final class ShareViewController: UIViewController {
 
             if let text = value as? String {
                 self?.mergePayload(text: text)
-                if let foundURL = Self.firstURL(in: text) {
-                    self?.mergePayload(url: foundURL)
-                }
+                if let foundURL = Self.firstURL(in: text) { self?.mergePayload(url: foundURL) }
             } else if let data = value as? Data, let text = String(data: data, encoding: .utf8) {
                 self?.mergePayload(text: text)
-                if let foundURL = Self.firstURL(in: text) {
-                    self?.mergePayload(url: foundURL)
-                }
+                if let foundURL = Self.firstURL(in: text) { self?.mergePayload(url: foundURL) }
             }
         }
     }
@@ -119,42 +195,71 @@ final class ShareViewController: UIViewController {
         collectionQueue.async { [weak self] in
             guard let self else { return }
 
-            if let url, !url.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if let url = url?.trimmingCharacters(in: .whitespacesAndNewlines), !url.isEmpty {
                 self.payload.url = url
             }
-            if let title, !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, self.payload.title == nil {
+            if let title = title?.trimmingCharacters(in: .whitespacesAndNewlines), !title.isEmpty, self.payload.title == nil {
                 self.payload.title = title
             }
-            if let text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, self.payload.text == nil {
+            if let text = text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty, self.payload.text == nil {
                 self.payload.text = text
             }
         }
     }
 
-    private func finishExtractionAndOpen() {
-        if didFinishExtraction || didStartOpenFlow || didComplete { return }
-        didFinishExtraction = true
-
+    private func finishExtractionAndUpdateUI() {
         collectionQueue.async { [weak self] in
+            guard let self else { return }
+            let currentPayload = self.payload
             DispatchQueue.main.async {
-                self?.openContainingAppWithCurrentPayload()
+                self.updateUI(for: currentPayload)
             }
         }
     }
 
-    private func openContainingAppWithCurrentPayload() {
-        if didStartOpenFlow || didComplete { return }
-        didStartOpenFlow = true
-        statusLabel?.text = "يتم فتح LinkVault..."
+    private func updateUI(for payload: SharedPayload) {
+        let candidate = payload.url ?? Self.firstURL(in: payload.text ?? "")
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+
+        if let candidate, !candidate.isEmpty {
+            messageLabel.text = "تم العثور على الرابط. اضغط فتح لإرساله إلى التطبيق."
+            previewLabel.text = candidate
+            openButton.isEnabled = true
+        } else if let text = payload.text, !text.isEmpty {
+            messageLabel.text = "تم العثور على نص فقط. اضغط فتح لإرساله إلى التطبيق."
+            previewLabel.text = text
+            openButton.isEnabled = true
+        } else {
+            showNoContentState()
+        }
+    }
+
+    private func showNoContentState() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+        messageLabel.text = "ما قدرنا نقرأ رابط من المشاركة."
+        previewLabel.text = "جرّب المشاركة من Safari أو انسخ الرابط كنص."
+        openButton.isEnabled = false
+    }
+
+    @objc private func openButtonTapped() {
+        if didComplete { return }
+        openButton.isEnabled = false
+        cancelButton.isEnabled = false
+        messageLabel.text = "يتم فتح LinkVault..."
 
         collectionQueue.async { [weak self] in
             guard let self else { return }
             let currentPayload = self.payload
-
             DispatchQueue.main.async {
                 self.openContainingApp(payload: currentPayload)
             }
         }
+    }
+
+    @objc private func cancelButtonTapped() {
+        completeOnce()
     }
 
     private func openContainingApp(payload: SharedPayload) {
@@ -174,13 +279,11 @@ final class ShareViewController: UIViewController {
             return
         }
 
-        // Critical runtime fix: do not wait forever for the host app/open callback.
-        // The share extension must always complete so Safari/Notes/etc. never freeze.
         extensionContext?.open(deepLink) { [weak self] _ in
             self?.completeOnce()
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
             self?.completeOnce()
         }
     }
