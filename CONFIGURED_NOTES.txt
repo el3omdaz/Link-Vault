@@ -8,3 +8,9 @@ LinkVault configured build
 - BACKEND_URL: Railway backend URL بدون /api/health
 
 ملاحظة: إذا كان التطبيق مثبتاً على شاشة الآيفون الرئيسية، احذف الاختصار القديم ثم افتح رابط GitHub Pages من Safari وأضفه من جديد بعد رفع هذه النسخة.
+
+تحديث iOS/App Store:
+- Bundle ID الأساسي: com.linkvaultq8.app
+- Bundle ID للمشاركة: com.linkvaultq8.app.ShareExtension
+- App Group: group.com.linkvaultq8.app
+- تم تحديث capacitor.config.json و codemagic.yaml وسكربت Share Extension لتطابق هذه القيم.

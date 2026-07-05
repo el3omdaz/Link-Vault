@@ -88,9 +88,11 @@
 
 ### المطلوب في Apple Developer / App Store Connect
 - App ID للتطبيق:
-  `com.linkvault.app`
+  `com.linkvaultq8.app`
 - App ID للـ Share Extension:
-  `com.linkvault.app.ShareExtension`
+  `com.linkvaultq8.app.ShareExtension`
+- App Group:
+  `group.com.linkvaultq8.app`
 - تطبيق جديد في App Store Connect مربوط بـ Bundle ID الأساسي.
 
 ### المطلوب في Codemagic

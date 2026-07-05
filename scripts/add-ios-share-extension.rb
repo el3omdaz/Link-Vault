@@ -9,13 +9,16 @@ require 'xcodeproj'
 ROOT = File.expand_path('..', __dir__)
 Dir.chdir(ROOT)
 
-APP_BUNDLE_ID = ENV.fetch('BUNDLE_ID', 'com.linkvault.app')
+APP_BUNDLE_ID = ENV.fetch('BUNDLE_ID', 'com.linkvaultq8.app')
 EXTENSION_NAME = ENV.fetch('SHARE_EXTENSION_NAME', 'LinkVaultShareExtension')
 EXTENSION_BUNDLE_ID = ENV.fetch('SHARE_EXTENSION_BUNDLE_ID', "#{APP_BUNDLE_ID}.ShareExtension")
+APP_GROUP_ID = ENV.fetch('APP_GROUP_ID', "group.#{APP_BUNDLE_ID}")
 DEPLOYMENT_TARGET = ENV.fetch('IOS_DEPLOYMENT_TARGET', '14.0')
 PROJECT_PATH = 'ios/App/App.xcodeproj'
 APP_INFO_PLIST = 'ios/App/App/Info.plist'
 EXTENSION_DIR = "ios/App/#{EXTENSION_NAME}"
+APP_ENTITLEMENTS = 'ios/App/App/App.entitlements'
+EXTENSION_ENTITLEMENTS = "#{EXTENSION_DIR}/#{EXTENSION_NAME}.entitlements"
 
 abort "Missing #{PROJECT_PATH}. Run: npx cap add ios && npx cap sync ios" unless File.exist?(PROJECT_PATH)
 abort "Missing #{APP_INFO_PLIST}" unless File.exist?(APP_INFO_PLIST)
@@ -23,6 +26,26 @@ abort "Missing #{APP_INFO_PLIST}" unless File.exist?(APP_INFO_PLIST)
 FileUtils.mkdir_p(EXTENSION_DIR)
 FileUtils.cp('ios-share-extension/Info.plist', "#{EXTENSION_DIR}/Info.plist")
 FileUtils.cp('ios-share-extension/ShareViewController.swift', "#{EXTENSION_DIR}/ShareViewController.swift")
+
+
+def write_app_group_entitlements(path, app_group_id)
+  FileUtils.mkdir_p(File.dirname(path))
+  File.write(path, <<~PLIST)
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>com.apple.security.application-groups</key>
+      <array>
+        <string>#{app_group_id}</string>
+      </array>
+    </dict>
+    </plist>
+  PLIST
+end
+
+write_app_group_entitlements(APP_ENTITLEMENTS, APP_GROUP_ID)
+write_app_group_entitlements(EXTENSION_ENTITLEMENTS, APP_GROUP_ID)
 
 # Add custom URL scheme: linkvault://share?url=...
 def plistbuddy(*args)
@@ -45,6 +68,7 @@ app_target.build_configurations.each do |config|
   config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = APP_BUNDLE_ID
   config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = DEPLOYMENT_TARGET
   config.build_settings['CODE_SIGN_STYLE'] = 'Automatic'
+  config.build_settings['CODE_SIGN_ENTITLEMENTS'] = 'App/App.entitlements'
 end
 
 extension_group = project.main_group.find_subpath(EXTENSION_NAME, true)
@@ -67,6 +91,7 @@ extension_target.build_configurations.each do |config|
   config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
   config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'YES'
   config.build_settings['CODE_SIGN_STYLE'] = 'Automatic'
+  config.build_settings['CODE_SIGN_ENTITLEMENTS'] = "#{EXTENSION_NAME}/#{EXTENSION_NAME}.entitlements"
   config.build_settings['MARKETING_VERSION'] = '1.0'
   config.build_settings['CURRENT_PROJECT_VERSION'] = ENV.fetch('BUILD_NUMBER', '1')
 end
@@ -90,4 +115,4 @@ unless embed_phase.files_references.include?(extension_target.product_reference)
 end
 
 project.save
-puts "Added/updated #{EXTENSION_NAME} (#{EXTENSION_BUNDLE_ID}) and linkvault:// URL scheme."
+puts "Added/updated #{EXTENSION_NAME} (#{EXTENSION_BUNDLE_ID}), App Group #{APP_GROUP_ID}, and linkvault:// URL scheme."
