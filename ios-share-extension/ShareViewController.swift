@@ -2,7 +2,19 @@ import UIKit
 import UniformTypeIdentifiers
 
 final class ShareViewController: UIViewController {
-    private var didOpenApp = false
+    private var didStartOpenFlow = false
+    private var didComplete = false
+    private var didFinishExtraction = false
+    private let collectionQueue = DispatchQueue(label: "com.linkvaultq8.share.collection")
+
+    private struct SharedPayload {
+        var url: String?
+        var title: String?
+        var text: String?
+    }
+
+    private var payload = SharedPayload()
+    private var statusLabel: UILabel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,96 +29,165 @@ final class ShareViewController: UIViewController {
         label.text = "جاري إرسال الرابط إلى LinkVault..."
         label.textAlignment = .center
         label.textColor = .white
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         view.addSubview(label)
+        statusLabel = label
+
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
     private func extractSharedContent() {
-        guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem] else {
-            completeWithoutContent()
+        let inputItems = extensionContext?.inputItems as? [NSExtensionItem] ?? []
+        guard !inputItems.isEmpty else {
+            openContainingAppWithCurrentPayload()
             return
         }
 
-        var collectedURL: String?
-        var collectedText: String?
-        var collectedTitle: String?
         let group = DispatchGroup()
 
         for item in inputItems {
             if let attributedTitle = item.attributedTitle?.string, !attributedTitle.isEmpty {
-                collectedTitle = attributedTitle
+                mergePayload(title: attributedTitle)
             }
+
             if let attributedText = item.attributedContentText?.string, !attributedText.isEmpty {
-                collectedText = attributedText
+                mergePayload(text: attributedText)
             }
 
             for provider in item.attachments ?? [] {
-                if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier) {
-                    group.enter()
-                    provider.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { value, _ in
-                        if let url = value as? URL {
-                            collectedURL = url.absoluteString
-                        } else if let text = value as? String {
-                            collectedURL = text
-                        }
-                        group.leave()
-                    }
-                } else if provider.hasItemConformingToTypeIdentifier(UTType.plainText.identifier) {
-                    group.enter()
-                    provider.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { value, _ in
-                        if let text = value as? String {
-                            if collectedText == nil { collectedText = text }
-                            if collectedURL == nil { collectedURL = Self.firstURL(in: text) }
-                        }
-                        group.leave()
-                    }
-                } else if provider.hasItemConformingToTypeIdentifier(UTType.text.identifier) {
-                    group.enter()
-                    provider.loadItem(forTypeIdentifier: UTType.text.identifier, options: nil) { value, _ in
-                        if let text = value as? String {
-                            if collectedText == nil { collectedText = text }
-                            if collectedURL == nil { collectedURL = Self.firstURL(in: text) }
-                        }
-                        group.leave()
-                    }
-                }
+                loadURLIfAvailable(from: provider, group: group)
+                loadTextIfAvailable(from: provider, group: group)
             }
         }
 
         group.notify(queue: .main) { [weak self] in
-            self?.openContainingApp(url: collectedURL, title: collectedTitle, text: collectedText)
+            self?.finishExtractionAndOpen()
+        }
+
+        // Some host apps occasionally do not call one of the NSItemProvider callbacks.
+        // Never leave the host app stuck behind the share extension.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.finishExtractionAndOpen()
         }
     }
 
-    private func openContainingApp(url: String?, title: String?, text: String?) {
-        if didOpenApp { return }
-        didOpenApp = true
+    private func loadURLIfAvailable(from provider: NSItemProvider, group: DispatchGroup) {
+        guard provider.hasItemConformingToTypeIdentifier(UTType.url.identifier) else { return }
 
+        group.enter()
+        provider.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { [weak self] value, _ in
+            defer { group.leave() }
+
+            if let url = value as? URL {
+                self?.mergePayload(url: url.absoluteString)
+            } else if let nsurl = value as? NSURL {
+                self?.mergePayload(url: nsurl.absoluteString)
+            } else if let text = value as? String {
+                self?.mergePayload(url: Self.firstURL(in: text) ?? text)
+            }
+        }
+    }
+
+    private func loadTextIfAvailable(from provider: NSItemProvider, group: DispatchGroup) {
+        let identifiers = [UTType.plainText.identifier, UTType.text.identifier, "public.utf8-plain-text"]
+        guard let identifier = identifiers.first(where: { provider.hasItemConformingToTypeIdentifier($0) }) else { return }
+
+        group.enter()
+        provider.loadItem(forTypeIdentifier: identifier, options: nil) { [weak self] value, _ in
+            defer { group.leave() }
+
+            if let text = value as? String {
+                self?.mergePayload(text: text)
+                if let foundURL = Self.firstURL(in: text) {
+                    self?.mergePayload(url: foundURL)
+                }
+            } else if let data = value as? Data, let text = String(data: data, encoding: .utf8) {
+                self?.mergePayload(text: text)
+                if let foundURL = Self.firstURL(in: text) {
+                    self?.mergePayload(url: foundURL)
+                }
+            }
+        }
+    }
+
+    private func mergePayload(url: String? = nil, title: String? = nil, text: String? = nil) {
+        collectionQueue.async { [weak self] in
+            guard let self else { return }
+
+            if let url, !url.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                self.payload.url = url
+            }
+            if let title, !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, self.payload.title == nil {
+                self.payload.title = title
+            }
+            if let text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, self.payload.text == nil {
+                self.payload.text = text
+            }
+        }
+    }
+
+    private func finishExtractionAndOpen() {
+        if didFinishExtraction || didStartOpenFlow || didComplete { return }
+        didFinishExtraction = true
+
+        collectionQueue.async { [weak self] in
+            DispatchQueue.main.async {
+                self?.openContainingAppWithCurrentPayload()
+            }
+        }
+    }
+
+    private func openContainingAppWithCurrentPayload() {
+        if didStartOpenFlow || didComplete { return }
+        didStartOpenFlow = true
+        statusLabel?.text = "يتم فتح LinkVault..."
+
+        collectionQueue.async { [weak self] in
+            guard let self else { return }
+            let currentPayload = self.payload
+
+            DispatchQueue.main.async {
+                self.openContainingApp(payload: currentPayload)
+            }
+        }
+    }
+
+    private func openContainingApp(payload: SharedPayload) {
         var components = URLComponents()
         components.scheme = "linkvault"
         components.host = "share"
+
+        let extractedURL = payload.url ?? Self.firstURL(in: payload.text ?? "") ?? ""
         components.queryItems = [
-            URLQueryItem(name: "url", value: url ?? ""),
-            URLQueryItem(name: "title", value: title ?? ""),
-            URLQueryItem(name: "text", value: text ?? "")
+            URLQueryItem(name: "url", value: extractedURL),
+            URLQueryItem(name: "title", value: payload.title ?? ""),
+            URLQueryItem(name: "text", value: payload.text ?? "")
         ]
 
         guard let deepLink = components.url else {
-            completeWithoutContent()
+            completeOnce()
             return
         }
 
+        // Critical runtime fix: do not wait forever for the host app/open callback.
+        // The share extension must always complete so Safari/Notes/etc. never freeze.
         extensionContext?.open(deepLink) { [weak self] _ in
-            self?.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            self?.completeOnce()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.completeOnce()
         }
     }
 
-    private func completeWithoutContent() {
+    private func completeOnce() {
+        if didComplete { return }
+        didComplete = true
         extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
 
