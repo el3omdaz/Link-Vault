@@ -146,3 +146,8 @@
 - Supabase anon key مسموح يكون داخل التطبيق، لكن Service Role Key ممنوع.
 - TMDB/Youtube keys تكون في Railway فقط.
 - أول Build على Codemagic قد يحتاج تعديل بسيط حسب حالة Apple signing عندك. إذا فشل، افتح log وأرسل الخطأ فقط.
+
+## Build fix note
+
+This package disables App Group entitlements by default because the current Share Extension uses the `linkvault://` URL scheme to pass shared links to the main app. This avoids provisioning-profile entitlement mismatches during App Store/TestFlight archive. App Groups can be enabled later by setting `USE_APP_GROUPS=true` after the capability is enabled for both Bundle IDs in Apple Developer.
+
