@@ -15,3 +15,8 @@ Runtime Share Extension UI fix:
 - Share Extension now shows a small native confirmation screen with Open and Close buttons.
 - It no longer tries to auto-open the app immediately on selection, which prevents host apps from appearing frozen.
 - User can always close the share extension safely.
+
+
+Share Extension open fix:
+- Added primary URL scheme linkvaultq8:// and kept linkvault:// as fallback.
+- Share Extension now tries responder-chain opening plus extensionContext.open for better iOS compatibility.

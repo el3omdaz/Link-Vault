@@ -5,6 +5,7 @@ final class ShareViewController: UIViewController {
     private let collectionQueue = DispatchQueue(label: "com.linkvaultq8.share.collection")
     private var didStartExtraction = false
     private var didComplete = false
+    private var didStartOpen = false
 
     private struct SharedPayload {
         var url: String?
@@ -244,9 +245,9 @@ final class ShareViewController: UIViewController {
     }
 
     @objc private func openButtonTapped() {
-        if didComplete { return }
+        if didComplete || didStartOpen { return }
+        didStartOpen = true
         openButton.isEnabled = false
-        cancelButton.isEnabled = false
         messageLabel.text = "يتم فتح LinkVault..."
 
         collectionQueue.async { [weak self] in
@@ -263,35 +264,99 @@ final class ShareViewController: UIViewController {
     }
 
     private func openContainingApp(payload: SharedPayload) {
-        var components = URLComponents()
-        components.scheme = "linkvault"
-        components.host = "share"
-
-        let extractedURL = payload.url ?? Self.firstURL(in: payload.text ?? "") ?? ""
-        components.queryItems = [
-            URLQueryItem(name: "url", value: extractedURL),
-            URLQueryItem(name: "title", value: payload.title ?? ""),
-            URLQueryItem(name: "text", value: payload.text ?? "")
-        ]
-
-        guard let deepLink = components.url else {
-            completeOnce()
+        let deepLinks = makeDeepLinks(payload: payload)
+        guard let primaryDeepLink = deepLinks.first else {
+            showOpenFailedState()
             return
         }
 
-        extensionContext?.open(deepLink) { [weak self] _ in
-            self?.completeOnce()
+        // 1) First try the responder-chain route. It is the most reliable route
+        // for iOS Share Extensions when opening the containing app by URL scheme.
+        var didAskSystemToOpen = false
+        for link in deepLinks {
+            didAskSystemToOpen = openURLThroughResponderChain(link) || didAskSystemToOpen
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
-            self?.completeOnce()
+        // 2) Also ask the extension context to open the primary URL. Some iOS
+        // versions prefer this API, while others ignore it for Share Extensions.
+        extensionContext?.open(primaryDeepLink) { [weak self] success in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                if success || didAskSystemToOpen {
+                    self.completeOnce(retryOpening: success ? [] : deepLinks)
+                } else if !self.didComplete {
+                    self.showOpenFailedState()
+                }
+            }
+        }
+
+        // 3) Safety close + retry. Some Share Extension hosts ignore open(_:)
+        // until the extension is dismissed. In that case we complete the request
+        // and retry the URL-scheme open from the completion handler.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { [weak self] in
+            guard let self, !self.didComplete else { return }
+            if didAskSystemToOpen {
+                self.completeOnce(retryOpening: deepLinks)
+            } else {
+                self.showOpenFailedState()
+            }
         }
     }
 
-    private func completeOnce() {
+    private func makeDeepLinks(payload: SharedPayload) -> [URL] {
+        let extractedURL = payload.url ?? Self.firstURL(in: payload.text ?? "") ?? ""
+        let title = payload.title ?? ""
+        let text = payload.text ?? ""
+        let schemes = ["linkvaultq8", "linkvault"]
+
+        return schemes.compactMap { scheme in
+            var components = URLComponents()
+            components.scheme = scheme
+            components.host = "share"
+            components.queryItems = [
+                URLQueryItem(name: "url", value: extractedURL),
+                URLQueryItem(name: "title", value: title),
+                URLQueryItem(name: "text", value: text)
+            ]
+            return components.url
+        }
+    }
+
+    @discardableResult
+    private func openURLThroughResponderChain(_ url: URL) -> Bool {
+        let selector = NSSelectorFromString("openURL:")
+        var responder: UIResponder? = self
+
+        while let currentResponder = responder {
+            if currentResponder.responds(to: selector) {
+                _ = currentResponder.perform(selector, with: url)
+                return true
+            }
+            responder = currentResponder.next
+        }
+
+        return false
+    }
+
+    private func showOpenFailedState() {
+        openButton.isEnabled = true
+        cancelButton.isEnabled = true
+        didStartOpen = false
+        messageLabel.text = "ما قدرنا نفتح LinkVault تلقائيًا. تأكد أن التطبيق مثبت من TestFlight ثم جرّب مرة ثانية."
+    }
+
+    private func completeOnce(retryOpening deepLinks: [URL] = []) {
         if didComplete { return }
         didComplete = true
-        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        let linksToRetry = deepLinks
+        extensionContext?.completeRequest(returningItems: nil) { [weak self] _ in
+            guard let self, !linksToRetry.isEmpty else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                for link in linksToRetry {
+                    if self.openURLThroughResponderChain(link) { break }
+                }
+            }
+        }
     }
 
     private static func firstURL(in text: String) -> String? {

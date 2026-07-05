@@ -56,7 +56,9 @@ else
   FileUtils.rm_f(EXTENSION_ENTITLEMENTS)
 end
 
-# Add custom URL scheme: linkvault://share?url=...
+# Add custom URL schemes for share deep links:
+# linkvaultq8://share?url=... is the primary scheme, and linkvault:// is kept
+# as a legacy fallback for previously installed builds.
 def plistbuddy(*args)
   command = ['/usr/libexec/PlistBuddy'] + args + [APP_INFO_PLIST]
   _stdout, _stderr, _status = Open3.capture3(*command)
@@ -66,7 +68,12 @@ plistbuddy('-c', 'Add :CFBundleURLTypes array')
 plistbuddy('-c', 'Add :CFBundleURLTypes:0 dict')
 plistbuddy('-c', "Add :CFBundleURLTypes:0:CFBundleURLName string #{APP_BUNDLE_ID}")
 plistbuddy('-c', 'Add :CFBundleURLTypes:0:CFBundleURLSchemes array')
-plistbuddy('-c', 'Add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string linkvault')
+plistbuddy('-c', 'Add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string linkvaultq8')
+plistbuddy('-c', 'Add :CFBundleURLTypes:0:CFBundleURLSchemes:1 string linkvault')
+plistbuddy('-c', 'Delete :LSApplicationQueriesSchemes')
+plistbuddy('-c', 'Add :LSApplicationQueriesSchemes array')
+plistbuddy('-c', 'Add :LSApplicationQueriesSchemes:0 string linkvaultq8')
+plistbuddy('-c', 'Add :LSApplicationQueriesSchemes:1 string linkvault')
 
 project = Xcodeproj::Project.open(PROJECT_PATH)
 app_target = project.targets.find { |t| t.name == 'App' }
@@ -186,4 +193,4 @@ build_file.settings = { 'ATTRIBUTES' => ['RemoveHeadersOnCopy'] }
 
 project.save
 entitlements_status = USE_APP_GROUPS ? "with App Group #{APP_GROUP_ID}" : 'without App Group entitlements'
-puts "Added/updated #{EXTENSION_NAME} (#{EXTENSION_BUNDLE_ID}) #{entitlements_status}, and linkvault:// URL scheme."
+puts "Added/updated #{EXTENSION_NAME} (#{EXTENSION_BUNDLE_ID}) #{entitlements_status}, and linkvaultq8:// + linkvault:// URL schemes."

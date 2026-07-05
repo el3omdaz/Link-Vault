@@ -407,11 +407,12 @@ function checkShareTarget(){
   const handled = handleIncomingShareFromParams(params);
   if(handled || params.get('action')) window.history.replaceState({}, '', window.location.pathname || './');
 }
+function isLinkVaultDeepLink(u){ return u && (u.protocol === 'linkvaultq8:' || u.protocol === 'linkvault:'); }
 function initNativeDeepLinks(){
   const App = window.Capacitor?.Plugins?.App;
   if(!App) return;
-  App.addListener('appUrlOpen', data => { try { const u = new URL(data.url); if(u.protocol === 'linkvault:'){ handleIncomingShareFromParams(u.searchParams); } } catch(e){} });
-  if(App.getLaunchUrl){ App.getLaunchUrl().then(res => { if(res?.url){ try { const u = new URL(res.url); if(u.protocol === 'linkvault:') handleIncomingShareFromParams(u.searchParams); } catch(e){} } }).catch(()=>{}); }
+  App.addListener('appUrlOpen', data => { try { const u = new URL(data.url); if(isLinkVaultDeepLink(u)){ handleIncomingShareFromParams(u.searchParams); } } catch(e){} });
+  if(App.getLaunchUrl){ App.getLaunchUrl().then(res => { if(res?.url){ try { const u = new URL(res.url); if(isLinkVaultDeepLink(u)) handleIncomingShareFromParams(u.searchParams); } catch(e){} } }).catch(()=>{}); }
 }
 
 function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2500); }
