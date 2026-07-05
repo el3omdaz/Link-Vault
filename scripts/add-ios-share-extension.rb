@@ -83,13 +83,35 @@ unless extension_target
   extension_target = project.new_target(:app_extension, EXTENSION_NAME, :ios, DEPLOYMENT_TARGET)
 end
 
+extension_product_name = EXTENSION_NAME
+extension_product_filename = "#{EXTENSION_NAME}.appex"
+extension_module_name = EXTENSION_NAME.gsub(/[^A-Za-z0-9_]/, '_')
+
+# Xcode 26's build system is stricter about product names. If PRODUCT_NAME is
+# empty, the extension archive output becomes `.appex`, which can collide with
+# other build outputs and fail with: "Multiple commands produce .../.appex".
+extension_target.product_reference.name = extension_product_filename
+extension_target.product_reference.path = extension_product_filename
+extension_target.product_reference.explicit_file_type = 'wrapper.app-extension'
+extension_target.product_reference.include_in_index = '0'
+
 extension_target.build_configurations.each do |config|
+  config.build_settings['PRODUCT_NAME'] = extension_product_name
+  config.build_settings['EXECUTABLE_NAME'] = '$(PRODUCT_NAME)'
+  config.build_settings['WRAPPER_EXTENSION'] = 'appex'
+  config.build_settings['PRODUCT_BUNDLE_PACKAGE_TYPE'] = 'XPC!'
+  config.build_settings['PRODUCT_MODULE_NAME'] = extension_module_name
+  config.build_settings['FULL_PRODUCT_NAME'] = '$(PRODUCT_NAME).$(WRAPPER_EXTENSION)'
   config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = EXTENSION_BUNDLE_ID
   config.build_settings['INFOPLIST_FILE'] = "#{EXTENSION_NAME}/Info.plist"
   config.build_settings['SWIFT_VERSION'] = '5.0'
   config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = DEPLOYMENT_TARGET
   config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
   config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'YES'
+  config.build_settings['SKIP_INSTALL'] = 'YES'
+  config.build_settings['DEFINES_MODULE'] = 'YES'
+  config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
+  config.build_settings['LD_RUNPATH_SEARCH_PATHS'] = ['$(inherited)', '@executable_path/Frameworks', '@executable_path/../../Frameworks']
   config.build_settings['CODE_SIGN_STYLE'] = 'Automatic'
   config.build_settings['CODE_SIGN_ENTITLEMENTS'] = "#{EXTENSION_NAME}/#{EXTENSION_NAME}.entitlements"
   config.build_settings['MARKETING_VERSION'] = '1.0'
@@ -109,10 +131,24 @@ end
 embed_phase = app_target.copy_files_build_phases.find { |p| p.name == 'Embed App Extensions' }
 embed_phase ||= app_target.new_copy_files_build_phase('Embed App Extensions')
 embed_phase.dst_subfolder_spec = '13' # PlugIns
-unless embed_phase.files_references.include?(extension_target.product_reference)
-  build_file = embed_phase.add_file_reference(extension_target.product_reference)
-  build_file.settings = { 'ATTRIBUTES' => ['RemoveHeadersOnCopy'] }
+
+# Keep the copy phase deterministic. Remove stale extension references first;
+# then add exactly one product reference with the fixed .appex name.
+embed_phase.files.dup.each do |build_file|
+  ref = build_file.file_ref
+  next unless ref
+
+  display_name = ref.respond_to?(:display_name) ? ref.display_name.to_s : ''
+  ref_path = ref.path.to_s
+  ref_name = ref.name.to_s
+  should_remove = [display_name, ref_path, ref_name].any? do |value|
+    value == '.appex' || value == extension_product_filename || value.include?(EXTENSION_NAME)
+  end
+  build_file.remove_from_project if should_remove
 end
+
+build_file = embed_phase.add_file_reference(extension_target.product_reference)
+build_file.settings = { 'ATTRIBUTES' => ['RemoveHeadersOnCopy'] }
 
 project.save
 puts "Added/updated #{EXTENSION_NAME} (#{EXTENSION_BUNDLE_ID}), App Group #{APP_GROUP_ID}, and linkvault:// URL scheme."

@@ -15,7 +15,7 @@ LinkVault configured build
 - App Group: group.com.linkvaultq8.app
 - تم تحديث capacitor.config.json و codemagic.yaml وسكربت Share Extension لتطابق هذه القيم.
 
-App Store Connect extra setup:
-- Privacy Policy URL after GitHub Pages deploy: https://<github-username>.github.io/<repo-name>/privacy-policy.html
-- App Privacy recommended data types: Email Address, User ID, User Content. Purpose: App Functionality. Tracking: No. Advertising: No.
-- Content Rights Information: choose No if the app does not contain, show, or access third-party copyrighted content as part of the app experience. User-saved private links are user content, not app-provided media content.
+2026-07-05 fix:
+- Updated scripts/add-ios-share-extension.rb to set a deterministic Share Extension product name (LinkVaultShareExtension.appex) for Xcode 26 archive builds.
+- Cleaned stale Embed App Extensions references before adding the extension product.
+- Added privacy-policy.html and support.html to root and www for GitHub Pages/App Store Connect URLs.
