@@ -11,7 +11,8 @@ workflows:
       vars:
         BUNDLE_ID: "com.linkvaultq8.app"
         SHARE_EXTENSION_BUNDLE_ID: "com.linkvaultq8.app.ShareExtension"
-        APP_GROUP_ID: "group.com.linkvaultq8.app"
+        APP_GROUP_ID: "group.com.linkvaultq8.shared"
+        USE_APP_GROUPS: "true"
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
         IOS_DEPLOYMENT_TARGET: "14.0"

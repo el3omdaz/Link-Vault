@@ -12,8 +12,8 @@ Dir.chdir(ROOT)
 APP_BUNDLE_ID = ENV.fetch('BUNDLE_ID', 'com.linkvaultq8.app')
 EXTENSION_NAME = ENV.fetch('SHARE_EXTENSION_NAME', 'LinkVaultShareExtension')
 EXTENSION_BUNDLE_ID = ENV.fetch('SHARE_EXTENSION_BUNDLE_ID', "#{APP_BUNDLE_ID}.ShareExtension")
-APP_GROUP_ID = ENV.fetch('APP_GROUP_ID', "group.#{APP_BUNDLE_ID}")
-USE_APP_GROUPS = ENV.fetch('USE_APP_GROUPS', 'false').downcase == 'true'
+APP_GROUP_ID = ENV.fetch('APP_GROUP_ID', 'group.com.linkvaultq8.shared')
+USE_APP_GROUPS = ENV.fetch('USE_APP_GROUPS', 'true').downcase == 'true'
 DEPLOYMENT_TARGET = ENV.fetch('IOS_DEPLOYMENT_TARGET', '14.0')
 PROJECT_PATH = 'ios/App/App.xcodeproj'
 APP_INFO_PLIST = 'ios/App/App/Info.plist'
@@ -27,6 +27,7 @@ abort "Missing #{APP_INFO_PLIST}" unless File.exist?(APP_INFO_PLIST)
 FileUtils.mkdir_p(EXTENSION_DIR)
 FileUtils.cp('ios-share-extension/Info.plist', "#{EXTENSION_DIR}/Info.plist")
 FileUtils.cp('ios-share-extension/ShareViewController.swift', "#{EXTENSION_DIR}/ShareViewController.swift")
+FileUtils.cp('ios-share-extension/PendingSharePlugin.swift', 'ios/App/App/PendingSharePlugin.swift')
 
 
 def write_app_group_entitlements(path, app_group_id)
@@ -79,6 +80,10 @@ project = Xcodeproj::Project.open(PROJECT_PATH)
 app_target = project.targets.find { |t| t.name == 'App' }
 abort 'Could not find App target in iOS project' unless app_target
 
+app_group = project.main_group.find_subpath('App', true)
+app_group.set_source_tree('<group>')
+pending_share_ref = app_group.files.find { |f| File.basename(f.path.to_s) == 'PendingSharePlugin.swift' } || app_group.new_file('PendingSharePlugin.swift')
+
 # Clean stale/empty extension products left by previous generated scripts.
 # Xcode 26 fails archive when an app extension product resolves to `.appex`.
 project.targets.each do |target|
@@ -103,6 +108,10 @@ app_target.build_configurations.each do |config|
   else
     config.build_settings.delete('CODE_SIGN_ENTITLEMENTS')
   end
+end
+
+unless app_target.source_build_phase.files_references.include?(pending_share_ref)
+  app_target.source_build_phase.add_file_reference(pending_share_ref, true)
 end
 
 extension_group = project.main_group.find_subpath(EXTENSION_NAME, true)

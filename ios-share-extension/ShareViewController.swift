@@ -2,10 +2,11 @@ import UIKit
 import UniformTypeIdentifiers
 
 final class ShareViewController: UIViewController {
+    private let appGroupId = "group.com.linkvaultq8.shared"
     private let collectionQueue = DispatchQueue(label: "com.linkvaultq8.share.collection")
     private var didStartExtraction = false
     private var didComplete = false
-    private var didStartOpen = false
+    private var didStartSave = false
 
     private struct SharedPayload {
         var url: String?
@@ -19,7 +20,7 @@ final class ShareViewController: UIViewController {
     private let titleLabel = UILabel()
     private let messageLabel = UILabel()
     private let previewLabel = UILabel()
-    private let openButton = UIButton(type: .system)
+    private let saveButton = UIButton(type: .system)
     private let cancelButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
@@ -69,18 +70,18 @@ final class ShareViewController: UIViewController {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.startAnimating()
 
-        openButton.translatesAutoresizingMaskIntoConstraints = false
-        openButton.setTitle("فتح في LinkVault", for: .normal)
-        openButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        openButton.isEnabled = false
-        openButton.addTarget(self, action: #selector(openButtonTapped), for: .touchUpInside)
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        saveButton.setTitle("حفظ في LinkVault", for: .normal)
+        saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        saveButton.isEnabled = false
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
 
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.setTitle("إغلاق", for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
 
-        let buttonStack = UIStackView(arrangedSubviews: [openButton, cancelButton])
+        let buttonStack = UIStackView(arrangedSubviews: [saveButton, cancelButton])
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
         buttonStack.axis = .vertical
         buttonStack.spacing = 10
@@ -146,8 +147,6 @@ final class ShareViewController: UIViewController {
             self?.finishExtractionAndUpdateUI()
         }
 
-        // Safety fallback: even if a host app never calls an NSItemProvider callback,
-        // keep the extension responsive and give the user a visible close button.
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
             self?.finishExtractionAndUpdateUI()
         }
@@ -224,13 +223,13 @@ final class ShareViewController: UIViewController {
         activityIndicator.isHidden = true
 
         if let candidate, !candidate.isEmpty {
-            messageLabel.text = "تم العثور على الرابط. اضغط فتح لإرساله إلى التطبيق."
+            messageLabel.text = "تم العثور على الرابط. اضغط حفظ ثم افتح تطبيق LinkVault."
             previewLabel.text = candidate
-            openButton.isEnabled = true
+            saveButton.isEnabled = true
         } else if let text = payload.text, !text.isEmpty {
-            messageLabel.text = "تم العثور على نص فقط. اضغط فتح لإرساله إلى التطبيق."
+            messageLabel.text = "تم العثور على نص. اضغط حفظ ثم افتح تطبيق LinkVault."
             previewLabel.text = text
-            openButton.isEnabled = true
+            saveButton.isEnabled = true
         } else {
             showNoContentState()
         }
@@ -241,20 +240,33 @@ final class ShareViewController: UIViewController {
         activityIndicator.isHidden = true
         messageLabel.text = "ما قدرنا نقرأ رابط من المشاركة."
         previewLabel.text = "جرّب المشاركة من Safari أو انسخ الرابط كنص."
-        openButton.isEnabled = false
+        saveButton.isEnabled = false
     }
 
-    @objc private func openButtonTapped() {
-        if didComplete || didStartOpen { return }
-        didStartOpen = true
-        openButton.isEnabled = false
-        messageLabel.text = "يتم فتح LinkVault..."
+    @objc private func saveButtonTapped() {
+        if didComplete || didStartSave { return }
+        didStartSave = true
+        saveButton.isEnabled = false
+        cancelButton.isEnabled = false
+        messageLabel.text = "جاري حفظ الرابط..."
 
         collectionQueue.async { [weak self] in
             guard let self else { return }
             let currentPayload = self.payload
+            let saved = self.savePayloadToAppGroup(currentPayload)
             DispatchQueue.main.async {
-                self.openContainingApp(payload: currentPayload)
+                if saved {
+                    self.messageLabel.text = "تم حفظ الرابط. افتح LinkVault وسيظهر تلقائيًا."
+                    self.previewLabel.text = currentPayload.url ?? Self.firstURL(in: currentPayload.text ?? "") ?? currentPayload.text ?? ""
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+                        self?.completeOnce()
+                    }
+                } else {
+                    self.didStartSave = false
+                    self.saveButton.isEnabled = true
+                    self.cancelButton.isEnabled = true
+                    self.messageLabel.text = "تعذر حفظ الرابط. تأكد من تفعيل App Groups ثم جرّب مرة ثانية."
+                }
             }
         }
     }
@@ -263,100 +275,25 @@ final class ShareViewController: UIViewController {
         completeOnce()
     }
 
-    private func openContainingApp(payload: SharedPayload) {
-        let deepLinks = makeDeepLinks(payload: payload)
-        guard let primaryDeepLink = deepLinks.first else {
-            showOpenFailedState()
-            return
-        }
-
-        // 1) First try the responder-chain route. It is the most reliable route
-        // for iOS Share Extensions when opening the containing app by URL scheme.
-        var didAskSystemToOpen = false
-        for link in deepLinks {
-            didAskSystemToOpen = openURLThroughResponderChain(link) || didAskSystemToOpen
-        }
-
-        // 2) Also ask the extension context to open the primary URL. Some iOS
-        // versions prefer this API, while others ignore it for Share Extensions.
-        extensionContext?.open(primaryDeepLink) { [weak self] success in
-            DispatchQueue.main.async {
-                guard let self else { return }
-                if success || didAskSystemToOpen {
-                    self.completeOnce(retryOpening: success ? [] : deepLinks)
-                } else if !self.didComplete {
-                    self.showOpenFailedState()
-                }
-            }
-        }
-
-        // 3) Safety close + retry. Some Share Extension hosts ignore open(_:)
-        // until the extension is dismissed. In that case we complete the request
-        // and retry the URL-scheme open from the completion handler.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { [weak self] in
-            guard let self, !self.didComplete else { return }
-            if didAskSystemToOpen {
-                self.completeOnce(retryOpening: deepLinks)
-            } else {
-                self.showOpenFailedState()
-            }
-        }
-    }
-
-    private func makeDeepLinks(payload: SharedPayload) -> [URL] {
+    private func savePayloadToAppGroup(_ payload: SharedPayload) -> Bool {
         let extractedURL = payload.url ?? Self.firstURL(in: payload.text ?? "") ?? ""
-        let title = payload.title ?? ""
         let text = payload.text ?? ""
-        let schemes = ["linkvaultq8", "linkvault"]
+        let title = payload.title ?? ""
 
-        return schemes.compactMap { scheme in
-            var components = URLComponents()
-            components.scheme = scheme
-            components.host = "share"
-            components.queryItems = [
-                URLQueryItem(name: "url", value: extractedURL),
-                URLQueryItem(name: "title", value: title),
-                URLQueryItem(name: "text", value: text)
-            ]
-            return components.url
-        }
+        guard !extractedURL.isEmpty || !text.isEmpty else { return false }
+        guard let defaults = UserDefaults(suiteName: appGroupId) else { return false }
+
+        defaults.set(extractedURL, forKey: "linkvault.pendingShare.url")
+        defaults.set(title, forKey: "linkvault.pendingShare.title")
+        defaults.set(text, forKey: "linkvault.pendingShare.text")
+        defaults.set(Date().timeIntervalSince1970, forKey: "linkvault.pendingShare.timestamp")
+        return defaults.synchronize()
     }
 
-    @discardableResult
-    private func openURLThroughResponderChain(_ url: URL) -> Bool {
-        let selector = NSSelectorFromString("openURL:")
-        var responder: UIResponder? = self
-
-        while let currentResponder = responder {
-            if currentResponder.responds(to: selector) {
-                _ = currentResponder.perform(selector, with: url)
-                return true
-            }
-            responder = currentResponder.next
-        }
-
-        return false
-    }
-
-    private func showOpenFailedState() {
-        openButton.isEnabled = true
-        cancelButton.isEnabled = true
-        didStartOpen = false
-        messageLabel.text = "ما قدرنا نفتح LinkVault تلقائيًا. تأكد أن التطبيق مثبت من TestFlight ثم جرّب مرة ثانية."
-    }
-
-    private func completeOnce(retryOpening deepLinks: [URL] = []) {
+    private func completeOnce() {
         if didComplete { return }
         didComplete = true
-        let linksToRetry = deepLinks
-        extensionContext?.completeRequest(returningItems: nil) { [weak self] _ in
-            guard let self, !linksToRetry.isEmpty else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
-                for link in linksToRetry {
-                    if self.openURLThroughResponderChain(link) { break }
-                }
-            }
-        }
+        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
 
     private static func firstURL(in text: String) -> String? {
