@@ -14,3 +14,8 @@ LinkVault configured build
 - Bundle ID للمشاركة: com.linkvaultq8.app.ShareExtension
 - App Group: group.com.linkvaultq8.app
 - تم تحديث capacitor.config.json و codemagic.yaml وسكربت Share Extension لتطابق هذه القيم.
+
+App Store Connect extra setup:
+- Privacy Policy URL after GitHub Pages deploy: https://<github-username>.github.io/<repo-name>/privacy-policy.html
+- App Privacy recommended data types: Email Address, User ID, User Content. Purpose: App Functionality. Tracking: No. Advertising: No.
+- Content Rights Information: choose No if the app does not contain, show, or access third-party copyrighted content as part of the app experience. User-saved private links are user content, not app-provided media content.

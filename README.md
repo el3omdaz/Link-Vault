@@ -146,3 +146,27 @@
 - Supabase anon key مسموح يكون داخل التطبيق، لكن Service Role Key ممنوع.
 - TMDB/Youtube keys تكون في Railway فقط.
 - أول Build على Codemagic قد يحتاج تعديل بسيط حسب حالة Apple signing عندك. إذا فشل، افتح log وأرسل الخطأ فقط.
+
+## App Store Connect Privacy and Content Rights
+
+Privacy Policy page included:
+
+- `privacy-policy.html` in the repository root for GitHub Pages.
+- `www/privacy-policy.html` inside the packaged web app.
+
+After GitHub Pages deploys, use this URL pattern in App Store Connect:
+
+`https://<github-username>.github.io/<repo-name>/privacy-policy.html`
+
+Recommended App Privacy answers for the current LinkVault Q8 setup:
+
+- Email Address: Yes — App Functionality.
+- User ID: Yes — App Functionality.
+- User Content: Yes — App Functionality.
+- Tracking: No.
+- Advertising: No.
+- Location, Contacts, Health, Financial Info: No, unless these features are added later.
+
+Content Rights Information:
+
+- Choose `No` if LinkVault Q8 does not contain, show, or access third-party copyrighted content as part of the app itself.
