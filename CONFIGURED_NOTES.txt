@@ -7,9 +7,11 @@ Configured bundle identifiers:
 Important fix in this package:
 - The Share Extension product name is forced to LinkVaultShareExtension.appex.
 - Stale/empty .appex references are cleaned from the Xcode project.
-- App Group entitlements are disabled by default because the current Share Extension sends the link to the main app using linkvault:// and does not require App Groups. This avoids archive failures when App Store provisioning profiles do not include the App Groups capability.
-
-If you later decide to store shared data directly between the extension and app, enable App Groups in Apple Developer for both identifiers and set USE_APP_GROUPS=true in Codemagic environment variables.
+- App Group entitlements are enabled by default and unified on: group.com.linkvaultq8.shared.
+- In Apple Developer, enable the same App Group for both identifiers before building:
+  App: com.linkvaultq8.app
+  Share Extension: com.linkvaultq8.app.ShareExtension
+- Codemagic keeps USE_APP_GROUPS=true and APP_GROUP_ID=group.com.linkvaultq8.shared so the generated entitlements match the Swift files.
 
 Runtime Share Extension UI fix:
 - Share Extension now shows a small native confirmation screen with Open and Close buttons.

@@ -1,0 +1,24 @@
+LinkVault App Group fix applied
+
+App Group unified as:
+group.com.linkvaultq8.shared
+
+Checked/updated files:
+- README.md
+- CONFIGURED_NOTES.txt
+
+Already correct and kept unchanged:
+- codemagic.yaml
+- ios-share-extension/ShareViewController.swift
+- ios-share-extension/PendingSharePlugin.swift
+- scripts/add-ios-share-extension.rb
+
+Required Apple Developer setup:
+Enable App Groups for both Bundle IDs:
+- com.linkvaultq8.app
+- com.linkvaultq8.app.ShareExtension
+
+Both must include:
+- group.com.linkvaultq8.shared
+
+After changing Apple Developer capabilities, rebuild/re-fetch provisioning profiles in Codemagic.

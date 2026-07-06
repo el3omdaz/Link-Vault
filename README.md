@@ -92,7 +92,7 @@
 - App ID للـ Share Extension:
   `com.linkvaultq8.app.ShareExtension`
 - App Group:
-  `group.com.linkvaultq8.app`
+  `group.com.linkvaultq8.shared`
 - تطبيق جديد في App Store Connect مربوط بـ Bundle ID الأساسي.
 
 ### المطلوب في Codemagic
@@ -149,5 +149,5 @@
 
 ## Build fix note
 
-This package disables App Group entitlements by default because the current Share Extension uses the `linkvault://` URL scheme to pass shared links to the main app. This avoids provisioning-profile entitlement mismatches during App Store/TestFlight archive. App Groups can be enabled later by setting `USE_APP_GROUPS=true` after the capability is enabled for both Bundle IDs in Apple Developer.
+This package enables App Group entitlements by default. The app and Share Extension must both use the exact same App Group ID: `group.com.linkvaultq8.shared`. Make sure this App Group is enabled in Apple Developer for both Bundle IDs before building for TestFlight/App Store.
 
