@@ -281,13 +281,28 @@ final class ShareViewController: UIViewController {
         let title = payload.title ?? ""
 
         guard !extractedURL.isEmpty || !text.isEmpty else { return false }
+
+        // A nil suite here is the one real hard-failure case worth surfacing:
+        // the App Group identifier is malformed, or the entitlement is
+        // completely absent for this extension.
         guard let defaults = UserDefaults(suiteName: appGroupId) else { return false }
 
         defaults.set(extractedURL, forKey: "linkvault.pendingShare.url")
         defaults.set(title, forKey: "linkvault.pendingShare.title")
         defaults.set(text, forKey: "linkvault.pendingShare.text")
         defaults.set(Date().timeIntervalSince1970, forKey: "linkvault.pendingShare.timestamp")
-        return defaults.synchronize()
+
+        // NOTE: we deliberately do NOT gate success on synchronize()'s return
+        // value anymore. synchronize() has been deprecated since iOS 12 —
+        // Apple's own docs say plainly that it "is unnecessary and shouldn't
+        // be used" — because the OS now persists UserDefaults automatically
+        // in the background. Its return value no longer reliably reflects
+        // whether the set() calls above actually persisted, so using it here
+        // was producing a false "تعذر حفظ الرابط" error even when the App
+        // Group write genuinely succeeded. We still call it (harmless) but
+        // no longer trust what it returns.
+        defaults.synchronize()
+        return true
     }
 
     private func completeOnce() {
