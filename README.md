@@ -151,3 +151,6 @@
 
 This package enables App Group entitlements by default. The app and Share Extension must both use the exact same App Group ID: `group.com.linkvaultq8.shared`. Make sure this App Group is enabled in Apple Developer for both Bundle IDs before building for TestFlight/App Store.
 
+## Share save reliability update
+
+This package changes the iOS share flow so tapping **حفظ في LinkVault** saves the URL to the App Group and then opens the main app via `linkvaultq8://share`. The app opens the Add Link modal from the deep link, then clears the pending App Group payload only after it has been consumed. This prevents the previous failure mode where the share sheet closed but the pending URL disappeared before the app displayed it.

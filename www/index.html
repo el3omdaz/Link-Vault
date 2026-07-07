@@ -399,12 +399,22 @@ function openSettings(){ const cfg = getSettings(); $('setSupabaseUrl').value = 
 function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
 function saveSettingsFromForm(){ setSettings({ SUPABASE_URL:$('setSupabaseUrl').value.trim(), SUPABASE_ANON_KEY:$('setSupabaseAnon').value.trim(), BACKEND_URL:$('setBackendUrl').value.trim().replace(/\/$/,'') }); sbClient = null; cloudUser = null; initSupabase(); toast('✅ تم حفظ الإعدادات'); }
 
+let lastIncomingShareSignature = '';
+let lastIncomingShareAt = 0;
 function handleIncomingShareFromParams(params){
   const rawUrl = params.get('url') || extractFirstUrl(params.get('text')) || '';
   const title = params.get('title') || '';
   const text = params.get('text') || '';
   const sharedUrl = normalizeUrl(rawUrl || extractFirstUrl(text));
-  if(sharedUrl){ setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '' }), 280); return true; }
+  if(sharedUrl){
+    const signature = `${sharedUrl}|${title}|${text.slice(0, 120)}`;
+    const now = Date.now();
+    if(signature === lastIncomingShareSignature && now - lastIncomingShareAt < 8000) return true;
+    lastIncomingShareSignature = signature;
+    lastIncomingShareAt = now;
+    setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '' }), 280);
+    return true;
+  }
   return false;
 }
 function checkShareTarget(){
@@ -417,8 +427,33 @@ function isLinkVaultDeepLink(u){ return u && (u.protocol === 'linkvaultq8:' || u
 function initNativeDeepLinks(){
   const App = window.Capacitor?.Plugins?.App;
   if(!App) return;
-  App.addListener('appUrlOpen', data => { try { const u = new URL(data.url); if(isLinkVaultDeepLink(u)){ handleIncomingShareFromParams(u.searchParams); } } catch(e){} });
-  if(App.getLaunchUrl){ App.getLaunchUrl().then(res => { if(res?.url){ try { const u = new URL(res.url); if(isLinkVaultDeepLink(u)) handleIncomingShareFromParams(u.searchParams); } catch(e){} } }).catch(()=>{}); }
+  App.addListener('appUrlOpen', data => {
+    try {
+      const u = new URL(data.url);
+      if(isLinkVaultDeepLink(u) && handleIncomingShareFromParams(u.searchParams)){
+        clearPendingNativeShare();
+      }
+    } catch(e){}
+  });
+  if(App.getLaunchUrl){
+    App.getLaunchUrl().then(res => {
+      if(res?.url){
+        try {
+          const u = new URL(res.url);
+          if(isLinkVaultDeepLink(u) && handleIncomingShareFromParams(u.searchParams)){
+            clearPendingNativeShare();
+          }
+        } catch(e){}
+      }
+    }).catch(()=>{});
+  }
+}
+
+async function clearPendingNativeShare(){
+  try{
+    const PendingShare = window.Capacitor?.Plugins?.PendingShare;
+    if(PendingShare && PendingShare.clearPendingShare) await PendingShare.clearPendingShare();
+  }catch(e){}
 }
 
 async function consumePendingNativeShare(){
@@ -432,7 +467,10 @@ async function consumePendingNativeShare(){
     if(res.title) params.set('title', res.title);
     if(res.text) params.set('text', res.text);
     const handled = handleIncomingShareFromParams(params);
-    if(handled) toast('✅ تم استلام الرابط من المشاركة');
+    if(handled){
+      await clearPendingNativeShare();
+      toast('✅ تم استلام الرابط من المشاركة');
+    }
     return handled;
   }catch(e){ return false; }
 }
@@ -465,7 +503,8 @@ async function runShareDiagnostics(){
         if(res.url) params.set('url', res.url);
         if(res.title) params.set('title', res.title);
         if(res.text) params.set('text', res.text);
-        handleIncomingShareFromParams(params);
+        const handled = handleIncomingShareFromParams(params);
+        if(handled) await clearPendingNativeShare();
         report.push('✅ لقينا رابط محفوظ وفتحنا نافذة الإضافة له الحين.');
       } else {
         report.push('يعني: App Group يشتغل ويرد رد صحيح، لكن ما فيه رابط محفوظ بالوقت الحالي (Share Extension ما حفظ شي، أو الرابط انسحب/انحذف قبل لا توصل هنا).');

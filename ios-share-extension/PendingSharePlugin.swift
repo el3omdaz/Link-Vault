@@ -32,7 +32,10 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
             return
         }
 
-        clear(defaults)
+        // Do not clear here. The web app clears the pending share only after it
+        // actually opens the Add Link flow. Clearing during read can lose the
+        // URL if the JavaScript boot sequence, router, or modal initialization
+        // fails before the share is consumed.
         call.resolve([
             "hasShare": true,
             "url": url,

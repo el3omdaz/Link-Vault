@@ -21,4 +21,9 @@ Runtime Share Extension UI fix:
 
 Share Extension open fix:
 - Added primary URL scheme linkvaultq8:// and kept linkvault:// as fallback.
-- Share Extension now tries responder-chain opening plus extensionContext.open for better iOS compatibility.
+- Share Extension now opens the main app using extensionContext.open after the URL is saved.
+
+Applied share save reliability update:
+- Share Extension now opens linkvaultq8://share after saving, so the app receives the link immediately.
+- PendingSharePlugin no longer clears App Group data during getPendingShare(); the web app clears it only after the Add Link modal is opened.
+- Web app clears pending share after a successful deep-link or App Group consume and de-duplicates repeated delivery.

@@ -223,11 +223,11 @@ final class ShareViewController: UIViewController {
         activityIndicator.isHidden = true
 
         if let candidate, !candidate.isEmpty {
-            messageLabel.text = "تم العثور على الرابط. اضغط حفظ ثم افتح تطبيق LinkVault."
+            messageLabel.text = "تم العثور على الرابط. اضغط حفظ وسيفتح LinkVault تلقائيًا."
             previewLabel.text = candidate
             saveButton.isEnabled = true
         } else if let text = payload.text, !text.isEmpty {
-            messageLabel.text = "تم العثور على نص. اضغط حفظ ثم افتح تطبيق LinkVault."
+            messageLabel.text = "تم العثور على نص. اضغط حفظ وسيفتح LinkVault تلقائيًا."
             previewLabel.text = text
             saveButton.isEnabled = true
         } else {
@@ -255,20 +255,91 @@ final class ShareViewController: UIViewController {
             let currentPayload = self.payload
             let saved = self.savePayloadToAppGroup(currentPayload)
             DispatchQueue.main.async {
+                self.previewLabel.text = currentPayload.url ?? Self.firstURL(in: currentPayload.text ?? "") ?? currentPayload.text ?? ""
                 if saved {
-                    self.messageLabel.text = "تم حفظ الرابط. افتح LinkVault وسيظهر تلقائيًا."
-                    self.previewLabel.text = currentPayload.url ?? Self.firstURL(in: currentPayload.text ?? "") ?? currentPayload.text ?? ""
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+                    self.messageLabel.text = "تم الحفظ. جاري فتح LinkVault..."
+                } else {
+                    self.messageLabel.text = "تعذر حفظ النسخة الاحتياطية. جاري فتح LinkVault بالرابط مباشرة..."
+                }
+                self.openContainingApp(with: currentPayload, appGroupSaved: saved)
+            }
+        }
+    }
+
+    private func openContainingApp(with payload: SharedPayload, appGroupSaved: Bool) {
+        guard let deepLink = makeDeepLinkURL(from: payload) else {
+            if appGroupSaved {
+                messageLabel.text = "تم الحفظ. افتح LinkVault وسيظهر الرابط تلقائيًا."
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+                    self?.completeOnce()
+                }
+            } else {
+                didStartSave = false
+                saveButton.isEnabled = true
+                cancelButton.isEnabled = true
+                messageLabel.text = "تعذر تجهيز الرابط للفتح. جرّب مرة ثانية."
+            }
+            return
+        }
+
+        guard let context = extensionContext else {
+            if appGroupSaved {
+                messageLabel.text = "تم حفظ الرابط. افتح LinkVault يدويًا وسيظهر تلقائيًا."
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { [weak self] in
+                    self?.completeOnce()
+                }
+            } else {
+                didStartSave = false
+                saveButton.isEnabled = true
+                cancelButton.isEnabled = true
+                messageLabel.text = "تعذر فتح LinkVault. جرّب مرة ثانية."
+            }
+            return
+        }
+
+        context.open(deepLink, completionHandler: { [weak self] success in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                if success {
+                    self.messageLabel.text = "تم فتح LinkVault."
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
+                        self?.completeOnce()
+                    }
+                } else if appGroupSaved {
+                    self.messageLabel.text = "تم حفظ الرابط. افتح LinkVault يدويًا وسيظهر تلقائيًا."
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { [weak self] in
                         self?.completeOnce()
                     }
                 } else {
                     self.didStartSave = false
                     self.saveButton.isEnabled = true
                     self.cancelButton.isEnabled = true
-                    self.messageLabel.text = "تعذر حفظ الرابط. تأكد من تفعيل App Groups ثم جرّب مرة ثانية."
+                    self.messageLabel.text = "تعذر فتح LinkVault. تأكد من تثبيت التطبيق ثم جرّب مرة ثانية."
                 }
             }
-        }
+        })
+    }
+
+    private func makeDeepLinkURL(from payload: SharedPayload) -> URL? {
+        let extractedURL = payload.url ?? Self.firstURL(in: payload.text ?? "") ?? ""
+        let text = payload.text ?? ""
+        let title = payload.title ?? ""
+
+        guard !extractedURL.isEmpty || !text.isEmpty else { return nil }
+
+        var components = URLComponents()
+        components.scheme = "linkvaultq8"
+        components.host = "share"
+
+        var queryItems = [URLQueryItem]()
+        if !extractedURL.isEmpty { queryItems.append(URLQueryItem(name: "url", value: extractedURL)) }
+        if !title.isEmpty { queryItems.append(URLQueryItem(name: "title", value: title)) }
+        if extractedURL.isEmpty && !text.isEmpty { queryItems.append(URLQueryItem(name: "text", value: text)) }
+        queryItems.append(URLQueryItem(name: "source", value: "share_extension"))
+        queryItems.append(URLQueryItem(name: "ts", value: String(Int(Date().timeIntervalSince1970))))
+        components.queryItems = queryItems
+
+        return components.url
     }
 
     @objc private func cancelButtonTapped() {
