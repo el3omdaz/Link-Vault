@@ -142,6 +142,12 @@ button{cursor:pointer}
       <button class="btn-ai" id="btnSyncNow">مزامنة الآن</button>
       <button class="btn-ai" id="btnLogout">تسجيل خروج</button>
     </div>
+
+    <div class="divider"></div>
+    <div class="field-label">🔧 تشخيص المشاركة (Share Extension)</div>
+    <div class="hint">اضغط هذا الزر بعد ما تشارك رابط من تطبيق ثاني (وقبل لا تسكر LinkVault)، عشان تشوف بالضبط وين المشكلة لو الرابط ما يوصل.</div>
+    <div class="ai-row"><button class="btn-ai" id="btnShareDiag">🔍 افحص الروابط المشتركة الآن</button></div>
+
     <button class="btn-cancel" id="btnCloseSettings">إغلاق</button>
   </div>
 </div>
@@ -439,6 +445,38 @@ function initPendingNativeShare(){
   }
 }
 
+async function runShareDiagnostics(){
+  const report = [];
+  try{
+    const cap = window.Capacitor;
+    const isNative = !!(cap && typeof cap.isNativePlatform === 'function' && cap.isNativePlatform());
+    report.push('تطبيق آيفون أصلي (native): ' + (isNative ? 'نعم ✅' : 'لا ❌ (يبدو إنك بمتصفح ويب عادي)'));
+
+    const plugin = cap?.Plugins?.PendingShare;
+    report.push('إضافة PendingShare مسجلة بالتطبيق: ' + (plugin ? 'نعم ✅' : 'لا ❌'));
+
+    if(!plugin || !plugin.getPendingShare){
+      report.push('السبب على الأغلب: هذا البناء ما فيه SharedLinksPlugin/PendingSharePlugin متضمن فعليًا داخل تطبيق App، رغم إن ملف الكود موجود بالمشروع.');
+    } else {
+      const res = await plugin.getPendingShare();
+      report.push('نتيجة getPendingShare(): ' + JSON.stringify(res));
+      if(res && res.hasShare){
+        const params = new URLSearchParams();
+        if(res.url) params.set('url', res.url);
+        if(res.title) params.set('title', res.title);
+        if(res.text) params.set('text', res.text);
+        handleIncomingShareFromParams(params);
+        report.push('✅ لقينا رابط محفوظ وفتحنا نافذة الإضافة له الحين.');
+      } else {
+        report.push('يعني: App Group يشتغل ويرد رد صحيح، لكن ما فيه رابط محفوظ بالوقت الحالي (Share Extension ما حفظ شي، أو الرابط انسحب/انحذف قبل لا توصل هنا).');
+      }
+    }
+  }catch(e){
+    report.push('⚠️ صار خطأ فعلي أثناء الفحص: ' + (e && e.message ? e.message : String(e)));
+  }
+  alert(report.join('\n\n'));
+}
+
 function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2500); }
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; setTimeout(() => { if(document.querySelector('.install-bar')) return; const bar = document.createElement('div'); bar.className='install-bar'; bar.innerHTML = `<span>📲 ثبّت LinkVault كتطبيق</span><button id="doInstall">تثبيت</button><button class="close-install" id="closeInstall">✕</button>`; document.body.appendChild(bar); setTimeout(()=>bar.classList.add('show'),100); $('doInstall').addEventListener('click',()=>{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>bar.remove()); }); $('closeInstall').addEventListener('click',()=>bar.remove()); }, 3000); });
@@ -462,6 +500,7 @@ $('btnLogin').addEventListener('click', login);
 $('btnSignup').addEventListener('click', signup);
 $('btnLogout').addEventListener('click', logout);
 $('btnSyncNow').addEventListener('click', syncLocalToCloud);
+$('btnShareDiag').addEventListener('click', runShareDiagnostics);
 
 saveLocal(); renderTabs(); renderList(); checkShareTarget(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});

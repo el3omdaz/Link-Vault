@@ -76,6 +76,16 @@ plistbuddy('-c', 'Add :LSApplicationQueriesSchemes array')
 plistbuddy('-c', 'Add :LSApplicationQueriesSchemes:0 string linkvaultq8')
 plistbuddy('-c', 'Add :LSApplicationQueriesSchemes:1 string linkvault')
 
+# Export compliance: LinkVault only makes standard HTTPS/TLS calls (Supabase,
+# its own backend) and implements no custom/proprietary cryptography, so it
+# qualifies for Apple's standard exemption. Declaring this in Info.plist
+# answers the question at the source so every future automated upload skips
+# the "Build is missing export compliance" hold in App Store Connect/TestFlight.
+# If LinkVault ever adds its own encryption beyond standard HTTPS, this should
+# be revisited rather than left as false.
+plistbuddy('-c', 'Delete :ITSAppUsesNonExemptEncryption')
+plistbuddy('-c', 'Add :ITSAppUsesNonExemptEncryption bool false')
+
 project = Xcodeproj::Project.open(PROJECT_PATH)
 app_target = project.targets.find { |t| t.name == 'App' }
 abort 'Could not find App target in iOS project' unless app_target
