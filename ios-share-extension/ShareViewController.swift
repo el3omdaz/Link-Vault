@@ -223,11 +223,11 @@ final class ShareViewController: UIViewController {
         activityIndicator.isHidden = true
 
         if let candidate, !candidate.isEmpty {
-            messageLabel.text = "تم العثور على الرابط. اضغط حفظ وسيفتح LinkVault تلقائيًا."
+            messageLabel.text = "تم العثور على الرابط. اضغط حفظ، ثم افتح LinkVault إذا ما انتقل تلقائيًا."
             previewLabel.text = candidate
             saveButton.isEnabled = true
         } else if let text = payload.text, !text.isEmpty {
-            messageLabel.text = "تم العثور على نص. اضغط حفظ وسيفتح LinkVault تلقائيًا."
+            messageLabel.text = "تم العثور على النص. اضغط حفظ، ثم افتح LinkVault إذا ما انتقل تلقائيًا."
             previewLabel.text = text
             saveButton.isEnabled = true
         } else {
@@ -257,9 +257,9 @@ final class ShareViewController: UIViewController {
             DispatchQueue.main.async {
                 self.previewLabel.text = currentPayload.url ?? Self.firstURL(in: currentPayload.text ?? "") ?? currentPayload.text ?? ""
                 if saved {
-                    self.messageLabel.text = "تم الحفظ. جاري فتح LinkVault..."
+                    self.messageLabel.text = "تم الحفظ. إذا ما انتقل التطبيق تلقائيًا، افتح LinkVault وسيظهر الرابط."
                 } else {
-                    self.messageLabel.text = "تعذر حفظ النسخة الاحتياطية. جاري فتح LinkVault بالرابط مباشرة..."
+                    self.messageLabel.text = "تعذر حفظ النسخة الاحتياطية. جاري محاولة فتح LinkVault بالرابط مباشرة..."
                 }
                 self.openContainingApp(with: currentPayload, appGroupSaved: saved)
             }

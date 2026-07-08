@@ -1,0 +1,18 @@
+LinkVault Q8 - Share Category Fix
+=================================
+
+Applied fixes:
+1. Shared links are no longer forced into "أخرى".
+2. The app now auto-classifies shared links using title/text/url keywords:
+   - طبخ: بيتزا، مقادير، وصفة، طبخ، recipe, pizza, food...
+   - تعليم: شرح، درس، كورس، tutorial, course...
+   - مشتريات: شراء، سعر، خصم، shop, price...
+   - أفلام / مسلسلات / أفكار based on matching keywords.
+3. YouTube links without clear text now fall back to "يوتيوب" instead of "أخرى".
+4. When possible, YouTube metadata is fetched before saving, so a video title like "مقادير البيتزا" should be saved under "طبخ".
+5. Previously saved links in "أخرى" are rechecked on app startup and safely moved to a better category when the title/note/url gives a confident match.
+6. Share Extension messages were adjusted so the user is not promised automatic app opening when iOS blocks it.
+
+Important:
+- iOS may still require opening LinkVault manually after saving from the Share Extension.
+- The main fix here is automatic categorization and safe handling after the shared link reaches the app.
