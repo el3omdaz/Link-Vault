@@ -1,0 +1,46 @@
+LinkVault Q8 — Share Save Fix
+==============================
+Date: 2026-07-08
+
+Problem addressed
+-----------------
+When pressing save from the iOS Share Extension, the share sheet could close but the link would not appear in LinkVault.
+
+Root cause fixed
+----------------
+The native PendingSharePlugin Swift file was copied into the Capacitor iOS project, but the app-local plugin was not explicitly registered with the Capacitor bridge. As a result, the web app could fail to read the App Group pending share even though the Share Extension saved it.
+
+Changes applied
+---------------
+1. Added ios-share-extension/LinkVaultBridgeViewController.swift.
+2. Updated scripts/add-ios-share-extension.rb to:
+   - copy LinkVaultBridgeViewController.swift into ios/App/App/
+   - add it to the App target source build phase
+   - patch Main.storyboard to use LinkVaultBridgeViewController instead of CAPBridgeViewController
+   - register PendingSharePlugin inside capacitorDidLoad()
+3. Updated index.html and www/index.html to:
+   - use Capacitor.registerPlugin('PendingShare') before calling the native plugin
+   - auto-save shared links directly into the links list after reading from App Group
+   - auto-generate a title from the domain/text when the title is missing
+   - save locally before attempting cloud sync so a cloud/network issue cannot lose the link
+   - prevent duplicate links from being added repeatedly
+   - always switch to the All tab after save so the saved link is visible immediately
+4. Improved the Share Diagnostics action to save a found pending share immediately and report whether the native bridge is registered.
+
+Verification done
+-----------------
+- node --check passed on the extracted app JavaScript.
+- ruby -c passed on scripts/add-ios-share-extension.rb.
+- A local DOM-stub logic test confirmed:
+  - manual form save works with an empty title by generating a fallback title
+  - pending share direct-save adds the link
+  - duplicate pending shares do not create duplicate cards
+
+Important deployment note
+-------------------------
+After uploading the contents of this ZIP to GitHub, run a fresh Codemagic Clean build. The App Group must still be enabled in Apple Developer for both:
+- com.linkvaultq8.app
+- com.linkvaultq8.app.ShareExtension
+
+App Group value must remain exactly:
+group.com.linkvaultq8.shared

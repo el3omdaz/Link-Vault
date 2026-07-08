@@ -17,6 +17,8 @@ USE_APP_GROUPS = ENV.fetch('USE_APP_GROUPS', 'true').downcase == 'true'
 DEPLOYMENT_TARGET = ENV.fetch('IOS_DEPLOYMENT_TARGET', '14.0')
 PROJECT_PATH = 'ios/App/App.xcodeproj'
 APP_INFO_PLIST = 'ios/App/App/Info.plist'
+APP_MAIN_STORYBOARD = 'ios/App/App/Base.lproj/Main.storyboard'
+APP_BRIDGE_CONTROLLER = 'ios/App/App/LinkVaultBridgeViewController.swift'
 EXTENSION_DIR = "ios/App/#{EXTENSION_NAME}"
 APP_ENTITLEMENTS = 'ios/App/App/App.entitlements'
 EXTENSION_ENTITLEMENTS = "#{EXTENSION_DIR}/#{EXTENSION_NAME}.entitlements"
@@ -28,6 +30,7 @@ FileUtils.mkdir_p(EXTENSION_DIR)
 FileUtils.cp('ios-share-extension/Info.plist', "#{EXTENSION_DIR}/Info.plist")
 FileUtils.cp('ios-share-extension/ShareViewController.swift', "#{EXTENSION_DIR}/ShareViewController.swift")
 FileUtils.cp('ios-share-extension/PendingSharePlugin.swift', 'ios/App/App/PendingSharePlugin.swift')
+FileUtils.cp('ios-share-extension/LinkVaultBridgeViewController.swift', APP_BRIDGE_CONTROLLER)
 
 
 def write_app_group_entitlements(path, app_group_id)
@@ -93,6 +96,7 @@ abort 'Could not find App target in iOS project' unless app_target
 app_group = project.main_group.find_subpath('App', true)
 app_group.set_source_tree('<group>')
 pending_share_ref = app_group.files.find { |f| File.basename(f.path.to_s) == 'PendingSharePlugin.swift' } || app_group.new_file('PendingSharePlugin.swift')
+bridge_controller_ref = app_group.files.find { |f| File.basename(f.path.to_s) == 'LinkVaultBridgeViewController.swift' } || app_group.new_file('LinkVaultBridgeViewController.swift')
 
 # Clean stale/empty extension products left by previous generated scripts.
 # Xcode 26 fails archive when an app extension product resolves to `.appex`.
@@ -122,6 +126,9 @@ end
 
 unless app_target.source_build_phase.files_references.include?(pending_share_ref)
   app_target.source_build_phase.add_file_reference(pending_share_ref, true)
+end
+unless app_target.source_build_phase.files_references.include?(bridge_controller_ref)
+  app_target.source_build_phase.add_file_reference(bridge_controller_ref, true)
 end
 
 extension_group = project.main_group.find_subpath(EXTENSION_NAME, true)
@@ -210,6 +217,28 @@ end
 build_file = embed_phase.add_file_reference(extension_target.product_reference)
 build_file.settings = { 'ATTRIBUTES' => ['RemoveHeadersOnCopy'] }
 
+
+# Make the Capacitor WebView use our bridge subclass, otherwise the app-local
+# PendingSharePlugin is compiled but never registered with the Capacitor bridge.
+if File.exist?(APP_MAIN_STORYBOARD)
+  storyboard = File.read(APP_MAIN_STORYBOARD)
+  original_storyboard = storyboard.dup
+
+  storyboard.gsub!(/customClass="CAPBridgeViewController"\s+customModule="Capacitor"(?:\s+customModuleProvider="target")?/, 'customClass="LinkVaultBridgeViewController" customModule="App" customModuleProvider="target"')
+  storyboard.gsub!(/customClass="CAPBridgeViewController"/, 'customClass="LinkVaultBridgeViewController" customModule="App" customModuleProvider="target"')
+
+  # Clean up accidental duplicate customModule attributes if the generated
+  # storyboard format changes in a future Capacitor/Xcode release.
+  storyboard.gsub!(/customModule="App"\s+customModuleProvider="target"\s+customModule="Capacitor"(?:\s+customModuleProvider="target")?/, 'customModule="App" customModuleProvider="target"')
+
+  File.write(APP_MAIN_STORYBOARD, storyboard) if storyboard != original_storyboard
+  unless storyboard.include?('LinkVaultBridgeViewController')
+    warn "WARNING: Could not patch #{APP_MAIN_STORYBOARD}; PendingSharePlugin may not be registered."
+  end
+else
+  warn "WARNING: Missing #{APP_MAIN_STORYBOARD}; PendingSharePlugin may not be registered."
+end
+
 project.save
 entitlements_status = USE_APP_GROUPS ? "with App Group #{APP_GROUP_ID}" : 'without App Group entitlements'
-puts "Added/updated #{EXTENSION_NAME} (#{EXTENSION_BUNDLE_ID}) #{entitlements_status}, and linkvaultq8:// + linkvault:// URL schemes."
+puts "Added/updated #{EXTENSION_NAME} (#{EXTENSION_BUNDLE_ID}) #{entitlements_status}, registered PendingSharePlugin, and linkvaultq8:// + linkvault:// URL schemes."

@@ -200,6 +200,70 @@ function saveLocal(){ STORE.set(LS_LINKS, links); STORE.set(LS_CATS, cats); }
 function getSettings(){ const fileCfg = window.LINKVAULT_CONFIG || {}; const local = STORE.get(LS_SETTINGS, {}); return { SUPABASE_URL: local.SUPABASE_URL || fileCfg.SUPABASE_URL || '', SUPABASE_ANON_KEY: local.SUPABASE_ANON_KEY || fileCfg.SUPABASE_ANON_KEY || '', BACKEND_URL: local.BACKEND_URL || fileCfg.BACKEND_URL || '' }; }
 function setSettings(v){ STORE.set(LS_SETTINGS, v); }
 
+function getNativePlugin(name){
+  const cap = window.Capacitor;
+  if(!cap) return null;
+  if(cap.Plugins && cap.Plugins[name]) return cap.Plugins[name];
+  if(typeof cap.registerPlugin === 'function'){
+    try{
+      const plugin = cap.registerPlugin(name);
+      cap.Plugins = cap.Plugins || {};
+      cap.Plugins[name] = plugin;
+      return plugin;
+    }catch(e){
+      return (cap.Plugins && cap.Plugins[name]) || null;
+    }
+  }
+  return null;
+}
+function fallbackTitleFor(url, title='', text=''){
+  const cleanTitle = String(title || '').trim();
+  if(cleanTitle && cleanTitle !== url) return cleanTitle.slice(0, 180);
+  const withoutUrl = String(text || '').replace(url || '', '').trim().replace(/\s+/g, ' ');
+  if(withoutUrl) return withoutUrl.slice(0, 120);
+  const d = domainOf(url);
+  return d || url || 'رابط محفوظ';
+}
+function canonicalUrl(url){ return String(url || '').trim().replace(/\/$/, '').toLowerCase(); }
+async function saveSharedLinkDirectly(payload){
+  const rawUrl = payload.url || extractFirstUrl(payload.text || '') || '';
+  const url = normalizeUrl(rawUrl);
+  const text = String(payload.text || '').trim();
+  if(!url || !/^https?:\/\//i.test(url)) return false;
+
+  const existing = links.find(l => canonicalUrl(l.url) === canonicalUrl(url));
+  if(existing){
+    currentCat = 'all';
+    saveLocal();
+    renderTabs();
+    renderList();
+    toast('ℹ️ الرابط محفوظ مسبقًا');
+    return true;
+  }
+
+  const cat = cats.includes('أخرى') ? 'أخرى' : (cats[0] || 'أخرى');
+  const item = {
+    id: uid(),
+    url,
+    title: fallbackTitleFor(url, payload.title, text),
+    cat,
+    trailer: '',
+    note: text && text !== url ? text : '',
+    thumbnail: '',
+    platform: detectPlatform(url).label,
+    ts: Date.now(),
+    updatedAt: nowIso()
+  };
+  links.unshift(item);
+  currentCat = 'all';
+  saveLocal();
+  renderTabs();
+  renderList();
+  toast('✅ تم حفظ الرابط من المشاركة');
+  upsertLinkCloud(item).catch(e => console.warn('Cloud upsert failed after local share save', e));
+  return true;
+}
+
 const PLATFORMS = [
   { id:'youtube', test:u=>/youtube\.com|youtu\.be/.test(u), color:'#FF0000', label:'YouTube' },
   { id:'instagram', test:u=>/instagram\.com/.test(u), color:'ig', label:'Instagram' },
@@ -278,12 +342,54 @@ function populateCatSelect(selected){ $('inpCat').innerHTML = cats.map(c => `<op
 function updatePlatformField(){ const p = detectPlatform($('inpUrl').value); $('inpPlatform').value = p.label; }
 
 async function saveLinkFromForm(){
-  const url = normalizeUrl($('inpUrl').value); const title = $('inpTitle').value.trim(); const cat = $('inpCat').value || 'أخرى'; const trailer = normalizeUrl($('inpTrailer').value); const note = $('inpNote').value.trim(); const thumbnail = normalizeUrl($('inpThumb').value); const platform = detectPlatform(url).label;
-  if(!url || !title){ toast('⚠️ الرابط والعنوان مطلوبان'); return; }
+  const url = normalizeUrl($('inpUrl').value);
+  let title = $('inpTitle').value.trim();
+  const cat = $('inpCat').value || 'أخرى';
+  const trailer = normalizeUrl($('inpTrailer').value);
+  const note = $('inpNote').value.trim();
+  const thumbnail = normalizeUrl($('inpThumb').value);
+  const platform = detectPlatform(url).label;
+
+  if(!url){ toast('⚠️ الرابط مطلوب'); return; }
   if(!/^https?:\/\//i.test(url)){ toast('⚠️ الرابط لازم يبدأ بـ http أو https'); return; }
-  if(editId){ const idx = links.findIndex(x => x.id === editId); if(idx !== -1) links[idx] = { ...links[idx], url, title, cat, trailer, note, thumbnail, platform, updatedAt: nowIso() }; await upsertLinkCloud(links[idx]); toast('✅ تم التعديل'); }
-  else { const item = { id: uid(), url, title, cat, trailer, note, thumbnail, platform, ts: Date.now(), updatedAt: nowIso() }; links.unshift(item); await upsertLinkCloud(item); toast('✅ تم الحفظ'); }
-  saveLocal(); closeModal(); renderTabs(); renderList();
+  if(!title){
+    title = fallbackTitleFor(url, '', note);
+    $('inpTitle').value = title;
+  }
+
+  let cloudItem = null;
+  if(editId){
+    const idx = links.findIndex(x => x.id === editId);
+    if(idx !== -1){
+      links[idx] = { ...links[idx], url, title, cat, trailer, note, thumbnail, platform, updatedAt: nowIso() };
+      cloudItem = links[idx];
+    }
+    toast('✅ تم التعديل');
+  } else {
+    const existing = links.find(l => canonicalUrl(l.url) === canonicalUrl(url));
+    if(existing){
+      existing.title = title || existing.title;
+      existing.cat = cat || existing.cat;
+      existing.trailer = trailer || existing.trailer || '';
+      existing.note = note || existing.note || '';
+      existing.thumbnail = thumbnail || existing.thumbnail || '';
+      existing.platform = platform;
+      existing.updatedAt = nowIso();
+      cloudItem = existing;
+      toast('ℹ️ الرابط كان محفوظ، وتم تحديثه');
+    }else{
+      cloudItem = { id: uid(), url, title, cat, trailer, note, thumbnail, platform, ts: Date.now(), updatedAt: nowIso() };
+      links.unshift(cloudItem);
+      toast('✅ تم الحفظ');
+    }
+  }
+
+  currentCat = 'all';
+  saveLocal();
+  closeModal();
+  renderTabs();
+  renderList();
+  if(cloudItem) upsertLinkCloud(cloudItem).catch(e => console.warn('Cloud upsert failed after local save', e));
 }
 async function deleteLink(id){
   if(!confirm('حذف هذا الرابط؟')) return;
@@ -405,14 +511,22 @@ function handleIncomingShareFromParams(params){
   const rawUrl = params.get('url') || extractFirstUrl(params.get('text')) || '';
   const title = params.get('title') || '';
   const text = params.get('text') || '';
+  const source = params.get('source') || '';
   const sharedUrl = normalizeUrl(rawUrl || extractFirstUrl(text));
   if(sharedUrl){
-    const signature = `${sharedUrl}|${title}|${text.slice(0, 120)}`;
+    const signature = `${sharedUrl}|${title}|${text.slice(0, 120)}|${source}`;
     const now = Date.now();
     if(signature === lastIncomingShareSignature && now - lastIncomingShareAt < 8000) return true;
     lastIncomingShareSignature = signature;
     lastIncomingShareAt = now;
-    setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '' }), 280);
+
+    if(source === 'share_extension' || params.get('autosave') === '1'){
+      saveSharedLinkDirectly({ url: sharedUrl, title, text }).then(saved => {
+        if(saved) clearPendingNativeShare();
+      });
+    }else{
+      setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '' }), 280);
+    }
     return true;
   }
   return false;
@@ -451,28 +565,24 @@ function initNativeDeepLinks(){
 
 async function clearPendingNativeShare(){
   try{
-    const PendingShare = window.Capacitor?.Plugins?.PendingShare;
+    const PendingShare = getNativePlugin('PendingShare');
     if(PendingShare && PendingShare.clearPendingShare) await PendingShare.clearPendingShare();
   }catch(e){}
 }
 
 async function consumePendingNativeShare(){
   try{
-    const PendingShare = window.Capacitor?.Plugins?.PendingShare;
+    const PendingShare = getNativePlugin('PendingShare');
     if(!PendingShare || !PendingShare.getPendingShare) return false;
     const res = await PendingShare.getPendingShare();
     if(!res || !res.hasShare) return false;
-    const params = new URLSearchParams();
-    if(res.url) params.set('url', res.url);
-    if(res.title) params.set('title', res.title);
-    if(res.text) params.set('text', res.text);
-    const handled = handleIncomingShareFromParams(params);
-    if(handled){
-      await clearPendingNativeShare();
-      toast('✅ تم استلام الرابط من المشاركة');
-    }
-    return handled;
-  }catch(e){ return false; }
+    const saved = await saveSharedLinkDirectly({ url: res.url || '', title: res.title || '', text: res.text || '' });
+    if(saved) await clearPendingNativeShare();
+    return saved;
+  }catch(e){
+    console.warn('PendingShare consume failed', e);
+    return false;
+  }
 }
 function initPendingNativeShare(){
   const CapApp = window.Capacitor?.Plugins?.App;
@@ -490,24 +600,20 @@ async function runShareDiagnostics(){
     const isNative = !!(cap && typeof cap.isNativePlatform === 'function' && cap.isNativePlatform());
     report.push('تطبيق آيفون أصلي (native): ' + (isNative ? 'نعم ✅' : 'لا ❌ (يبدو إنك بمتصفح ويب عادي)'));
 
-    const plugin = cap?.Plugins?.PendingShare;
-    report.push('إضافة PendingShare مسجلة بالتطبيق: ' + (plugin ? 'نعم ✅' : 'لا ❌'));
+    const plugin = getNativePlugin('PendingShare');
+    report.push('إضافة PendingShare مسجلة بالتطبيق: ' + (plugin && plugin.getPendingShare ? 'نعم ✅' : 'لا ❌'));
 
     if(!plugin || !plugin.getPendingShare){
-      report.push('السبب على الأغلب: هذا البناء ما فيه SharedLinksPlugin/PendingSharePlugin متضمن فعليًا داخل تطبيق App، رغم إن ملف الكود موجود بالمشروع.');
+      report.push('السبب: PendingSharePlugin غير مسجل داخل Capacitor bridge. تأكد أن البناء الجديد شغّل scripts/add-ios-share-extension.rb وأن Main.storyboard صار يستخدم LinkVaultBridgeViewController.');
     } else {
       const res = await plugin.getPendingShare();
       report.push('نتيجة getPendingShare(): ' + JSON.stringify(res));
       if(res && res.hasShare){
-        const params = new URLSearchParams();
-        if(res.url) params.set('url', res.url);
-        if(res.title) params.set('title', res.title);
-        if(res.text) params.set('text', res.text);
-        const handled = handleIncomingShareFromParams(params);
-        if(handled) await clearPendingNativeShare();
-        report.push('✅ لقينا رابط محفوظ وفتحنا نافذة الإضافة له الحين.');
+        const saved = await saveSharedLinkDirectly({ url: res.url || '', title: res.title || '', text: res.text || '' });
+        if(saved) await clearPendingNativeShare();
+        report.push(saved ? '✅ لقينا رابط محفوظ وحفظناه داخل القائمة الآن.' : '⚠️ لقينا بيانات مشاركة لكن ما فيها رابط http/https صالح.');
       } else {
-        report.push('يعني: App Group يشتغل ويرد رد صحيح، لكن ما فيه رابط محفوظ بالوقت الحالي (Share Extension ما حفظ شي، أو الرابط انسحب/انحذف قبل لا توصل هنا).');
+        report.push('يعني: الـ plugin شغال، لكن لا يوجد رابط محفوظ في App Group حاليًا. جرّب مشاركة رابط جديد ثم افتح التطبيق.');
       }
     }
   }catch(e){
