@@ -14,6 +14,8 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
     private let urlKey = "linkvault.pendingShare.url"
     private let titleKey = "linkvault.pendingShare.title"
     private let textKey = "linkvault.pendingShare.text"
+    private let noteKey = "linkvault.pendingShare.note"
+    private let categoryKey = "linkvault.pendingShare.category"
     private let timestampKey = "linkvault.pendingShare.timestamp"
 
     @objc func getPendingShare(_ call: CAPPluginCall) {
@@ -25,6 +27,8 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
         let url = defaults.string(forKey: urlKey) ?? ""
         let title = defaults.string(forKey: titleKey) ?? ""
         let text = defaults.string(forKey: textKey) ?? ""
+        let note = defaults.string(forKey: noteKey) ?? ""
+        let category = defaults.string(forKey: categoryKey) ?? ""
         let timestamp = defaults.double(forKey: timestampKey)
 
         guard !url.isEmpty || !text.isEmpty else {
@@ -32,15 +36,13 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
             return
         }
 
-        // Do not clear here. The web app clears the pending share only after it
-        // actually opens the Add Link flow. Clearing during read can lose the
-        // URL if the JavaScript boot sequence, router, or modal initialization
-        // fails before the share is consumed.
         call.resolve([
             "hasShare": true,
             "url": url,
             "title": title,
             "text": text,
+            "note": note,
+            "cat": category,
             "timestamp": timestamp
         ])
     }
@@ -58,6 +60,8 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
         defaults.removeObject(forKey: urlKey)
         defaults.removeObject(forKey: titleKey)
         defaults.removeObject(forKey: textKey)
+        defaults.removeObject(forKey: noteKey)
+        defaults.removeObject(forKey: categoryKey)
         defaults.removeObject(forKey: timestampKey)
         defaults.synchronize()
     }

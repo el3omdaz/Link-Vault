@@ -38,15 +38,15 @@ button{cursor:pointer}
 .status-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);box-shadow:0 0 0 3px rgba(116,116,156,.08);flex-shrink:0}.status-pill.online .status-dot{background:var(--green);box-shadow:0 0 0 3px rgba(34,211,165,.12)}.status-pill.warn .status-dot{background:var(--gold)}
 .tabs-bar{background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;padding:8px 12px}.tabs-bar::-webkit-scrollbar{display:none}
 .tab{padding:8px 13px;border:1px solid var(--border);background:var(--card);color:var(--muted2);border-radius:999px;font-size:.82rem;font-weight:800;white-space:nowrap;transition:.18s}.tab.active{color:#fff;border-color:rgba(124,106,255,.75);background:linear-gradient(135deg,rgba(124,106,255,.28),rgba(168,85,247,.2))}.tab-add-cat{width:36px;height:36px;border-radius:999px;border:1px dashed var(--border2);background:transparent;color:var(--muted2);font-size:20px;flex-shrink:0}
-.search-bar{padding:10px 14px;flex-shrink:0}.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:13px;padding:0 12px}.search-wrap input{flex:1;border:none;background:none;color:var(--text);font-size:.92rem;padding:11px 0;outline:none}.search-wrap input::placeholder{color:var(--muted)}.search-icon{font-size:16px;color:var(--muted)}
+.search-bar{padding:10px 14px;flex-shrink:0}.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:13px;padding:0 12px}.search-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,106,255,.10)}.search-wrap input{flex:1;border:none;background:none;color:var(--text);font-size:.92rem;padding:11px 0;outline:none}.search-wrap input::placeholder{color:var(--muted)}.search-icon{font-size:16px;color:var(--muted)}.search-clear{background:none;border:none;color:var(--muted2);font-size:16px}
 .main{flex:1;overflow-y:auto;padding:8px 14px calc(92px + var(--safe-bottom));scrollbar-width:thin;scrollbar-color:var(--border2) transparent}.main::-webkit-scrollbar{width:4px}.main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
 .summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.stat-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:10px 11px}.stat-num{font-size:1rem;font-weight:900;color:var(--text)}.stat-label{font-size:.68rem;color:var(--muted);font-weight:800;margin-top:3px}
 .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:66px 22px;gap:13px;text-align:center;color:var(--muted)}.empty-icon{font-size:54px;opacity:.55}.empty-state h3{font-size:1.1rem;color:var(--muted2)}.empty-state p{font-size:.86rem;line-height:1.65;white-space:pre-line}
-.link-card{background:linear-gradient(180deg,var(--card),rgba(26,26,46,.96));border:1px solid var(--border);border-radius:var(--radius);margin-bottom:11px;overflow:hidden;transition:.18s;position:relative}.link-card:hover{border-color:var(--border2);transform:translateY(-1px)}.card-accent{height:3px;width:100%}.card-body{padding:13px 14px}.card-top{display:flex;gap:11px;align-items:flex-start}.platform-logo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}.platform-logo svg{width:42px;height:42px}.platform-logo img{width:42px;height:42px;object-fit:cover}.card-info{flex:1;min-width:0}.card-title{font-size:.98rem;font-weight:900;line-height:1.35;margin-bottom:4px;word-break:break-word}.card-url{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:right}.card-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}.card-btn{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:6px 8px;font-size:13px;color:var(--muted2);display:flex;align-items:center;gap:4px;transition:.15s}.card-btn:hover{color:var(--text);border-color:var(--border2)}.card-btn.open{color:var(--accent)}.card-btn.trailer{color:var(--gold)}.card-btn.edit{color:var(--blue)}.card-btn.del{color:var(--red)}.card-meta{display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:9px;border-top:1px solid var(--border);flex-wrap:wrap}.cat-badge,.platform-badge{font-size:.7rem;font-weight:900;padding:4px 9px;border-radius:999px;background:rgba(124,106,255,.14);color:var(--accent)}.platform-badge{background:rgba(255,255,255,.04);color:var(--muted2)}.card-date{font-size:.7rem;color:var(--muted);margin-right:auto}.card-note{margin-top:9px;padding:9px 11px;background:rgba(255,255,255,.035);border-right:2px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.82rem;color:var(--muted2);line-height:1.55;white-space:pre-wrap}.thumb-row{display:flex;align-items:center;gap:10px;margin-top:10px}.thumb-row img{width:82px;height:46px;object-fit:cover;border-radius:9px;border:1px solid var(--border)}.trailer-row{display:flex;align-items:center;gap:9px;margin-top:9px;padding:9px 11px;background:rgba(245,200,66,.07);border-radius:var(--radius-sm);border:1px solid rgba(245,200,66,.2)}.trailer-row .t-icon{font-size:18px}.trailer-row .t-info{flex:1;min-width:0}.trailer-row .t-title{font-size:.78rem;color:var(--gold);font-weight:900}.trailer-row .t-url{font-size:.68rem;color:var(--muted);direction:ltr;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trailer-row a{color:var(--gold);font-size:11px;white-space:nowrap;text-decoration:none;border:1px solid rgba(245,200,66,.4);border-radius:7px;padding:4px 8px;font-weight:900}
+.link-card{background:linear-gradient(180deg,var(--card),rgba(26,26,46,.96));border:1px solid var(--border);border-radius:var(--radius);margin-bottom:11px;overflow:hidden;transition:.18s;position:relative;cursor:pointer}.link-card:hover{border-color:var(--border2);transform:translateY(-1px)}.link-card.card-open-hint::after{content:'اضغط لفتح الرابط';position:absolute;left:12px;top:12px;font-size:.68rem;color:var(--muted);opacity:.8}.card-accent{height:3px;width:100%}.card-body{padding:13px 14px}.card-top{display:flex;gap:11px;align-items:flex-start}.platform-logo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}.platform-logo svg{width:42px;height:42px}.platform-logo img{width:42px;height:42px;object-fit:cover}.card-info{flex:1;min-width:0}.card-title{font-size:.98rem;font-weight:900;line-height:1.35;margin-bottom:4px;word-break:break-word}.card-url{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:right}.card-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}.card-btn{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:6px 8px;font-size:13px;color:var(--muted2);display:flex;align-items:center;gap:4px;transition:.15s}.card-btn:hover{color:var(--text);border-color:var(--border2)}.card-btn.open{color:var(--accent)}.card-btn.share{color:var(--green)}.card-btn.trailer{color:var(--gold)}.card-btn.edit{color:var(--blue)}.card-btn.del{color:var(--red)}.card-meta{display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:9px;border-top:1px solid var(--border);flex-wrap:wrap}.cat-badge,.platform-badge{font-size:.7rem;font-weight:900;padding:4px 9px;border-radius:999px;background:rgba(124,106,255,.14);color:var(--accent)}.platform-badge{background:rgba(255,255,255,.04);color:var(--muted2)}.card-date{font-size:.7rem;color:var(--muted);margin-right:auto}.card-note{margin-top:9px;padding:9px 11px;background:rgba(255,255,255,.035);border-right:2px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.82rem;color:var(--muted2);line-height:1.55;white-space:pre-wrap}.thumb-row{display:flex;align-items:center;gap:10px;margin-top:10px}.thumb-row img{width:82px;height:46px;object-fit:cover;border-radius:9px;border:1px solid var(--border)}.trailer-row{display:flex;align-items:center;gap:9px;margin-top:9px;padding:9px 11px;background:rgba(245,200,66,.07);border-radius:var(--radius-sm);border:1px solid rgba(245,200,66,.2)}.trailer-row .t-icon{font-size:18px}.trailer-row .t-info{flex:1;min-width:0}.trailer-row .t-title{font-size:.78rem;color:var(--gold);font-weight:900}.trailer-row .t-url{font-size:.68rem;color:var(--muted);direction:ltr;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trailer-row a{color:var(--gold);font-size:11px;white-space:nowrap;text-decoration:none;border:1px solid rgba(245,200,66,.4);border-radius:7px;padding:4px 8px;font-weight:900}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(5px)}.overlay.open{opacity:1;pointer-events:all}.sheet{background:var(--surface);border-radius:22px 22px 0 0;width:100%;padding:18px 20px calc(22px + var(--safe-bottom));border-top:1px solid var(--border);transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:92vh;overflow-y:auto}.overlay.open .sheet{transform:translateY(0)}.sheet-handle{width:44px;height:4px;background:var(--border2);border-radius:4px;margin:0 auto 16px}.sheet-title{font-size:1.12rem;font-weight:900;margin-bottom:16px}.field-label{font-size:.78rem;color:var(--muted2);font-weight:900;margin-bottom:6px;margin-top:14px;text-transform:uppercase;letter-spacing:.035em}.field-label:first-of-type{margin-top:0}.inp,.select-inp{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:.94rem;padding:12px 13px;outline:none;transition:.18s}.inp:focus,.select-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,106,255,.12)}.inp::placeholder{color:var(--muted)}textarea.inp{resize:vertical;min-height:76px}.select-inp{appearance:none;cursor:pointer}.row{display:flex;gap:8px}.row>*{flex:1}.ai-row{display:flex;gap:8px;margin-top:8px}.btn-ai{flex:1;background:linear-gradient(135deg,rgba(124,106,255,.20),rgba(168,85,247,.18));border:1px solid rgba(124,106,255,.4);border-radius:11px;color:var(--accent);font-size:.85rem;font-weight:900;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px}.btn-ai:disabled{opacity:.55;cursor:not-allowed}.btn-save{width:100%;margin-top:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:13px;color:#fff;font-size:1rem;font-weight:900;padding:14px;box-shadow:0 8px 28px rgba(124,106,255,.35)}.btn-cancel{width:100%;margin-top:8px;background:var(--card);border:1px solid var(--border);border-radius:13px;color:var(--muted2);font-size:.92rem;font-weight:900;padding:12px}.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(124,106,255,.3);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.ai-status{font-size:.78rem;color:var(--muted2);margin-top:7px;min-height:20px;text-align:center;line-height:1.45}.hint{font-size:.77rem;color:var(--muted);line-height:1.5;margin-top:7px}.divider{height:1px;background:var(--border);margin:16px 0}.settings-grid{display:grid;gap:10px}.settings-status{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:12px;padding:11px;font-size:.82rem;color:var(--muted2);line-height:1.55}.danger-text{color:var(--red)}.success-text{color:var(--green)}.warning-text{color:var(--gold)}
 .cat-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;backdrop-filter:blur(5px)}.cat-modal-overlay.open{opacity:1;pointer-events:all}.cat-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px;width:min(350px,90vw)}.cat-modal h3{font-size:1.03rem;font-weight:900;margin-bottom:14px}.cat-actions{display:flex;gap:8px;margin-top:12px}.cat-actions button{flex:1;padding:11px;border-radius:10px;border:none;font-weight:900;font-size:.9rem}.cat-actions .confirm{background:var(--accent);color:#fff}.cat-actions .cancel2{background:var(--card);color:var(--muted2);border:1px solid var(--border)}.cat-list{margin-top:14px;display:grid;gap:7px;max-height:220px;overflow:auto}.cat-item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 10px}.cat-item span{flex:1;font-size:.86rem;font-weight:800}.cat-item button{border:1px solid rgba(239,71,111,.35);background:rgba(239,71,111,.08);color:var(--red);border-radius:8px;padding:5px 8px;font-size:.76rem;font-weight:900}
 .toast{position:fixed;bottom:calc(22px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(90px);background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:11px 18px;font-size:.86rem;font-weight:900;color:var(--text);z-index:999;transition:transform .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}.toast.show{transform:translateX(-50%) translateY(0)}.install-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:12px 18px calc(12px + var(--safe-bottom));display:flex;align-items:center;gap:12px;z-index:50;transform:translateY(100%);transition:.35s}.install-bar.show{transform:translateY(0)}.install-bar span{flex:1;font-size:.85rem;font-weight:900}.install-bar button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:9px;color:#fff;font-size:.8rem;font-weight:900;padding:7px 13px}.install-bar .close-install{background:none;border:none;font-size:18px;padding:0}.hidden{display:none!important}
-@media(max-width:560px){.header{gap:8px;padding-right:12px;padding-left:12px}.status-pill{max-width:46px;padding:7px}.status-pill span:last-child{display:none}.summary-row{grid-template-columns:repeat(3,1fr)}.card-actions{width:100%;margin-top:8px}.card-top{flex-wrap:wrap}.card-info{min-width:calc(100% - 56px)}.row{flex-direction:column}.sheet{padding-left:16px;padding-right:16px}.card-btn{flex:1;justify-content:center}.thumb-row{display:block}.thumb-row img{width:100%;height:150px;margin-top:4px}}
+@media(max-width:560px){.header{gap:8px;padding-right:12px;padding-left:12px}.status-pill{max-width:46px;padding:7px}.status-pill span:last-child{display:none}.summary-row{grid-template-columns:repeat(3,1fr)}.card-actions{width:100%;margin-top:8px}.card-top{flex-wrap:wrap}.card-info{min-width:calc(100% - 56px)}.row{flex-direction:column}.sheet{padding-left:16px;padding-right:16px}.card-btn{flex:1;justify-content:center}.thumb-row{display:block}.thumb-row img{width:100%;height:150px;margin-top:4px}.link-card.card-open-hint::after{display:none}}
 </style>
 </head>
 <body>
@@ -67,7 +67,8 @@ button{cursor:pointer}
 <div class="search-bar">
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
-    <input type="search" id="searchInp" placeholder="ابحث عن رابط أو عنوان أو ملاحظة...">
+    <input type="search" id="searchInp" placeholder="ابحث في الروابط والعناوين والملاحظات...">
+    <button class="search-clear" id="btnClearSearch" title="مسح البحث">✕</button>
   </div>
 </div>
 
@@ -100,9 +101,9 @@ button{cursor:pointer}
     <div class="field-label">🖼️ صورة مصغرة (اختياري)</div>
     <input class="inp" id="inpThumb" type="url" placeholder="https://...">
 
-    <div class="field-label">🎬 رابط التريلر (اختياري)</div>
+    <div class="field-label">🎬 رابط التريلر (اختياري)</div><div class="hint">إذا ما عندك رابط التريلر، استخدم زر البحث وسيتم فتح نتائج يوتيوب تلقائيًا.</div>
     <input class="inp" id="inpTrailer" type="url" placeholder="https://youtube.com/watch?v=...">
-    <div class="ai-row"><button class="btn-ai" id="btnTrailer">🎬 جلب/بحث عن التريلر</button></div>
+    <div class="ai-row"><button class="btn-ai" id="btnTrailer">🎬 بحث عن تريلر رسمي في يوتيوب</button></div>
 
     <div class="field-label">📌 ملاحظات</div>
     <textarea class="inp" id="inpNote" placeholder="أي ملاحظات تريد إضافتها... مثل: شفته، مهم، للرجوع لاحقًا..."></textarea>
@@ -154,7 +155,7 @@ button{cursor:pointer}
 
 <div class="cat-modal-overlay" id="catOverlay">
   <div class="cat-modal">
-    <h3>🗂️ التصنيفات</h3>
+    <h3>🗂️ التصنيفات</h3><div class="cat-order-hint">تقدر تضيف أو تحذف أو تعيد ترتيب التصنيفات بالأسهم. أول تصنيف بالأعلى يظل الأقرب في الواجهة.</div>
     <input class="inp" id="inpNewCat" placeholder="اسم التصنيف: أفلام، طبخ، تعليم...">
     <div class="cat-actions">
       <button class="confirm" id="btnConfirmCat">إضافة</button>
@@ -294,21 +295,30 @@ async function saveSharedLinkDirectly(payload){
   const rawUrl = payload.url || extractFirstUrl(payload.text || '') || '';
   const url = normalizeUrl(rawUrl);
   const text = String(payload.text || '').trim();
+  const manualNote = String(payload.note || '').trim();
+  let manualCat = String(payload.cat || payload.category || '').trim();
   if(!url || !/^https?:\/\//i.test(url)) return false;
 
+  if(manualCat && !cats.includes(manualCat)){
+    cats.push(manualCat);
+  }
+
   const metadata = await getMetadataQuick(url);
-  const title = fallbackTitleFor(url, payload.title || metadata.title, [text, metadata.title].filter(Boolean).join(' '));
-  const categoryText = [text, payload.title, metadata.title].filter(Boolean).join(' ');
-  const cat = suggestCategoryForLink({ url, title, text: categoryText });
-  const thumbnail = metadata.image || '';
-  const platform = metadata.platform || detectPlatform(url).label;
+  const title = fallbackTitleFor(url, payload.title || metadata.title, [text, manualNote, metadata.title].filter(Boolean).join(' '));
+  const categoryText = [text, manualNote, payload.title, metadata.title, manualCat].filter(Boolean).join(' ');
+  const suggestedCat = suggestCategoryForLink({ url, title, text: categoryText });
+  const cat = manualCat || suggestedCat;
+  const thumbnail = payload.thumbnail || metadata.image || '';
+  const platform = payload.platform || metadata.platform || detectPlatform(url).label;
+  const note = manualNote || (text && text !== url ? text : '');
 
   const existing = links.find(l => canonicalUrl(l.url) === canonicalUrl(url));
   if(existing){
     let changed = false;
     const oldTitleLooksGeneric = !existing.title || existing.title === existing.url || existing.title === domainOf(existing.url);
-    if(oldTitleLooksGeneric && title){ existing.title = title; changed = true; }
-    if((!existing.cat || existing.cat === 'أخرى') && cat && cat !== 'أخرى'){ existing.cat = cat; changed = true; }
+    if((oldTitleLooksGeneric || manualCat) && title && existing.title !== title){ existing.title = title; changed = true; }
+    if(((manualCat && existing.cat !== manualCat) || ((!existing.cat || existing.cat === 'أخرى') && cat && cat !== 'أخرى'))){ existing.cat = cat; changed = true; }
+    if(note && (!existing.note || existing.note !== note)){ existing.note = note; changed = true; }
     if(!existing.thumbnail && thumbnail){ existing.thumbnail = thumbnail; changed = true; }
     if(!existing.platform && platform){ existing.platform = platform; changed = true; }
     if(changed){
@@ -319,7 +329,7 @@ async function saveSharedLinkDirectly(payload){
     saveLocal();
     renderTabs();
     renderList();
-    toast(changed ? '✅ الرابط محفوظ مسبقًا وتم تحديث تصنيفه' : 'ℹ️ الرابط محفوظ مسبقًا');
+    toast(changed ? '✅ الرابط محفوظ مسبقًا وتم تحديث بياناته' : 'ℹ️ الرابط محفوظ مسبقًا');
     return true;
   }
 
@@ -329,7 +339,7 @@ async function saveSharedLinkDirectly(payload){
     title,
     cat,
     trailer: '',
-    note: text && text !== url ? text : '',
+    note,
     thumbnail,
     platform,
     ts: Date.now(),
@@ -383,14 +393,25 @@ function renderList(){
   if(q) data = data.filter(l => [l.title,l.url,l.note,l.cat,l.platform].some(v => String(v||'').toLowerCase().includes(q)));
   const el = $('mainList');
   const stats = `<div class="summary-row"><div class="stat-card"><div class="stat-num">${links.length}</div><div class="stat-label">رابط</div></div><div class="stat-card"><div class="stat-num">${cats.length}</div><div class="stat-label">تصنيف</div></div><div class="stat-card"><div class="stat-num">${links.filter(x=>x.trailer).length}</div><div class="stat-label">تريلر</div></div></div>`;
-  if(!data.length){ el.innerHTML = stats + `<div class="empty-state"><div class="empty-icon">🔗</div><h3>${q ? 'لا نتائج' : 'لا يوجد روابط بعد'}</h3><p>${q ? 'جرب كلمة بحث مختلفة' : 'اضغط + لإضافة رابط جديد\nأو شاركه من أي تطبيق آخر'}</p></div>`; return; }
+  if(!data.length){ el.innerHTML = stats + `<div class="empty-state"><div class="empty-icon">🔗</div><h3>${q ? 'لا نتائج' : 'لا يوجد روابط بعد'}</h3><p>${q ? 'جرب كلمة بحث مختلفة' : 'اضغط + لإضافة رابط جديد<br>أو شاركه من أي تطبيق آخر'}</p></div>`; return; }
   el.innerHTML = stats + data.map(l => {
     const platform = detectPlatform(l.url);
-    return `<div class="link-card" data-id="${escapeHtml(l.id)}"><div class="card-accent" style="background:${accentColor(l.url)}"></div><div class="card-body"><div class="card-top"><div class="platform-logo">${platformLogo(l.url)}</div><div class="card-info"><div class="card-title">${escapeHtml(l.title)}</div><div class="card-url">${escapeHtml(l.url)}</div></div><div class="card-actions"><button class="card-btn open" data-id="${escapeHtml(l.id)}" data-action="open" title="فتح">↗ فتح</button><button class="card-btn trailer" data-id="${escapeHtml(l.id)}" data-action="trailer" title="التريلر">🎬</button><button class="card-btn edit" data-id="${escapeHtml(l.id)}" data-action="edit" title="تعديل">✏️</button><button class="card-btn del" data-id="${escapeHtml(l.id)}" data-action="del" title="حذف">🗑</button></div></div>${l.thumbnail ? `<div class="thumb-row"><img src="${escapeHtml(l.thumbnail)}" alt="صورة الرابط" loading="lazy"></div>` : ''}${l.note ? `<div class="card-note">📌 ${escapeHtml(l.note)}</div>` : ''}${l.trailer ? `<div class="trailer-row"><div class="t-icon">🎬</div><div class="t-info"><div class="t-title">تريلر</div><div class="t-url">${escapeHtml(l.trailer)}</div></div><a href="${escapeHtml(l.trailer)}" target="_blank" rel="noopener">▶ شاهد</a></div>` : ''}<div class="card-meta"><span class="cat-badge">${escapeHtml(l.cat)}</span><span class="platform-badge">${escapeHtml(platform.label)}</span><span class="card-date">${new Date(l.ts).toLocaleDateString('ar-KW',{day:'numeric',month:'short'})}</span></div></div></div>`;
+    return `<div class="link-card card-open-hint" data-id="${escapeHtml(l.id)}"><div class="card-accent" style="background:${accentColor(l.url)}"></div><div class="card-body"><div class="card-top"><div class="platform-logo">${platformLogo(l.url)}</div><div class="card-info"><div class="card-title">${escapeHtml(l.title)}</div><div class="card-url">${escapeHtml(l.url)}</div></div><div class="card-actions"><button class="card-btn open" data-id="${escapeHtml(l.id)}" data-action="open" title="فتح">↗ فتح</button><button class="card-btn share" data-id="${escapeHtml(l.id)}" data-action="share" title="مشاركة">📤 مشاركة</button><button class="card-btn trailer" data-id="${escapeHtml(l.id)}" data-action="trailer" title="التريلر">🎬 تريلر</button><button class="card-btn edit" data-id="${escapeHtml(l.id)}" data-action="edit" title="تعديل">✏️ تعديل</button><button class="card-btn del" data-id="${escapeHtml(l.id)}" data-action="del" title="حذف">🗑 حذف</button></div></div>${l.thumbnail ? `<div class="thumb-row"><img src="${escapeHtml(l.thumbnail)}" alt="صورة الرابط" loading="lazy"></div>` : ''}${l.note ? `<div class="card-note">📌 ${escapeHtml(l.note)}</div>` : ''}${l.trailer ? `<div class="trailer-row"><div class="t-icon">🎬</div><div class="t-info"><div class="t-title">تريلر</div><div class="t-url">${escapeHtml(l.trailer)}</div></div><a href="${escapeHtml(l.trailer)}" target="_blank" rel="noopener">▶ شاهد</a></div>` : ''}<div class="card-meta"><span class="cat-badge">${escapeHtml(l.cat)}</span><span class="platform-badge">${escapeHtml(platform.label)}</span><span class="card-date">${new Date(l.ts).toLocaleDateString('ar-KW',{day:'numeric',month:'short'})}</span></div></div></div>`;
   }).join('');
+  el.querySelectorAll('.link-card').forEach(card => card.addEventListener('click', e => {
+    if(e.target.closest('[data-action],a,button,input,textarea,select')) return;
+    const id = card.dataset.id;
+    const l = links.find(x => x.id === id);
+    if(l) window.open(l.url, '_blank');
+  }));
   el.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', async e => {
-    e.stopPropagation(); const id = btn.dataset.id; const action = btn.dataset.action; const l = links.find(x => x.id === id); if(!l) return;
+    e.stopPropagation();
+    const id = btn.dataset.id;
+    const action = btn.dataset.action;
+    const l = links.find(x => x.id === id);
+    if(!l) return;
     if(action === 'open') window.open(l.url, '_blank');
+    if(action === 'share') await shareLink(l);
     if(action === 'trailer') { if(l.trailer) window.open(l.trailer, '_blank'); else { openEdit(id); setTimeout(()=>$('btnTrailer').click(), 150); } }
     if(action === 'edit') openEdit(id);
     if(action === 'del') await deleteLink(id);
@@ -476,17 +497,37 @@ async function deleteLink(id){
   if(!confirm('حذف هذا الرابط؟')) return;
   links = links.filter(x => x.id !== id); saveLocal(); await deleteLinkCloud(id); renderList(); toast('تم الحذف');
 }
+async function shareLink(link){
+  try{
+    if(navigator.share){
+      await navigator.share({ title: link.title || 'LinkVault', text: link.note || link.title || link.url, url: link.url });
+      toast('✅ تمت مشاركة الرابط');
+      return;
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(link.url);
+      toast('📋 تم نسخ الرابط. الصقه في التطبيق الذي تريد مشاركته.');
+      return;
+    }
+  }catch(e){ if(String(e && e.name || '') === 'AbortError') return; }
+  prompt('انسخ هذا الرابط للمشاركة', link.url);
+}
 
 function openCatModal(){
   $('inpNewCat').value = ''; renderCatList(); $('catOverlay').classList.add('open'); setTimeout(()=>$('inpNewCat').focus(), 100);
 }
 function renderCatList(){
-  $('catList').innerHTML = cats.map(c => `<div class="cat-item"><span>${escapeHtml(c)}</span><button data-cat="${escapeHtml(c)}">حذف</button></div>`).join('');
+  $('catList').innerHTML = cats.map((c, idx) => `<div class="cat-item"><span>${idx + 1}. ${escapeHtml(c)}</span><div class="cat-item-actions"><button class="move-btn" data-cat="${escapeHtml(c)}" data-dir="up" title="أعلى">↑</button><button class="move-btn" data-cat="${escapeHtml(c)}" data-dir="down" title="أسفل">↓</button><button class="del-btn" data-cat="${escapeHtml(c)}" data-action="delete">حذف</button></div></div>`).join('');
   $('catList').querySelectorAll('button').forEach(btn => btn.addEventListener('click', async () => {
-    const c = btn.dataset.cat; if(links.some(l => l.cat === c)){ toast('⚠️ التصنيف مستخدم بروابط محفوظة'); return; }
-    if(cats.length <= 1){ toast('⚠️ لازم يبقى تصنيف واحد على الأقل'); return; }
-    if(!confirm(`حذف تصنيف ${c}؟`)) return;
-    cats = cats.filter(x => x !== c); saveLocal(); await deleteCategoryCloud(c); renderTabs(); renderCatList(); toast('تم حذف التصنيف');
+    const c = btn.dataset.cat;
+    if(btn.dataset.action === 'delete'){
+      if(links.some(l => l.cat === c)){ toast('⚠️ التصنيف مستخدم بروابط محفوظة'); return; }
+      if(cats.length <= 1){ toast('⚠️ لازم يبقى تصنيف واحد على الأقل'); return; }
+      if(!confirm(`حذف تصنيف ${c}؟`)) return;
+      cats = cats.filter(x => x !== c); saveLocal(); await deleteCategoryCloud(c); renderTabs(); renderCatList(); renderList(); toast('تم حذف التصنيف');
+      return;
+    }
+    moveCategory(c, btn.dataset.dir);
   }));
 }
 async function addCategory(){
@@ -494,6 +535,9 @@ async function addCategory(){
   if(!cats.includes(v)){ cats.push(v); saveLocal(); await upsertCategoryCloud(v); }
   $('inpNewCat').value=''; renderTabs(); renderCatList(); toast(`✅ تمت إضافة ${v}`);
 }
+function moveCategory(cat, dir){ const idx = cats.indexOf(cat); if(idx === -1) return; const target = dir === 'up' ? idx - 1 : idx + 1; if(target < 0 || target >= cats.length) return; const copy = [...cats]; const [item] = copy.splice(idx, 1); copy.splice(target, 0, item); cats = copy; saveLocal(); renderTabs(); renderCatList(); renderList(); toast('✅ تم تحديث ترتيب التصنيفات'); }
+function moveCategory(cat, dir){ const idx = cats.indexOf(cat); if(idx === -1) return; const target = dir === 'up' ? idx - 1 : idx + 1; if(target < 0 || target >= cats.length) return; const copy = [...cats]; const [item] = copy.splice(idx, 1); copy.splice(target, 0, item); cats = copy; saveLocal(); renderTabs(); renderCatList(); renderList(); toast('✅ تم تحديث ترتيب التصنيفات'); }
+
 
 async function fetchMetadata(){
   const url = normalizeUrl($('inpUrl').value); if(!url){ toast('⚠️ أدخل الرابط أولاً'); return; }
@@ -580,8 +624,8 @@ async function syncLocalToCloud(){
   for(const l of links) await upsertLinkCloud(l);
   await loadCloudData(); updateSettingsStatus('✅ تمت المزامنة بنجاح', 'success-text'); toast('✅ تمت المزامنة');
 }
-async function login(){ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ أدخل بيانات Supabase أولاً'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } const { data, error } = await sbClient.auth.signInWithPassword({ email, password }); if(error){ updateSettingsStatus(error.message, 'danger-text'); toast('تعذر تسجيل الدخول'); return; } cloudUser = data.user; updateSettingsStatus('✅ تم تسجيل الدخول', 'success-text'); await syncLocalToCloud(); }
-async function signup(){ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ أدخل بيانات Supabase أولاً'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } const { data, error } = await sbClient.auth.signUp({ email, password }); if(error){ updateSettingsStatus(error.message, 'danger-text'); return; } cloudUser = data.user || cloudUser; updateSettingsStatus('✅ تم إنشاء الحساب. إذا كان تأكيد البريد مفعّل، افتح بريدك للتأكيد.', 'success-text'); if(cloudUser) await syncLocalToCloud(); }
+async function login(){ try{ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ أدخل بيانات Supabase أولاً'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } const { data, error } = await sbClient.auth.signInWithPassword({ email, password }); if(error) throw error; cloudUser = data.user || data.session?.user || null; updateSettingsStatus(`✅ تم تسجيل الدخول${cloudUser?.email ? `: ${cloudUser.email}` : ''}`, 'success-text'); toast('✅ تم تسجيل الدخول'); await syncLocalToCloud(); }catch(e){ const msg = e?.message || 'تعذر تسجيل الدخول'; updateSettingsStatus(msg, 'danger-text'); toast(msg); } }
+async function signup(){ try{ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ أدخل بيانات Supabase أولاً'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } if(password.length < 6){ toast('⚠️ كلمة المرور لازم تكون 6 أحرف على الأقل'); updateSettingsStatus('كلمة المرور قصيرة جدًا. الحد الأدنى 6 أحرف.', 'warning-text'); return; } const emailRedirectTo = (window.location.origin || '') + (window.location.pathname || '/'); const { data, error } = await sbClient.auth.signUp({ email, password, options:{ emailRedirectTo } }); if(error) throw error; if(data.session?.user){ cloudUser = data.session.user; updateSettingsStatus('✅ تم إنشاء الحساب وتسجيل الدخول تلقائيًا.', 'success-text'); toast('✅ تم إنشاء الحساب'); await syncLocalToCloud(); return; } if(data.user){ cloudUser = null; updateSettingsStatus('✅ تم إنشاء الحساب. إذا كان تأكيد البريد مفعّل عندك في Supabase، افتح بريدك ثم ارجع وسجّل الدخول.', 'success-text'); toast('✅ تم إنشاء الحساب'); return; } updateSettingsStatus('تم إرسال الطلب لكن لم تصلنا جلسة تسجيل. تأكد من إعدادات Auth في Supabase.', 'warning-text'); }catch(e){ const msg = e?.message || 'تعذر إنشاء الحساب'; if(/already registered/i.test(msg)){ updateSettingsStatus('هذا البريد مسجل مسبقًا. استخدم تسجيل الدخول بدل إنشاء حساب.', 'warning-text'); toast('البريد مسجل مسبقًا'); } else { updateSettingsStatus(msg, 'danger-text'); toast(msg); } } }
 async function logout(){ if(sbClient) await sbClient.auth.signOut(); cloudUser = null; updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج'); }
 
 function openSettings(){ const cfg = getSettings(); $('setSupabaseUrl').value = cfg.SUPABASE_URL; $('setSupabaseAnon').value = cfg.SUPABASE_ANON_KEY; $('setBackendUrl').value = cfg.BACKEND_URL; $('settingsOverlay').classList.add('open'); }
@@ -604,11 +648,11 @@ function handleIncomingShareFromParams(params){
     lastIncomingShareAt = now;
 
     if(source === 'share_extension' || params.get('autosave') === '1'){
-      saveSharedLinkDirectly({ url: sharedUrl, title, text }).then(saved => {
+      saveSharedLinkDirectly({ url: sharedUrl, title, text, note: params.get('note') || '', cat: params.get('cat') || '' }).then(saved => {
         if(saved) clearPendingNativeShare();
       });
     }else{
-      setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '' }), 280);
+      setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '', note: params.get('note') || '', cat: params.get('cat') || '' }), 280);
     }
     return true;
   }
@@ -659,7 +703,7 @@ async function consumePendingNativeShare(){
     if(!PendingShare || !PendingShare.getPendingShare) return false;
     const res = await PendingShare.getPendingShare();
     if(!res || !res.hasShare) return false;
-    const saved = await saveSharedLinkDirectly({ url: res.url || '', title: res.title || '', text: res.text || '' });
+    const saved = await saveSharedLinkDirectly({ url: res.url || '', title: res.title || '', text: res.text || '', note: res.note || '', cat: res.cat || '' });
     if(saved) await clearPendingNativeShare();
     return saved;
   }catch(e){
@@ -692,7 +736,7 @@ async function runShareDiagnostics(){
       const res = await plugin.getPendingShare();
       report.push('نتيجة getPendingShare(): ' + JSON.stringify(res));
       if(res && res.hasShare){
-        const saved = await saveSharedLinkDirectly({ url: res.url || '', title: res.title || '', text: res.text || '' });
+        const saved = await saveSharedLinkDirectly({ url: res.url || '', title: res.title || '', text: res.text || '', note: res.note || '', cat: res.cat || '' });
         if(saved) await clearPendingNativeShare();
         report.push(saved ? '✅ لقينا رابط محفوظ وحفظناه داخل القائمة الآن.' : '⚠️ لقينا بيانات مشاركة لكن ما فيها رابط http/https صالح.');
       } else {
@@ -718,6 +762,7 @@ $('inpUrl').addEventListener('input', updatePlatformField);
 $('btnFetch').addEventListener('click', fetchMetadata);
 $('btnTrailer').addEventListener('click', fetchTrailer);
 $('searchInp').addEventListener('input', renderList);
+$('btnClearSearch').addEventListener('click', () => { $('searchInp').value=''; renderList(); $('searchInp').focus(); });
 $('btnCancelCat').addEventListener('click', () => $('catOverlay').classList.remove('open'));
 $('btnConfirmCat').addEventListener('click', addCategory);
 $('inpNewCat').addEventListener('keydown', e => { if(e.key === 'Enter') addCategory(); });
