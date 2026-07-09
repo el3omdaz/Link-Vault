@@ -4,9 +4,9 @@
   "description": "LinkVault — مكتبة الروابط الذكية للويب والآيفون",
   "private": true,
   "scripts": {
-    "sync": "npx cap sync",
-    "ios": "npx cap open ios",
-    "android": "npx cap open android",
+    "sync": "npx --no-install cap sync",
+    "ios": "npx --no-install cap open ios",
+    "android": "npx --no-install cap open android",
     "ios:share-extension": "ruby scripts/add-ios-share-extension.rb",
     "check": "node --check backend/server.js"
   },
@@ -18,7 +18,11 @@
     "@capacitor/browser": "^6.0.2"
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.1.2"
-  }
+  },
+  "engines": {
+    "node": ">=20 <21",
+    "npm": ">=10 <11"
+  },
+  "packageManager": "npm@10.9.2"
 }

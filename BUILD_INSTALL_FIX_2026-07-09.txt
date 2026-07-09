@@ -1,0 +1,16 @@
+LinkVault CI install/build fix — 2026-07-09
+
+Changes applied:
+1. Rebuilt package-lock.json with a clean dependency graph.
+2. Replaced all internal package registry URLs with https://registry.npmjs.org/.
+3. Added a project .npmrc that explicitly uses the public npm registry.
+4. Changed Codemagic dependency installation from npm install to npm ci.
+5. Pinned Codemagic to Node 20.18.0 and npm 10-compatible engines.
+6. Removed @capacitor/assets because its sharp dependency downloads libvips from GitHub during npm installation.
+7. Added scripts/generate-ios-assets.sh, which uses macOS sips and the existing local icon/splash files.
+8. Changed all Codemagic npx calls to --no-install where applicable, preventing unexpected network installs.
+
+Expected result:
+The "Install npm dependencies" step installs only the locked 102 packages and no longer depends on the private OpenAI registry or sharp/libvips downloads.
+
+The tar/glob deprecation messages may still appear because they come from Capacitor CLI transitive dependencies. They are warnings and do not cause the build to exit.

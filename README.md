@@ -186,3 +186,15 @@ The Share Extension also uses the LinkVault dark theme, keeps the save controls 
 - فتح OAuth داخل Capacitor Browser وإغلاقه بعد رجوع الجلسة إلى `linkvaultq8://auth-callback`.
 
 راجع ملف `AUTH_OTP_APPLE_GOOGLE_SETUP_2026-07-09.txt` لإكمال إعداد Email Template ومزودي Apple وGoogle داخل Supabase وApple Developer وGoogle Auth Platform.
+
+## تحديث 2026-07-09: إصلاح تثبيت npm في Codemagic
+
+تم إصلاح مرحلة `Install npm dependencies` كالتالي:
+- استخدام Node 20.18.0 بدل Node 22.
+- استخدام `npm ci` بدل `npm install`.
+- إعادة إنشاء `package-lock.json` بروابط `registry.npmjs.org` العامة فقط.
+- حذف اعتماد `@capacitor/assets` و`sharp` لتجنب تنزيل libvips من GitHub أثناء التثبيت.
+- توليد أيقونة وشاشة بدء iOS محليًا بواسطة `scripts/generate-ios-assets.sh` وأداة `sips` الموجودة في macOS.
+- استخدام `npx --no-install` حتى لا ينزل Codemagic حزمًا إضافية خارج ملف القفل.
+
+قد تظهر تحذيرات `tar` أو `glob` القديمة من اعتماد فرعي داخل Capacitor CLI، لكنها تحذيرات فقط ولا توقف البناء.

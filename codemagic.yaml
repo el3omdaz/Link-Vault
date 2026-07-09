@@ -16,7 +16,7 @@ workflows:
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
         IOS_DEPLOYMENT_TARGET: "14.0"
-      node: 22.11.0
+      node: 20.18.0
       xcode: latest
       cocoapods: default
     triggering:
@@ -29,16 +29,17 @@ workflows:
     scripts:
       - name: Install npm dependencies
         script: |
-          npm install --include=dev
+          npm config set registry https://registry.npmjs.org/
+          npm ci --include=dev --no-audit --no-fund --prefer-online
       - name: Add iOS platform if missing
         script: |
           test -d ios || npx --no-install cap add ios
-      - name: Generate app icon and splash screen assets
+      - name: Generate iOS app assets
         script: |
-          npx capacitor-assets generate --ios --iconBackgroundColor "#0d0d14" --splashBackgroundColor "#0d0d14"
+          bash scripts/generate-ios-assets.sh
       - name: Sync web assets and native plugins
         script: |
-          npx cap sync ios
+          npx --no-install cap sync ios
       - name: Add native iOS Share Extension
         script: |
           gem install xcodeproj --no-document
@@ -88,11 +89,14 @@ workflows:
     max_build_duration: 20
     instance_type: linux_x2
     environment:
-      node: 22.11.0
+      node: 20.18.0
     scripts:
+      - name: Install npm dependencies
+        script: |
+          npm config set registry https://registry.npmjs.org/
+          npm ci --include=dev --no-audit --no-fund --prefer-online
       - name: Check backend syntax
         script: |
-          npm install --include=dev
           node --check backend/server.js
     artifacts:
       - www/**
