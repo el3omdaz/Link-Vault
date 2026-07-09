@@ -156,3 +156,21 @@ This package enables App Group entitlements by default. The app and Share Extens
 This package saves links from the iOS Share Extension into a persistent App Group queue without attempting to open the main app. Every new share is appended to the queue instead of replacing the previous link. When LinkVault is opened, the app imports all queued links in order and removes only the entries that were imported successfully.
 
 The Share Extension also uses the LinkVault dark theme, keeps the save controls above the keyboard, and allows the form content to scroll while notes are being entered.
+
+
+## تحديث 2026-07-09: الحساب والثيمات والنسخ الاحتياطي
+
+تمت إضافة:
+- إخفاء بيانات Supabase وRailway من واجهة الإعدادات. تبقى القيم العامة داخل `app-config.js`.
+- ثيم داكن وأبيض وبيج مع حفظ الاختيار.
+- طرق عرض بطاقات ومختصر وشبكة مع حفظ طريقة العرض.
+- تحديد متعدد، حذف المحدد، وتأكيد قبل مسح جميع الروابط.
+- Backup بصيغة JSON وRestore بخياري الدمج أو الاستبدال.
+- استقبال رابط توثيق البريد داخل التطبيق عبر `linkvaultq8://auth-callback`.
+
+### خطوة مطلوبة داخل Supabase Dashboard
+من Authentication > URL Configuration أضف Redirect URL التالي بالضبط:
+
+`linkvaultq8://auth-callback`
+
+ويُفضّل أن يكون قالب Confirm signup مستخدمًا للرابط الافتراضي `{{ .ConfirmationURL }}` حتى ينفذ Supabase التوثيق ثم يرجع للتطبيق. لا يمكن تعديل إعداد Dashboard من ملفات التطبيق أو باستخدام anon key.

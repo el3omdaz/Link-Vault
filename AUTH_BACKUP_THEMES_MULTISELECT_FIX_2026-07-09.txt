@@ -1,0 +1,14 @@
+LinkVault update 2026-07-09
+
+Implemented:
+1. Hidden Supabase and Railway configuration fields from the user settings screen.
+2. Added dark, white and beige themes with persistence.
+3. Added cards, compact and grid views with persistence.
+4. Added multi-select, select visible, clear selection, delete selected and delete all.
+5. Added JSON backup and restore with merge/replace choices.
+6. Added native Supabase email confirmation callback handling for linkvaultq8://auth-callback using PKCE or access/refresh token callbacks.
+7. Kept notes readable: white on dark theme and dark on light/beige themes.
+
+Supabase Dashboard manual requirement:
+Add linkvaultq8://auth-callback to Authentication > URL Configuration > Redirect URLs.
+Use {{ .ConfirmationURL }} in the signup confirmation email template.

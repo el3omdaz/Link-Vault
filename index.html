@@ -47,6 +47,61 @@ button{cursor:pointer}
 .cat-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;backdrop-filter:blur(5px)}.cat-modal-overlay.open{opacity:1;pointer-events:all}.cat-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px;width:min(350px,90vw)}.cat-modal h3{font-size:1.03rem;font-weight:900;margin-bottom:14px}.cat-actions{display:flex;gap:8px;margin-top:12px}.cat-actions button{flex:1;padding:11px;border-radius:10px;border:none;font-weight:900;font-size:.9rem}.cat-actions .confirm{background:var(--accent);color:#fff}.cat-actions .cancel2{background:var(--card);color:var(--muted2);border:1px solid var(--border)}.cat-list{margin-top:14px;display:grid;gap:7px;max-height:220px;overflow:auto}.cat-item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 10px}.cat-item span{flex:1;font-size:.86rem;font-weight:800}.cat-item button{border:1px solid rgba(239,71,111,.35);background:rgba(239,71,111,.08);color:var(--red);border-radius:8px;padding:5px 8px;font-size:.76rem;font-weight:900}
 .toast{position:fixed;bottom:calc(22px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(90px);background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:11px 18px;font-size:.86rem;font-weight:900;color:var(--text);z-index:999;transition:transform .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}.toast.show{transform:translateX(-50%) translateY(0)}.install-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:12px 18px calc(12px + var(--safe-bottom));display:flex;align-items:center;gap:12px;z-index:50;transform:translateY(100%);transition:.35s}.install-bar.show{transform:translateY(0)}.install-bar span{flex:1;font-size:.85rem;font-weight:900}.install-bar button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:9px;color:#fff;font-size:.8rem;font-weight:900;padding:7px 13px}.install-bar .close-install{background:none;border:none;font-size:18px;padding:0}.hidden{display:none!important}
 @media(max-width:560px){.header{gap:8px;padding-right:12px;padding-left:12px}.status-pill{max-width:46px;padding:7px}.status-pill span:last-child{display:none}.summary-row{grid-template-columns:repeat(3,1fr)}.card-actions{width:100%;margin-top:8px}.card-top{flex-wrap:wrap}.card-info{min-width:calc(100% - 56px)}.row{flex-direction:column}.sheet{padding-left:16px;padding-right:16px}.card-btn{flex:1;justify-content:center}.thumb-row{display:block}.thumb-row img{width:100%;height:150px;margin-top:4px}.link-card.card-open-hint::after{display:none}}
+
+
+/* LinkVault UI preferences: themes, view modes, selection, backup/restore */
+:root{--note-text:#fff;--toolbar-bg:rgba(19,19,31,.94);--danger-bg:rgba(239,71,111,.10)}
+html[data-theme="light"]{--bg:#f4f6fb;--surface:#ffffff;--card:#ffffff;--card2:#f1f3f9;--border:#dfe3ee;--border2:#c5cada;--accent:#6757e8;--accent2:#8b49d8;--gold:#b78400;--red:#d92d57;--green:#078f70;--blue:#087eae;--text:#171725;--muted:#76788b;--muted2:#4f5267;--note-text:#171725;--toolbar-bg:rgba(255,255,255,.95);--danger-bg:rgba(217,45,87,.08)}
+html[data-theme="beige"]{--bg:#eee7dc;--surface:#f8f2e9;--card:#fffaf2;--card2:#f0e7da;--border:#dfd1bf;--border2:#cbb99f;--accent:#8b6547;--accent2:#b07a52;--gold:#9b6c00;--red:#c84055;--green:#168268;--blue:#297796;--text:#2d251f;--muted:#8b7b6c;--muted2:#625548;--note-text:#2d251f;--toolbar-bg:rgba(248,242,233,.96);--danger-bg:rgba(200,64,85,.08)}
+html[data-theme="light"] .header{background:rgba(255,255,255,.96)}
+html[data-theme="beige"] .header{background:rgba(248,242,233,.96)}
+html[data-theme="light"] .link-card{background:linear-gradient(180deg,#fff,#fafbfe)}
+html[data-theme="beige"] .link-card{background:linear-gradient(180deg,#fffaf2,#f8f0e5)}
+html[data-theme="light"] .card-note,html[data-theme="beige"] .card-note{background:rgba(0,0,0,.035)}
+textarea.inp,.card-note{color:var(--note-text)}
+.library-toolbar{display:flex;align-items:center;gap:8px;padding:0 14px 9px;flex-shrink:0}
+.view-switch{display:flex;gap:5px;background:var(--card);border:1px solid var(--border);padding:4px;border-radius:12px;direction:rtl}
+.view-btn,.select-mode-btn{border:1px solid transparent;background:transparent;color:var(--muted2);border-radius:9px;min-height:34px;padding:7px 10px;font-size:.76rem;font-weight:900;white-space:nowrap}
+.view-btn.active{background:linear-gradient(135deg,rgba(124,106,255,.20),rgba(168,85,247,.14));border-color:rgba(124,106,255,.35);color:var(--accent)}
+.select-mode-btn{margin-right:auto;background:var(--card);border-color:var(--border)}
+.select-mode-btn.active{background:rgba(239,71,111,.11);border-color:rgba(239,71,111,.35);color:var(--red)}
+.selection-bar{display:none;align-items:center;gap:7px;overflow-x:auto;padding:8px 14px;background:var(--toolbar-bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-shrink:0;scrollbar-width:none}
+.selection-bar.show{display:flex}.selection-bar::-webkit-scrollbar{display:none}
+.selection-count{font-size:.78rem;font-weight:900;color:var(--text);white-space:nowrap;margin-left:auto}
+.selection-action{border:1px solid var(--border);background:var(--card);color:var(--muted2);border-radius:9px;padding:7px 9px;font-size:.73rem;font-weight:900;white-space:nowrap}
+.selection-action.danger{color:var(--red);border-color:rgba(239,71,111,.35);background:var(--danger-bg)}
+.links-container{display:block}
+.links-container.view-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:start}
+.links-container.view-grid .link-card{margin-bottom:0;height:100%}
+.links-container.view-grid .card-top{display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px}
+.links-container.view-grid .card-actions{grid-column:1/-1;width:100%;display:grid;grid-template-columns:repeat(5,1fr);margin-top:5px}
+.links-container.view-grid .card-btn{justify-content:center;padding:7px 4px;min-width:0}
+.links-container.view-grid .btn-label{display:none}
+.links-container.view-grid .thumb-row{display:block}.links-container.view-grid .thumb-row img{width:100%;height:105px}
+.links-container.view-grid .card-note{font-size:.86rem;line-height:1.45;max-height:76px;overflow:hidden}
+.links-container.view-grid .trailer-row{display:none}
+.links-container.view-grid .card-meta{gap:5px}.links-container.view-grid .card-date{width:100%;margin:0}
+.links-container.view-compact .link-card{border-radius:12px;margin-bottom:7px}
+.links-container.view-compact .card-accent{position:absolute;right:0;top:0;bottom:0;width:3px;height:auto}
+.links-container.view-compact .card-body{padding:10px 12px 9px}
+.links-container.view-compact .platform-logo,.links-container.view-compact .platform-logo svg,.links-container.view-compact .platform-logo img{width:34px;height:34px;border-radius:9px}
+.links-container.view-compact .card-title{font-size:.9rem;margin-bottom:2px}.links-container.view-compact .card-url{font-size:.67rem}
+.links-container.view-compact .card-actions{gap:4px}.links-container.view-compact .card-btn{padding:6px;min-width:31px;justify-content:center}.links-container.view-compact .btn-label{display:none}
+.links-container.view-compact .thumb-row,.links-container.view-compact .trailer-row{display:none}
+.links-container.view-compact .card-note{font-size:.82rem;line-height:1.4;padding:7px 9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.links-container.view-compact .card-meta{margin-top:7px;padding-top:7px}
+.select-check{display:none;position:absolute;left:10px;top:10px;z-index:3;width:31px;height:31px;border-radius:10px;border:2px solid var(--border2);background:var(--surface);color:transparent;font-size:17px;font-weight:900;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.14)}
+.selection-active .select-check{display:flex}.selection-active .link-card{padding-left:0}.selection-active .card-actions{display:none}.selection-active .link-card.card-open-hint::after{display:none}
+.link-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,106,255,.16)}.link-card.selected .select-check{background:var(--accent);border-color:var(--accent);color:#fff}
+.theme-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.theme-choice{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:12px;padding:10px 6px;font-size:.78rem;font-weight:900;display:flex;flex-direction:column;align-items:center;gap:7px}
+.theme-choice.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,106,255,.13)}
+.theme-swatch{width:38px;height:25px;border-radius:8px;border:1px solid rgba(127,127,127,.25)}.theme-swatch.dark{background:#13131f}.theme-swatch.light{background:#fff}.theme-swatch.beige{background:#f3eadf}
+.backup-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.backup-grid .btn-ai{width:100%}
+.restore-summary{font-size:.84rem;line-height:1.7;color:var(--muted2);background:var(--card);border:1px solid var(--border);border-radius:11px;padding:10px;margin-top:8px}
+.restore-actions{display:grid;gap:8px;margin-top:13px}.restore-actions button{padding:11px;border-radius:10px;border:1px solid var(--border);font-weight:900;font-size:.87rem}.restore-actions .merge{background:var(--accent);color:#fff;border-color:var(--accent)}.restore-actions .replace{background:var(--danger-bg);color:var(--red);border-color:rgba(239,71,111,.35)}.restore-actions .cancel{background:var(--card);color:var(--muted2)}
+@media(max-width:430px){.library-toolbar{gap:6px}.view-btn,.select-mode-btn{padding:7px 8px}.links-container.view-grid{gap:7px}.links-container.view-grid .card-body{padding:10px}.links-container.view-grid .platform-logo,.links-container.view-grid .platform-logo svg,.links-container.view-grid .platform-logo img{width:36px;height:36px}.links-container.view-grid .card-title{font-size:.84rem}.links-container.view-grid .card-url{font-size:.62rem}.links-container.view-grid .card-btn{font-size:.7rem}.links-container.view-grid .cat-badge,.links-container.view-grid .platform-badge{font-size:.6rem;padding:3px 6px}}
+
 </style>
 </head>
 <body>
@@ -70,6 +125,22 @@ button{cursor:pointer}
     <input type="search" id="searchInp" placeholder="ابحث في الروابط والعناوين والملاحظات...">
     <button class="search-clear" id="btnClearSearch" title="مسح البحث">✕</button>
   </div>
+</div>
+
+<div class="library-toolbar">
+  <div class="view-switch" aria-label="طريقة العرض">
+    <button class="view-btn" data-view="cards" title="بطاقات">▤ بطاقات</button>
+    <button class="view-btn" data-view="compact" title="مختصر">☷ مختصر</button>
+    <button class="view-btn" data-view="grid" title="شبكة">▦ شبكة</button>
+  </div>
+  <button class="select-mode-btn" id="btnSelectMode">☑ تحديد</button>
+</div>
+<div class="selection-bar" id="selectionBar">
+  <span class="selection-count" id="selectionCount">0 محدد</span>
+  <button class="selection-action" id="btnSelectVisible">تحديد الظاهر</button>
+  <button class="selection-action" id="btnClearSelection">إلغاء التحديد</button>
+  <button class="selection-action danger" id="btnDeleteSelected">حذف المحدد</button>
+  <button class="selection-action danger" id="btnDeleteAll">مسح الجميع</button>
 </div>
 
 <div class="main" id="mainList"></div>
@@ -121,20 +192,10 @@ button{cursor:pointer}
     <div class="settings-status" id="settingsStatus">الوضع الحالي: حفظ محلي على الجهاز.</div>
 
     <div class="divider"></div>
-    <div class="field-label">☁️ Supabase URL</div>
-    <input class="inp" id="setSupabaseUrl" placeholder="https://xxxx.supabase.co">
-    <div class="field-label">🔑 Supabase Anon Key</div>
-    <input class="inp" id="setSupabaseAnon" placeholder="anon public key">
-    <div class="field-label">🚂 Backend URL من Railway</div>
-    <input class="inp" id="setBackendUrl" placeholder="https://your-backend.up.railway.app">
-    <div class="hint">لا تضع Service Role Key هنا أبدًا. المفتاح المسموح هو anon public فقط.</div>
-    <div class="ai-row"><button class="btn-ai" id="btnSaveSettings">💾 حفظ إعدادات الربط</button></div>
-
-    <div class="divider"></div>
     <div class="field-label">📧 البريد الإلكتروني</div>
     <input class="inp" id="authEmail" type="email" placeholder="you@example.com">
     <div class="field-label">🔒 كلمة المرور</div>
-    <input class="inp" id="authPassword" type="password" placeholder="كلمة مرور Supabase Auth">
+    <input class="inp" id="authPassword" type="password" placeholder="كلمة المرور">
     <div class="row" style="margin-top:10px">
       <button class="btn-ai" id="btnLogin">تسجيل دخول</button>
       <button class="btn-ai" id="btnSignup">إنشاء حساب</button>
@@ -142,6 +203,22 @@ button{cursor:pointer}
     <div class="row" style="margin-top:8px">
       <button class="btn-ai" id="btnSyncNow">مزامنة الآن</button>
       <button class="btn-ai" id="btnLogout">تسجيل خروج</button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="field-label">🎨 ثيم التطبيق</div>
+    <div class="theme-picker" id="themePicker">
+      <button class="theme-choice" data-theme="dark"><span class="theme-swatch dark"></span>داكن</button>
+      <button class="theme-choice" data-theme="light"><span class="theme-swatch light"></span>أبيض</button>
+      <button class="theme-choice" data-theme="beige"><span class="theme-swatch beige"></span>بيج</button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="field-label">🗄️ النسخ الاحتياطي والاستعادة</div>
+    <div class="hint">النسخة تشمل الروابط والتصنيفات والملاحظات والصور والتريلرات، ولا تشمل كلمة المرور أو بيانات جلسة الدخول.</div>
+    <div class="backup-grid">
+      <button class="btn-ai" id="btnBackup">⬆️ باك أب</button>
+      <button class="btn-ai" id="btnRestore">⬇️ ريستور</button>
     </div>
 
     <div class="divider"></div>
@@ -166,6 +243,19 @@ button{cursor:pointer}
 </div>
 
 <div class="toast" id="toast"></div>
+<input type="file" id="restoreFileInput" accept="application/json,.json" hidden>
+
+<div class="cat-modal-overlay" id="restoreOverlay">
+  <div class="cat-modal">
+    <h3>🗄️ استعادة النسخة الاحتياطية</h3>
+    <div class="restore-summary" id="restoreSummary"></div>
+    <div class="restore-actions">
+      <button class="merge" id="btnRestoreMerge">دمج مع البيانات الحالية</button>
+      <button class="replace" id="btnRestoreReplace">استبدال البيانات الحالية</button>
+      <button class="cancel" id="btnRestoreCancel">إلغاء</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const STORE = {
@@ -186,6 +276,8 @@ const CATEGORY_RULES = [
 const LS_LINKS = 'lv_links_v2';
 const LS_CATS = 'lv_cats_v2';
 const LS_SETTINGS = 'lv_settings_v2';
+const LS_UI = 'lv_ui_v1';
+const AUTH_REDIRECT_URL = 'linkvaultq8://auth-callback';
 
 let legacyLinks = STORE.get('lv_links', []);
 let legacyCats = STORE.get('lv_cats', null);
@@ -197,6 +289,13 @@ let sbClient = null;
 let cloudUser = null;
 let syncing = false;
 let toastTimer = null;
+let uiPrefs = STORE.get(LS_UI, { theme:'dark', viewMode:'cards' }) || { theme:'dark', viewMode:'cards' };
+let currentTheme = ['dark','light','beige'].includes(uiPrefs.theme) ? uiPrefs.theme : 'dark';
+let viewMode = ['cards','compact','grid'].includes(uiPrefs.viewMode) ? uiPrefs.viewMode : 'cards';
+let selectionMode = false;
+let selectedIds = new Set();
+let pendingRestoreData = null;
+let pendingAuthCallbackUrl = '';
 
 function $(id){ return document.getElementById(id); }
 function uid(){ return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2)); }
@@ -208,6 +307,15 @@ function normalizeLinks(items){ return (items || []).map(x => ({ id:x.id || uid(
 function saveLocal(){ STORE.set(LS_LINKS, links); STORE.set(LS_CATS, cats); }
 function getSettings(){ const fileCfg = window.LINKVAULT_CONFIG || {}; const local = STORE.get(LS_SETTINGS, {}); return { SUPABASE_URL: local.SUPABASE_URL || fileCfg.SUPABASE_URL || '', SUPABASE_ANON_KEY: local.SUPABASE_ANON_KEY || fileCfg.SUPABASE_ANON_KEY || '', BACKEND_URL: local.BACKEND_URL || fileCfg.BACKEND_URL || '' }; }
 function setSettings(v){ STORE.set(LS_SETTINGS, v); }
+function saveUiPrefs(){ uiPrefs = { theme:currentTheme, viewMode }; STORE.set(LS_UI, uiPrefs); }
+function updateThemeMeta(){ const colors = { dark:'#0d0d14', light:'#f4f6fb', beige:'#eee7dc' }; const meta = document.querySelector('meta[name="theme-color"]'); if(meta) meta.setAttribute('content', colors[currentTheme] || colors.dark); }
+function applyTheme(theme, persist=true){ currentTheme = ['dark','light','beige'].includes(theme) ? theme : 'dark'; document.documentElement.dataset.theme = currentTheme; updateThemeMeta(); document.querySelectorAll('[data-theme]').forEach(btn => btn.classList.toggle('active', btn.dataset.theme === currentTheme)); if(persist) saveUiPrefs(); }
+function setViewMode(mode){ viewMode = ['cards','compact','grid'].includes(mode) ? mode : 'cards'; saveUiPrefs(); document.querySelectorAll('[data-view]').forEach(btn => btn.classList.toggle('active', btn.dataset.view === viewMode)); renderList(); }
+function getVisibleLinks(){ const q = $('searchInp').value.trim().toLowerCase(); let data = [...links].sort((a,b) => (b.ts || 0) - (a.ts || 0)); if(currentCat !== 'all') data = data.filter(l => l.cat === currentCat); if(q) data = data.filter(l => [l.title,l.url,l.note,l.cat,l.platform].some(v => String(v||'').toLowerCase().includes(q))); return data; }
+function setSelectionMode(enabled){ selectionMode = !!enabled; if(!selectionMode) selectedIds.clear(); $('btnSelectMode').classList.toggle('active', selectionMode); $('btnSelectMode').textContent = selectionMode ? '✕ إنهاء' : '☑ تحديد'; $('selectionBar').classList.toggle('show', selectionMode); renderList(); }
+function toggleSelected(id){ if(selectedIds.has(id)) selectedIds.delete(id); else selectedIds.add(id); updateSelectionUi(); const card = document.querySelector(`.link-card[data-id="${CSS.escape(id)}"]`); if(card) card.classList.toggle('selected', selectedIds.has(id)); }
+function updateSelectionUi(){ selectedIds = new Set([...selectedIds].filter(id => links.some(l => l.id === id))); $('selectionCount').textContent = `${selectedIds.size} محدد`; $('btnDeleteSelected').disabled = selectedIds.size === 0; }
+
 
 function getNativePlugin(name){
   const cap = window.Capacitor;
@@ -388,24 +496,29 @@ function renderTabs(){
 }
 function renderList(){
   const q = $('searchInp').value.trim().toLowerCase();
-  let data = [...links].sort((a,b) => (b.ts || 0) - (a.ts || 0));
-  if(currentCat !== 'all') data = data.filter(l => l.cat === currentCat);
-  if(q) data = data.filter(l => [l.title,l.url,l.note,l.cat,l.platform].some(v => String(v||'').toLowerCase().includes(q)));
+  const data = getVisibleLinks();
   const el = $('mainList');
+  document.querySelectorAll('[data-view]').forEach(btn => btn.classList.toggle('active', btn.dataset.view === viewMode));
   const stats = `<div class="summary-row"><div class="stat-card"><div class="stat-num">${links.length}</div><div class="stat-label">رابط</div></div><div class="stat-card"><div class="stat-num">${cats.length}</div><div class="stat-label">تصنيف</div></div><div class="stat-card"><div class="stat-num">${links.filter(x=>x.trailer).length}</div><div class="stat-label">تريلر</div></div></div>`;
-  if(!data.length){ el.innerHTML = stats + `<div class="empty-state"><div class="empty-icon">🔗</div><h3>${q ? 'لا نتائج' : 'لا يوجد روابط بعد'}</h3><p>${q ? 'جرب كلمة بحث مختلفة' : 'اضغط + لإضافة رابط جديد<br>أو شاركه من أي تطبيق آخر'}</p></div>`; return; }
-  el.innerHTML = stats + data.map(l => {
+  el.classList.toggle('selection-active', selectionMode);
+  if(!data.length){ el.innerHTML = stats + `<div class="empty-state"><div class="empty-icon">🔗</div><h3>${q ? 'لا نتائج' : 'لا يوجد روابط بعد'}</h3><p>${q ? 'جرب كلمة بحث مختلفة' : 'اضغط + لإضافة رابط جديد<br>أو شاركه من أي تطبيق آخر'}</p></div>`; updateSelectionUi(); return; }
+  const cards = data.map(l => {
     const platform = detectPlatform(l.url);
-    return `<div class="link-card card-open-hint" data-id="${escapeHtml(l.id)}"><div class="card-accent" style="background:${accentColor(l.url)}"></div><div class="card-body"><div class="card-top"><div class="platform-logo">${platformLogo(l.url)}</div><div class="card-info"><div class="card-title">${escapeHtml(l.title)}</div><div class="card-url">${escapeHtml(l.url)}</div></div><div class="card-actions"><button class="card-btn open" data-id="${escapeHtml(l.id)}" data-action="open" title="فتح">↗ فتح</button><button class="card-btn share" data-id="${escapeHtml(l.id)}" data-action="share" title="مشاركة">📤 مشاركة</button><button class="card-btn trailer" data-id="${escapeHtml(l.id)}" data-action="trailer" title="التريلر">🎬 تريلر</button><button class="card-btn edit" data-id="${escapeHtml(l.id)}" data-action="edit" title="تعديل">✏️ تعديل</button><button class="card-btn del" data-id="${escapeHtml(l.id)}" data-action="del" title="حذف">🗑 حذف</button></div></div>${l.thumbnail ? `<div class="thumb-row"><img src="${escapeHtml(l.thumbnail)}" alt="صورة الرابط" loading="lazy"></div>` : ''}${l.note ? `<div class="card-note">📌 ${escapeHtml(l.note)}</div>` : ''}${l.trailer ? `<div class="trailer-row"><div class="t-icon">🎬</div><div class="t-info"><div class="t-title">تريلر</div><div class="t-url">${escapeHtml(l.trailer)}</div></div><a href="${escapeHtml(l.trailer)}" target="_blank" rel="noopener">▶ شاهد</a></div>` : ''}<div class="card-meta"><span class="cat-badge">${escapeHtml(l.cat)}</span><span class="platform-badge">${escapeHtml(platform.label)}</span><span class="card-date">${new Date(l.ts).toLocaleDateString('ar-KW',{day:'numeric',month:'short'})}</span></div></div></div>`;
+    const selected = selectedIds.has(l.id);
+    return `<div class="link-card card-open-hint ${selected?'selected':''}" data-id="${escapeHtml(l.id)}"><button class="select-check" data-select-id="${escapeHtml(l.id)}" aria-label="تحديد الرابط">✓</button><div class="card-accent" style="background:${accentColor(l.url)}"></div><div class="card-body"><div class="card-top"><div class="platform-logo">${platformLogo(l.url)}</div><div class="card-info"><div class="card-title">${escapeHtml(l.title)}</div><div class="card-url">${escapeHtml(l.url)}</div></div><div class="card-actions"><button class="card-btn open" data-id="${escapeHtml(l.id)}" data-action="open" title="فتح"><span class="btn-icon">↗</span><span class="btn-label">فتح</span></button><button class="card-btn share" data-id="${escapeHtml(l.id)}" data-action="share" title="مشاركة"><span class="btn-icon">📤</span><span class="btn-label">مشاركة</span></button><button class="card-btn trailer" data-id="${escapeHtml(l.id)}" data-action="trailer" title="التريلر"><span class="btn-icon">🎬</span><span class="btn-label">تريلر</span></button><button class="card-btn edit" data-id="${escapeHtml(l.id)}" data-action="edit" title="تعديل"><span class="btn-icon">✏️</span><span class="btn-label">تعديل</span></button><button class="card-btn del" data-id="${escapeHtml(l.id)}" data-action="del" title="حذف"><span class="btn-icon">🗑</span><span class="btn-label">حذف</span></button></div></div>${l.thumbnail ? `<div class="thumb-row"><img src="${escapeHtml(l.thumbnail)}" alt="صورة الرابط" loading="lazy"></div>` : ''}${l.note ? `<div class="card-note">📌 ${escapeHtml(l.note)}</div>` : ''}${l.trailer ? `<div class="trailer-row"><div class="t-icon">🎬</div><div class="t-info"><div class="t-title">تريلر</div><div class="t-url">${escapeHtml(l.trailer)}</div></div><a href="${escapeHtml(l.trailer)}" target="_blank" rel="noopener">▶ شاهد</a></div>` : ''}<div class="card-meta"><span class="cat-badge">${escapeHtml(l.cat)}</span><span class="platform-badge">${escapeHtml(platform.label)}</span><span class="card-date">${new Date(l.ts).toLocaleDateString('ar-KW',{day:'numeric',month:'short'})}</span></div></div></div>`;
   }).join('');
+  el.innerHTML = stats + `<div class="links-container view-${viewMode}">${cards}</div>`;
   el.querySelectorAll('.link-card').forEach(card => card.addEventListener('click', e => {
     if(e.target.closest('[data-action],a,button,input,textarea,select')) return;
     const id = card.dataset.id;
+    if(selectionMode){ toggleSelected(id); return; }
     const l = links.find(x => x.id === id);
     if(l) window.open(l.url, '_blank');
   }));
+  el.querySelectorAll('[data-select-id]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleSelected(btn.dataset.selectId); }));
   el.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', async e => {
     e.stopPropagation();
+    if(selectionMode){ toggleSelected(btn.dataset.id); return; }
     const id = btn.dataset.id;
     const action = btn.dataset.action;
     const l = links.find(x => x.id === id);
@@ -416,6 +529,7 @@ function renderList(){
     if(action === 'edit') openEdit(id);
     if(action === 'del') await deleteLink(id);
   }));
+  updateSelectionUi();
 }
 
 function openAddModal(prefill={}){
@@ -497,6 +611,48 @@ async function deleteLink(id){
   if(!confirm('حذف هذا الرابط؟')) return;
   links = links.filter(x => x.id !== id); saveLocal(); await deleteLinkCloud(id); renderList(); toast('تم الحذف');
 }
+async function deleteLinksCloud(ids){ if(!sbClient || !cloudUser || !ids.length) return; const { error } = await sbClient.from('links').delete().in('id', ids); if(error) console.warn(error); }
+async function deleteAllLinksCloud(){ if(!sbClient || !cloudUser) return; const { error } = await sbClient.from('links').delete().eq('user_id', cloudUser.id); if(error) console.warn(error); }
+async function deleteSelectedLinks(){ const ids = [...selectedIds]; if(!ids.length){ toast('اختر رابطًا واحدًا على الأقل'); return; } if(!confirm(`حذف ${ids.length} رابط محدد؟ لا يمكن التراجع.`)) return; links = links.filter(l => !selectedIds.has(l.id)); saveLocal(); await deleteLinksCloud(ids); selectedIds.clear(); renderTabs(); renderList(); toast(`تم حذف ${ids.length} رابط`); }
+async function deleteAllLinks(){ if(!links.length){ toast('لا توجد روابط للحذف'); return; } if(!confirm(`مسح جميع الروابط وعددها ${links.length}؟\nلا يمكن التراجع عن هذه العملية.`)) return; links = []; selectedIds.clear(); saveLocal(); await deleteAllLinksCloud(); setSelectionMode(false); renderTabs(); renderList(); toast('تم مسح جميع الروابط'); }
+function selectVisibleLinks(){ getVisibleLinks().forEach(l => selectedIds.add(l.id)); updateSelectionUi(); renderList(); }
+function clearSelectedLinks(){ selectedIds.clear(); updateSelectionUi(); renderList(); }
+function backupPayload(){ return { app:'LinkVault', format:'linkvault-backup', version:1, exportedAt:nowIso(), categories:[...cats], links:normalizeLinks(links), preferences:{ theme:currentTheme, viewMode } }; }
+function backupFilename(){ return `LinkVault-backup-${new Date().toISOString().slice(0,10)}.json`; }
+async function exportBackup(){
+  try{
+    const content = JSON.stringify(backupPayload(), null, 2);
+    const file = new File([content], backupFilename(), { type:'application/json' });
+    if(navigator.share && (!navigator.canShare || navigator.canShare({ files:[file] }))){
+      try{ await navigator.share({ title:'نسخة LinkVault الاحتياطية', files:[file] }); toast('✅ تم تجهيز النسخة الاحتياطية'); return; }catch(e){ if(String(e?.name || '') === 'AbortError') return; }
+    }
+    const blobUrl = URL.createObjectURL(file); const a = document.createElement('a'); a.href = blobUrl; a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(blobUrl), 1500); toast('✅ تم حفظ النسخة الاحتياطية');
+  }catch(e){ console.warn(e); toast('⚠️ تعذر إنشاء النسخة الاحتياطية'); }
+}
+function beginRestore(){ $('restoreFileInput').value=''; $('restoreFileInput').click(); }
+function validateBackup(data){ if(!data || typeof data !== 'object' || !Array.isArray(data.links)) throw new Error('ملف غير صالح'); const restoredLinks = normalizeLinks(data.links); const restoredCats = Array.isArray(data.categories) ? data.categories.map(x=>String(x||'').trim()).filter(Boolean) : []; return { links:restoredLinks, categories:[...new Set(restoredCats.length ? restoredCats : restoredLinks.map(l=>l.cat).filter(Boolean))], preferences:data.preferences || {} }; }
+function showRestoreChoice(data){ pendingRestoreData = data; $('restoreSummary').textContent = `الملف يحتوي على ${data.links.length} رابط و${data.categories.length} تصنيف. اختر الدمج للاحتفاظ بالبيانات الحالية، أو الاستبدال لمسحها ووضع النسخة مكانها.`; $('restoreOverlay').classList.add('open'); }
+function closeRestoreChoice(){ pendingRestoreData = null; $('restoreOverlay').classList.remove('open'); }
+async function replaceCloudFromLocal(){ if(!sbClient || !cloudUser) return; await sbClient.from('links').delete().eq('user_id', cloudUser.id); await sbClient.from('categories').delete().eq('user_id', cloudUser.id); for(const c of cats) await upsertCategoryCloud(c); for(const l of links) await upsertLinkCloud(l); }
+async function applyRestore(mode){
+  if(!pendingRestoreData) return;
+  const data = pendingRestoreData; closeRestoreChoice();
+  if(mode === 'replace'){
+    if(!confirm('سيتم استبدال جميع الروابط والتصنيفات الحالية. هل أنت متأكد؟')) return;
+    links = normalizeLinks(data.links); cats = [...new Set(data.categories.length ? data.categories : DEFAULT_CATS)];
+  }else{
+    const usedIds = new Set(links.map(l=>l.id)); const byUrl = new Map(links.map(l=>[canonicalUrl(l.url),l]));
+    for(const incoming0 of normalizeLinks(data.links)){
+      const incoming = {...incoming0}; const key = canonicalUrl(incoming.url); const existing = byUrl.get(key);
+      if(existing){ existing.title = existing.title || incoming.title; existing.note = existing.note || incoming.note; existing.thumbnail = existing.thumbnail || incoming.thumbnail; existing.trailer = existing.trailer || incoming.trailer; existing.cat = existing.cat || incoming.cat; existing.updatedAt = nowIso(); continue; }
+      if(usedIds.has(incoming.id)) incoming.id = uid(); usedIds.add(incoming.id); links.push(incoming); byUrl.set(key,incoming);
+    }
+    cats = [...new Set([...cats, ...data.categories, ...links.map(l=>l.cat).filter(Boolean)])];
+  }
+  if(!cats.length) cats = [...DEFAULT_CATS]; currentCat = 'all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList();
+  try{ if(cloudUser){ if(mode === 'replace') await replaceCloudFromLocal(); else { for(const c of cats) await upsertCategoryCloud(c); for(const l of links) await upsertLinkCloud(l); } } }catch(e){ console.warn(e); }
+  toast(mode === 'replace' ? '✅ تمت استعادة النسخة واستبدال البيانات' : '✅ تم دمج النسخة الاحتياطية');
+}
 async function shareLink(link){
   try{
     if(navigator.share){
@@ -535,7 +691,6 @@ async function addCategory(){
   if(!cats.includes(v)){ cats.push(v); saveLocal(); await upsertCategoryCloud(v); }
   $('inpNewCat').value=''; renderTabs(); renderCatList(); toast(`✅ تمت إضافة ${v}`);
 }
-function moveCategory(cat, dir){ const idx = cats.indexOf(cat); if(idx === -1) return; const target = dir === 'up' ? idx - 1 : idx + 1; if(target < 0 || target >= cats.length) return; const copy = [...cats]; const [item] = copy.splice(idx, 1); copy.splice(target, 0, item); cats = copy; saveLocal(); renderTabs(); renderCatList(); renderList(); toast('✅ تم تحديث ترتيب التصنيفات'); }
 function moveCategory(cat, dir){ const idx = cats.indexOf(cat); if(idx === -1) return; const target = dir === 'up' ? idx - 1 : idx + 1; if(target < 0 || target >= cats.length) return; const copy = [...cats]; const [item] = copy.splice(idx, 1); copy.splice(target, 0, item); cats = copy; saveLocal(); renderTabs(); renderCatList(); renderList(); toast('✅ تم تحديث ترتيب التصنيفات'); }
 
 
@@ -587,15 +742,15 @@ function updateSettingsStatus(msg, cls=''){
 }
 async function initSupabase(){
   const cfg = getSettings();
-  $('setSupabaseUrl').value = cfg.SUPABASE_URL; $('setSupabaseAnon').value = cfg.SUPABASE_ANON_KEY; $('setBackendUrl').value = cfg.BACKEND_URL;
-  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي. أضف بيانات Supabase لتفعيل المزامنة.'); return; }
+  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
   try{
-    sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true } });
+    sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
     const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null;
     if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
-    else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم ربط Supabase، لكن تحتاج تسجيل دخول لتفعيل المزامنة.', 'warning-text'); }
-    sbClient.auth.onAuthStateChange(async (_event, session) => { cloudUser = session?.user || null; if(cloudUser){ updateCloudStatus('online','مزامن'); await loadCloudData(); } else updateCloudStatus('warn','غير مسجل'); });
-  }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر ربط Supabase. تأكد من URL و anon key.', 'danger-text'); }
+    else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('سجّل الدخول لتفعيل المزامنة بين أجهزتك.', 'warning-text'); }
+    sbClient.auth.onAuthStateChange(async (event, session) => { cloudUser = session?.user || null; if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); if(event === 'SIGNED_IN') await syncLocalToCloud(); else await loadCloudData(); } else updateCloudStatus('warn','غير مسجل'); });
+    if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
+  }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
 }
 function linkToRow(l){ return { id:l.id, user_id:cloudUser?.id, title:l.title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
 function rowToLink(r){ return { id:r.id, title:r.title || '', url:r.url || '', cat:r.category_name || 'أخرى', note:r.notes || '', trailer:r.trailer_url || '', thumbnail:r.thumbnail_url || '', platform:r.platform || detectPlatform(r.url || '').label, ts:r.created_at ? new Date(r.created_at).getTime() : Date.now(), updatedAt:r.updated_at || nowIso() }; }
@@ -610,7 +765,7 @@ async function loadCloudData(){
     const upgraded = upgradeExistingOtherCategories();
     saveLocal(); renderTabs(); renderList(); updateCloudStatus('online','مزامن');
     if(upgraded) links.forEach(l => upsertLinkCloud(l).catch(()=>{}));
-  }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل البيانات من Supabase. تأكد أنك شغلت ملف schema.sql.', 'danger-text'); }
+  }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.', 'danger-text'); }
   syncing = false;
 }
 async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const row = linkToRow(l); const { error } = await sbClient.from('links').upsert(row, { onConflict:'id' }); if(error) console.warn(error); }
@@ -624,13 +779,14 @@ async function syncLocalToCloud(){
   for(const l of links) await upsertLinkCloud(l);
   await loadCloudData(); updateSettingsStatus('✅ تمت المزامنة بنجاح', 'success-text'); toast('✅ تمت المزامنة');
 }
-async function login(){ try{ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ أدخل بيانات Supabase أولاً'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } const { data, error } = await sbClient.auth.signInWithPassword({ email, password }); if(error) throw error; cloudUser = data.user || data.session?.user || null; updateSettingsStatus(`✅ تم تسجيل الدخول${cloudUser?.email ? `: ${cloudUser.email}` : ''}`, 'success-text'); toast('✅ تم تسجيل الدخول'); await syncLocalToCloud(); }catch(e){ const msg = e?.message || 'تعذر تسجيل الدخول'; updateSettingsStatus(msg, 'danger-text'); toast(msg); } }
-async function signup(){ try{ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ أدخل بيانات Supabase أولاً'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } if(password.length < 6){ toast('⚠️ كلمة المرور لازم تكون 6 أحرف على الأقل'); updateSettingsStatus('كلمة المرور قصيرة جدًا. الحد الأدنى 6 أحرف.', 'warning-text'); return; } const emailRedirectTo = (window.location.origin || '') + (window.location.pathname || '/'); const { data, error } = await sbClient.auth.signUp({ email, password, options:{ emailRedirectTo } }); if(error) throw error; if(data.session?.user){ cloudUser = data.session.user; updateSettingsStatus('✅ تم إنشاء الحساب وتسجيل الدخول تلقائيًا.', 'success-text'); toast('✅ تم إنشاء الحساب'); await syncLocalToCloud(); return; } if(data.user){ cloudUser = null; updateSettingsStatus('✅ تم إنشاء الحساب. إذا كان تأكيد البريد مفعّل عندك في Supabase، افتح بريدك ثم ارجع وسجّل الدخول.', 'success-text'); toast('✅ تم إنشاء الحساب'); return; } updateSettingsStatus('تم إرسال الطلب لكن لم تصلنا جلسة تسجيل. تأكد من إعدادات Auth في Supabase.', 'warning-text'); }catch(e){ const msg = e?.message || 'تعذر إنشاء الحساب'; if(/already registered/i.test(msg)){ updateSettingsStatus('هذا البريد مسجل مسبقًا. استخدم تسجيل الدخول بدل إنشاء حساب.', 'warning-text'); toast('البريد مسجل مسبقًا'); } else { updateSettingsStatus(msg, 'danger-text'); toast(msg); } } }
+async function login(){ try{ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ خدمة الحساب غير متاحة حاليًا'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } const { data, error } = await sbClient.auth.signInWithPassword({ email, password }); if(error) throw error; cloudUser = data.user || data.session?.user || null; updateSettingsStatus(`✅ تم تسجيل الدخول${cloudUser?.email ? `: ${cloudUser.email}` : ''}`, 'success-text'); toast('✅ تم تسجيل الدخول'); await syncLocalToCloud(); }catch(e){ const msg = e?.message || 'تعذر تسجيل الدخول'; updateSettingsStatus(msg, 'danger-text'); toast(msg); } }
+function isNativeApp(){ try{return !!(window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform());}catch(e){return false;} }
+function getAuthRedirectUrl(){ return isNativeApp() ? AUTH_REDIRECT_URL : ((window.location.origin || '') + (window.location.pathname || '/')); }
+async function signup(){ try{ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ خدمة الحساب غير متاحة'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } if(password.length < 6){ toast('⚠️ كلمة المرور لازم تكون 6 أحرف على الأقل'); updateSettingsStatus('كلمة المرور قصيرة جدًا. الحد الأدنى 6 أحرف.', 'warning-text'); return; } const { data, error } = await sbClient.auth.signUp({ email, password, options:{ emailRedirectTo:getAuthRedirectUrl() } }); if(error) throw error; if(data.session?.user){ cloudUser = data.session.user; updateSettingsStatus('✅ تم إنشاء الحساب وتسجيل الدخول تلقائيًا.', 'success-text'); toast('✅ تم إنشاء الحساب'); await syncLocalToCloud(); return; } if(data.user){ cloudUser = null; updateSettingsStatus('✅ تم إنشاء الحساب وإرسال رسالة التوثيق. افتح الرابط من نفس الآيفون وسيعود إلى LinkVault.', 'success-text'); toast('📧 افتح رسالة التوثيق'); return; } updateSettingsStatus('تم إرسال طلب إنشاء الحساب، راجع بريدك للتوثيق.', 'warning-text'); }catch(e){ const msg = e?.message || 'تعذر إنشاء الحساب'; if(/already registered/i.test(msg)){ updateSettingsStatus('هذا البريد مسجل مسبقًا. استخدم تسجيل الدخول بدل إنشاء حساب.', 'warning-text'); toast('البريد مسجل مسبقًا'); } else { updateSettingsStatus(msg, 'danger-text'); toast(msg); } } }
 async function logout(){ if(sbClient) await sbClient.auth.signOut(); cloudUser = null; updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج'); }
 
-function openSettings(){ const cfg = getSettings(); $('setSupabaseUrl').value = cfg.SUPABASE_URL; $('setSupabaseAnon').value = cfg.SUPABASE_ANON_KEY; $('setBackendUrl').value = cfg.BACKEND_URL; $('settingsOverlay').classList.add('open'); }
+function openSettings(){ applyTheme(currentTheme, false); $('settingsOverlay').classList.add('open'); }
 function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
-function saveSettingsFromForm(){ setSettings({ SUPABASE_URL:$('setSupabaseUrl').value.trim(), SUPABASE_ANON_KEY:$('setSupabaseAnon').value.trim(), BACKEND_URL:$('setBackendUrl').value.trim().replace(/\/$/,'') }); sbClient = null; cloudUser = null; initSupabase(); toast('✅ تم حفظ الإعدادات'); }
 
 let lastIncomingShareSignature = '';
 let lastIncomingShareAt = 0;
@@ -666,25 +822,27 @@ function checkShareTarget(){
   if(handled || params.get('action')) window.history.replaceState({}, '', window.location.pathname || './');
 }
 function isLinkVaultDeepLink(u){ return u && (u.protocol === 'linkvaultq8:' || u.protocol === 'linkvault:'); }
+function isAuthCallbackUrl(u){ return isLinkVaultDeepLink(u) && (u.hostname === 'auth-callback' || u.pathname.replace(/^\//,'') === 'auth-callback'); }
+function authParamsFromUrl(raw){ const u = new URL(raw); const params = new URLSearchParams(u.search); const hash = new URLSearchParams((u.hash || '').replace(/^#/,'?')); for(const [k,v] of hash.entries()) if(!params.has(k)) params.set(k,v); return params; }
+async function handleAuthCallbackUrl(raw){
+  if(!sbClient){ pendingAuthCallbackUrl = raw; return false; }
+  try{
+    const params = authParamsFromUrl(raw); const errorText = params.get('error_description') || params.get('error'); if(errorText) throw new Error(decodeURIComponent(errorText.replace(/\+/g,' ')));
+    const code = params.get('code'); const access_token = params.get('access_token'); const refresh_token = params.get('refresh_token'); let result;
+    if(code) result = await sbClient.auth.exchangeCodeForSession(code);
+    else if(access_token && refresh_token) result = await sbClient.auth.setSession({ access_token, refresh_token });
+    else { const current = await sbClient.auth.getSession(); if(current.data?.session) result = current; else throw new Error('رابط التوثيق لا يحتوي بيانات جلسة صالحة'); }
+    if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null;
+    updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم توثيق البريد وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم توثيق الحساب'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); if(cloudUser) await syncLocalToCloud(); return true;
+  }catch(e){ console.warn('Auth callback failed', e); updateSettingsStatus(`تعذر إكمال التوثيق: ${e?.message || e}`, 'danger-text'); toast('⚠️ تعذر إكمال توثيق البريد'); return false; }
+}
+function routeDeepLink(raw){ try{ const u = new URL(raw); if(!isLinkVaultDeepLink(u)) return false; if(isAuthCallbackUrl(u)){ handleAuthCallbackUrl(raw); return true; } return handleIncomingShareFromParams(u.searchParams); }catch(e){ return false; } }
+function captureBrowserAuthCallback(){ try{ const params = authParamsFromUrl(window.location.href); if(params.get('code') || params.get('access_token') || params.get('error') || params.get('error_code')) pendingAuthCallbackUrl = window.location.href; }catch(e){} }
 function initNativeDeepLinks(){
   const App = window.Capacitor?.Plugins?.App;
   if(!App) return;
-  App.addListener('appUrlOpen', data => {
-    try {
-      const u = new URL(data.url);
-      if(isLinkVaultDeepLink(u)) handleIncomingShareFromParams(u.searchParams);
-    } catch(e){}
-  });
-  if(App.getLaunchUrl){
-    App.getLaunchUrl().then(res => {
-      if(res?.url){
-        try {
-          const u = new URL(res.url);
-          if(isLinkVaultDeepLink(u)) handleIncomingShareFromParams(u.searchParams);
-        } catch(e){}
-      }
-    }).catch(()=>{});
-  }
+  App.addListener('appUrlOpen', data => { if(data?.url) routeDeepLink(data.url); });
+  if(App.getLaunchUrl){ App.getLaunchUrl().then(res => { if(res?.url) routeDeepLink(res.url); }).catch(()=>{}); }
 }
 
 async function clearPendingNativeShare(upToTimestamp){
@@ -810,14 +968,27 @@ $('btnConfirmCat').addEventListener('click', addCategory);
 $('inpNewCat').addEventListener('keydown', e => { if(e.key === 'Enter') addCategory(); });
 $('btnCloseSettings').addEventListener('click', closeSettings);
 $('settingsOverlay').addEventListener('click', e => { if(e.target === $('settingsOverlay')) closeSettings(); });
-$('btnSaveSettings').addEventListener('click', saveSettingsFromForm);
 $('btnLogin').addEventListener('click', login);
 $('btnSignup').addEventListener('click', signup);
 $('btnLogout').addEventListener('click', logout);
 $('btnSyncNow').addEventListener('click', syncLocalToCloud);
 $('btnShareDiag').addEventListener('click', runShareDiagnostics);
+$('btnSelectMode').addEventListener('click', () => setSelectionMode(!selectionMode));
+document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => setViewMode(btn.dataset.view)));
+$('btnSelectVisible').addEventListener('click', selectVisibleLinks);
+$('btnClearSelection').addEventListener('click', clearSelectedLinks);
+$('btnDeleteSelected').addEventListener('click', deleteSelectedLinks);
+$('btnDeleteAll').addEventListener('click', deleteAllLinks);
+document.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
+$('btnBackup').addEventListener('click', exportBackup);
+$('btnRestore').addEventListener('click', beginRestore);
+$('restoreFileInput').addEventListener('change', async e => { const file=e.target.files?.[0]; if(!file) return; try{ showRestoreChoice(validateBackup(JSON.parse(await file.text()))); }catch(err){ toast('⚠️ ملف النسخة الاحتياطية غير صالح'); } });
+$('btnRestoreMerge').addEventListener('click', () => applyRestore('merge'));
+$('btnRestoreReplace').addEventListener('click', () => applyRestore('replace'));
+$('btnRestoreCancel').addEventListener('click', closeRestoreChoice);
+$('restoreOverlay').addEventListener('click', e => { if(e.target === $('restoreOverlay')) closeRestoreChoice(); });
 
-upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); checkShareTarget(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase();
+applyTheme(currentTheme, false); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
