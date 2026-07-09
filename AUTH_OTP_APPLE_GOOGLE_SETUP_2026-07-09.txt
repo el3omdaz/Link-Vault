@@ -1,0 +1,37 @@
+LinkVault — إعداد تسجيل الدخول برمز البريد وApple وGoogle
+التاريخ: 2026-07-09
+
+تم تنفيذ الواجهة والكود داخل التطبيق، لكن يلزم إكمال إعدادات مزودي الدخول من لوحات التحكم لأن هذه القيم لا يمكن وضعها تلقائيًا داخل المشروع.
+
+1) Supabase — رابط الرجوع
+Authentication > URL Configuration > Redirect URLs
+أضف:
+linkvaultq8://auth-callback
+
+2) Supabase — رمز البريد OTP
+Authentication > Email Templates > Magic Link
+غيّر محتوى الرسالة ليعرض الرمز باستخدام المتغير:
+{{ .Token }}
+مثال نص الرسالة: رمز تسجيل الدخول إلى LinkVault هو {{ .Token }}
+لا تستخدم {{ .ConfirmationURL }} في هذا القالب إذا كنت تريد إرسال الرقم بدل الرابط.
+
+3) Google
+- أنشئ OAuth Web Client في Google Auth Platform.
+- ضع رابط Supabase callback الظاهر داخل Authentication > Providers > Google في Authorized redirect URIs لدى Google.
+- انسخ Client ID وClient Secret إلى مزود Google داخل Supabase ثم فعّله.
+- تأكد أن linkvaultq8://auth-callback موجود ضمن Redirect URLs في Supabase.
+
+4) Apple
+- فعّل Sign in with Apple على App ID: com.linkvaultq8.app داخل Apple Developer.
+- أنشئ Services ID واربطه بنفس App ID.
+- استخدم Return URL الذي يعرضه Supabase داخل Authentication > Providers > Apple.
+- أنشئ Sign in with Apple Key وأدخل Team ID وKey ID وملف المفتاح/السر المطلوب داخل Supabase، ثم فعّل المزود.
+- في مسار OAuth الخاص بـ Apple يلزم تجديد Client Secret دوريًا وفق إعداد Apple.
+
+5) البناء
+المشروع أضيفت له حزمة @capacitor/browser. Codemagic يشغّل npm install ثم npx cap sync ios تلقائيًا، لذلك ستتم إضافة Browser plugin أثناء البناء.
+
+ملاحظات اختبار
+- جرّب رمز البريد على جهاز حقيقي.
+- جرّب Apple وGoogle من TestFlight أو Build موقع على جهاز، وليس من معاينة HTML فقط.
+- لو رجع المتصفح ولم يسجل الدخول، راجع أن Redirect URL مكتوب حرفيًا بدون مسافات وأن مزود Google/Apple مفعّل داخل Supabase.

@@ -98,6 +98,14 @@ textarea.inp,.card-note{color:var(--note-text)}
 .theme-choice.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,106,255,.13)}
 .theme-swatch{width:38px;height:25px;border-radius:8px;border:1px solid rgba(127,127,127,.25)}.theme-swatch.dark{background:#13131f}.theme-swatch.light{background:#fff}.theme-swatch.beige{background:#f3eadf}
 .backup-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.backup-grid .btn-ai{width:100%}
+.auth-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-top:8px}
+.auth-primary{width:100%;margin-top:9px}
+.otp-panel{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.otp-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.otp-input{direction:ltr;text-align:center;font-size:1.12rem!important;font-weight:900;letter-spacing:.32em;padding-right:calc(13px - .32em)!important}
+.auth-separator{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.76rem;font-weight:800;margin:14px 0 10px}.auth-separator::before,.auth-separator::after{content:'';height:1px;flex:1;background:var(--border)}
+.social-login{display:grid;grid-template-columns:1fr 1fr;gap:8px}.social-btn{border-radius:12px;padding:11px 10px;font-size:.86rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;min-height:45px}.social-btn.apple{background:#000;color:#fff;border:1px solid #000}.social-btn.google{background:#fff;color:#202124;border:1px solid #dadce0}.social-icon{font-size:1.05rem;line-height:1}
+.auth-hint{margin-top:8px;font-size:.73rem;line-height:1.6;color:var(--muted)}
 .restore-summary{font-size:.84rem;line-height:1.7;color:var(--muted2);background:var(--card);border:1px solid var(--border);border-radius:11px;padding:10px;margin-top:8px}
 .restore-actions{display:grid;gap:8px;margin-top:13px}.restore-actions button{padding:11px;border-radius:10px;border:1px solid var(--border);font-weight:900;font-size:.87rem}.restore-actions .merge{background:var(--accent);color:#fff;border-color:var(--accent)}.restore-actions .replace{background:var(--danger-bg);color:var(--red);border-color:rgba(239,71,111,.35)}.restore-actions .cancel{background:var(--card);color:var(--muted2)}
 @media(max-width:430px){.library-toolbar{gap:6px}.view-btn,.select-mode-btn{padding:7px 8px}.links-container.view-grid{gap:7px}.links-container.view-grid .card-body{padding:10px}.links-container.view-grid .platform-logo,.links-container.view-grid .platform-logo svg,.links-container.view-grid .platform-logo img{width:36px;height:36px}.links-container.view-grid .card-title{font-size:.84rem}.links-container.view-grid .card-url{font-size:.62rem}.links-container.view-grid .card-btn{font-size:.7rem}.links-container.view-grid .cat-badge,.links-container.view-grid .platform-badge{font-size:.6rem;padding:3px 6px}}
@@ -192,13 +200,27 @@ textarea.inp,.card-note{color:var(--note-text)}
     <div class="settings-status" id="settingsStatus">الوضع الحالي: حفظ محلي على الجهاز.</div>
 
     <div class="divider"></div>
-    <div class="field-label">📧 البريد الإلكتروني</div>
-    <input class="inp" id="authEmail" type="email" placeholder="you@example.com">
-    <div class="field-label">🔒 كلمة المرور</div>
-    <input class="inp" id="authPassword" type="password" placeholder="كلمة المرور">
-    <div class="row" style="margin-top:10px">
-      <button class="btn-ai" id="btnLogin">تسجيل دخول</button>
-      <button class="btn-ai" id="btnSignup">إنشاء حساب</button>
+    <div class="field-label">🔐 الحساب والمزامنة</div>
+    <div class="auth-box">
+      <div class="field-label">📧 البريد الإلكتروني</div>
+      <input class="inp" id="authEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="you@example.com">
+      <button class="btn-ai auth-primary" id="btnSendOtp">إرسال رمز التحقق</button>
+
+      <div class="otp-panel" id="otpPanel" hidden>
+        <div class="field-label">🔢 رمز التحقق</div>
+        <div class="otp-row">
+          <input class="inp otp-input" id="authOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+          <button class="btn-ai" id="btnVerifyOtp">تأكيد</button>
+        </div>
+        <button class="btn-cancel" id="btnResendOtp" style="margin-top:8px">إعادة إرسال الرمز</button>
+      </div>
+
+      <div class="auth-separator">أو</div>
+      <div class="social-login">
+        <button class="social-btn apple" id="btnAppleLogin"><span class="social-icon"></span><span>Apple ID</span></button>
+        <button class="social-btn google" id="btnGoogleLogin"><span class="social-icon">G</span><span>Google</span></button>
+      </div>
+      <div class="auth-hint">رمز البريد ينشئ الحساب تلقائيًا للمستخدم الجديد. لا توجد كلمة مرور.</div>
     </div>
     <div class="row" style="margin-top:8px">
       <button class="btn-ai" id="btnSyncNow">مزامنة الآن</button>
@@ -277,6 +299,7 @@ const LS_LINKS = 'lv_links_v2';
 const LS_CATS = 'lv_cats_v2';
 const LS_SETTINGS = 'lv_settings_v2';
 const LS_UI = 'lv_ui_v1';
+const LS_PENDING_OTP = 'lv_pending_otp_email_v1';
 const AUTH_REDIRECT_URL = 'linkvaultq8://auth-callback';
 
 let legacyLinks = STORE.get('lv_links', []);
@@ -296,6 +319,8 @@ let selectionMode = false;
 let selectedIds = new Set();
 let pendingRestoreData = null;
 let pendingAuthCallbackUrl = '';
+let pendingOtpEmail = STORE.get(LS_PENDING_OTP, '') || '';
+let otpCooldownTimer = null;
 
 function $(id){ return document.getElementById(id); }
 function uid(){ return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2)); }
@@ -747,8 +772,17 @@ async function initSupabase(){
     sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
     const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null;
     if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
-    else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('سجّل الدخول لتفعيل المزامنة بين أجهزتك.', 'warning-text'); }
-    sbClient.auth.onAuthStateChange(async (event, session) => { cloudUser = session?.user || null; if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); if(event === 'SIGNED_IN') await syncLocalToCloud(); else await loadCloudData(); } else updateCloudStatus('warn','غير مسجل'); });
+    else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.', 'warning-text'); }
+    sbClient.auth.onAuthStateChange((event, session) => {
+      cloudUser = session?.user || null;
+      if(cloudUser){
+        updateCloudStatus('online','مزامن');
+        updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text');
+        setTimeout(() => { if(event === 'SIGNED_IN') syncLocalToCloud(); else loadCloudData(); }, 0);
+      }else{
+        updateCloudStatus('warn','غير مسجل');
+      }
+    });
     if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
   }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
 }
@@ -779,11 +813,109 @@ async function syncLocalToCloud(){
   for(const l of links) await upsertLinkCloud(l);
   await loadCloudData(); updateSettingsStatus('✅ تمت المزامنة بنجاح', 'success-text'); toast('✅ تمت المزامنة');
 }
-async function login(){ try{ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ خدمة الحساب غير متاحة حاليًا'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } const { data, error } = await sbClient.auth.signInWithPassword({ email, password }); if(error) throw error; cloudUser = data.user || data.session?.user || null; updateSettingsStatus(`✅ تم تسجيل الدخول${cloudUser?.email ? `: ${cloudUser.email}` : ''}`, 'success-text'); toast('✅ تم تسجيل الدخول'); await syncLocalToCloud(); }catch(e){ const msg = e?.message || 'تعذر تسجيل الدخول'; updateSettingsStatus(msg, 'danger-text'); toast(msg); } }
 function isNativeApp(){ try{return !!(window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform());}catch(e){return false;} }
 function getAuthRedirectUrl(){ return isNativeApp() ? AUTH_REDIRECT_URL : ((window.location.origin || '') + (window.location.pathname || '/')); }
-async function signup(){ try{ if(!sbClient) await initSupabase(); if(!sbClient){ toast('⚠️ خدمة الحساب غير متاحة'); return; } const email=$('authEmail').value.trim(); const password=$('authPassword').value; if(!email || !password){ toast('⚠️ أدخل البريد وكلمة المرور'); return; } if(password.length < 6){ toast('⚠️ كلمة المرور لازم تكون 6 أحرف على الأقل'); updateSettingsStatus('كلمة المرور قصيرة جدًا. الحد الأدنى 6 أحرف.', 'warning-text'); return; } const { data, error } = await sbClient.auth.signUp({ email, password, options:{ emailRedirectTo:getAuthRedirectUrl() } }); if(error) throw error; if(data.session?.user){ cloudUser = data.session.user; updateSettingsStatus('✅ تم إنشاء الحساب وتسجيل الدخول تلقائيًا.', 'success-text'); toast('✅ تم إنشاء الحساب'); await syncLocalToCloud(); return; } if(data.user){ cloudUser = null; updateSettingsStatus('✅ تم إنشاء الحساب وإرسال رسالة التوثيق. افتح الرابط من نفس الآيفون وسيعود إلى LinkVault.', 'success-text'); toast('📧 افتح رسالة التوثيق'); return; } updateSettingsStatus('تم إرسال طلب إنشاء الحساب، راجع بريدك للتوثيق.', 'warning-text'); }catch(e){ const msg = e?.message || 'تعذر إنشاء الحساب'; if(/already registered/i.test(msg)){ updateSettingsStatus('هذا البريد مسجل مسبقًا. استخدم تسجيل الدخول بدل إنشاء حساب.', 'warning-text'); toast('البريد مسجل مسبقًا'); } else { updateSettingsStatus(msg, 'danger-text'); toast(msg); } } }
-async function logout(){ if(sbClient) await sbClient.auth.signOut(); cloudUser = null; updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج'); }
+function normalizeOtp(value){
+  const arabic = '٠١٢٣٤٥٦٧٨٩';
+  const persian = '۰۱۲۳۴۵۶۷۸۹';
+  return String(value || '').replace(/[٠-٩]/g, d => arabic.indexOf(d)).replace(/[۰-۹]/g, d => persian.indexOf(d)).replace(/\D/g,'').slice(0,6);
+}
+function setOtpPanelVisible(show){
+  const panel = $('otpPanel');
+  if(panel) panel.hidden = !show;
+  if(show && $('authOtp')) setTimeout(() => $('authOtp').focus(), 120);
+}
+function startOtpCooldown(seconds=60){
+  clearInterval(otpCooldownTimer);
+  let left = seconds;
+  const send = $('btnSendOtp');
+  const resend = $('btnResendOtp');
+  const refresh = () => {
+    const disabled = left > 0;
+    if(send){ send.disabled = disabled; send.textContent = disabled ? `إعادة الإرسال بعد ${left}ث` : 'إرسال رمز التحقق'; }
+    if(resend){ resend.disabled = disabled; resend.textContent = disabled ? `إعادة الإرسال بعد ${left}ث` : 'إعادة إرسال الرمز'; }
+    if(left <= 0){ clearInterval(otpCooldownTimer); otpCooldownTimer = null; }
+    left -= 1;
+  };
+  refresh();
+  otpCooldownTimer = setInterval(refresh, 1000);
+}
+async function ensureAuthClient(){
+  if(!sbClient) await initSupabase();
+  if(!sbClient){ toast('⚠️ خدمة الحساب غير متاحة حاليًا'); return false; }
+  return true;
+}
+async function sendEmailOtp(){
+  const button = $('btnSendOtp');
+  try{
+    if(!await ensureAuthClient()) return;
+    const email = $('authEmail').value.trim().toLowerCase();
+    if(!/^\S+@\S+\.\S+$/.test(email)){ toast('⚠️ أدخل بريدًا إلكترونيًا صحيحًا'); return; }
+    button.disabled = true; button.textContent = 'جاري إرسال الرمز...';
+    const { error } = await sbClient.auth.signInWithOtp({ email, options:{ shouldCreateUser:true } });
+    if(error) throw error;
+    pendingOtpEmail = email; STORE.set(LS_PENDING_OTP, email); setOtpPanelVisible(true); startOtpCooldown(60);
+    updateSettingsStatus(`📧 أرسلنا رمز تحقق إلى ${email}`, 'success-text'); toast('📧 تم إرسال رمز التحقق');
+  }catch(e){
+    const msg = e?.message || 'تعذر إرسال رمز التحقق';
+    updateSettingsStatus(msg, 'danger-text'); toast(msg);
+    button.disabled = false; button.textContent = 'إرسال رمز التحقق';
+  }
+}
+async function verifyEmailOtp(){
+  const button = $('btnVerifyOtp');
+  try{
+    if(!await ensureAuthClient()) return;
+    const email = (pendingOtpEmail || $('authEmail').value).trim().toLowerCase();
+    const token = normalizeOtp($('authOtp').value);
+    $('authOtp').value = token;
+    if(!email || token.length !== 6){ toast('⚠️ أدخل رمز التحقق المكوّن من 6 أرقام'); return; }
+    button.disabled = true; button.textContent = 'جاري التحقق...';
+    const { data, error } = await sbClient.auth.verifyOtp({ email, token, type:'email' });
+    if(error) throw error;
+    cloudUser = data.user || data.session?.user || null;
+    pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); $('authOtp').value = ''; setOtpPanelVisible(false);
+    updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل');
+    updateSettingsStatus('✅ تم التحقق وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول');
+  }catch(e){
+    const msg = e?.message || 'رمز التحقق غير صحيح أو انتهت صلاحيته';
+    updateSettingsStatus(msg, 'danger-text'); toast('⚠️ ' + msg);
+  }finally{
+    button.disabled = false; button.textContent = 'تأكيد';
+  }
+}
+async function openAuthBrowser(url){
+  if(!url) throw new Error('لم يتم إنشاء رابط تسجيل الدخول');
+  if(isNativeApp()){
+    const Browser = getNativePlugin('Browser');
+    if(Browser?.open){ await Browser.open({ url, presentationStyle:'fullscreen', toolbarColor:'#0d0d14' }); return; }
+  }
+  window.location.assign(url);
+}
+async function closeAuthBrowser(){
+  if(!isNativeApp()) return;
+  try{ const Browser = getNativePlugin('Browser'); if(Browser?.close) await Browser.close(); }catch(e){}
+}
+async function signInWithOAuthProvider(provider){
+  const label = provider === 'apple' ? 'Apple' : 'Google';
+  try{
+    if(!await ensureAuthClient()) return;
+    updateSettingsStatus(`جاري فتح تسجيل الدخول بواسطة ${label}...`, 'warning-text');
+    const queryParams = provider === 'google' ? { prompt:'select_account' } : undefined;
+    const { data, error } = await sbClient.auth.signInWithOAuth({ provider, options:{ redirectTo:getAuthRedirectUrl(), skipBrowserRedirect:isNativeApp(), queryParams } });
+    if(error) throw error;
+    if(isNativeApp()) await openAuthBrowser(data?.url);
+  }catch(e){
+    const msg = e?.message || `تعذر تسجيل الدخول بواسطة ${label}`;
+    updateSettingsStatus(msg, 'danger-text'); toast(msg);
+  }
+}
+async function logout(){
+  if(sbClient) await sbClient.auth.signOut();
+  await closeAuthBrowser();
+  cloudUser = null; pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false);
+  updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج');
+}
 
 function openSettings(){ applyTheme(currentTheme, false); $('settingsOverlay').classList.add('open'); }
 function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
@@ -827,14 +959,15 @@ function authParamsFromUrl(raw){ const u = new URL(raw); const params = new URLS
 async function handleAuthCallbackUrl(raw){
   if(!sbClient){ pendingAuthCallbackUrl = raw; return false; }
   try{
+    await closeAuthBrowser();
     const params = authParamsFromUrl(raw); const errorText = params.get('error_description') || params.get('error'); if(errorText) throw new Error(decodeURIComponent(errorText.replace(/\+/g,' ')));
     const code = params.get('code'); const access_token = params.get('access_token'); const refresh_token = params.get('refresh_token'); let result;
     if(code) result = await sbClient.auth.exchangeCodeForSession(code);
     else if(access_token && refresh_token) result = await sbClient.auth.setSession({ access_token, refresh_token });
-    else { const current = await sbClient.auth.getSession(); if(current.data?.session) result = current; else throw new Error('رابط التوثيق لا يحتوي بيانات جلسة صالحة'); }
+    else { const current = await sbClient.auth.getSession(); if(current.data?.session) result = current; else throw new Error('رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة'); }
     if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null;
-    updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم توثيق البريد وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم توثيق الحساب'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); if(cloudUser) await syncLocalToCloud(); return true;
-  }catch(e){ console.warn('Auth callback failed', e); updateSettingsStatus(`تعذر إكمال التوثيق: ${e?.message || e}`, 'danger-text'); toast('⚠️ تعذر إكمال توثيق البريد'); return false; }
+    updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم تسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); return true;
+  }catch(e){ await closeAuthBrowser(); console.warn('Auth callback failed', e); updateSettingsStatus(`تعذر إكمال تسجيل الدخول: ${e?.message || e}`, 'danger-text'); toast('⚠️ تعذر إكمال تسجيل الدخول'); return false; }
 }
 function routeDeepLink(raw){ try{ const u = new URL(raw); if(!isLinkVaultDeepLink(u)) return false; if(isAuthCallbackUrl(u)){ handleAuthCallbackUrl(raw); return true; } return handleIncomingShareFromParams(u.searchParams); }catch(e){ return false; } }
 function captureBrowserAuthCallback(){ try{ const params = authParamsFromUrl(window.location.href); if(params.get('code') || params.get('access_token') || params.get('error') || params.get('error_code')) pendingAuthCallbackUrl = window.location.href; }catch(e){} }
@@ -968,8 +1101,14 @@ $('btnConfirmCat').addEventListener('click', addCategory);
 $('inpNewCat').addEventListener('keydown', e => { if(e.key === 'Enter') addCategory(); });
 $('btnCloseSettings').addEventListener('click', closeSettings);
 $('settingsOverlay').addEventListener('click', e => { if(e.target === $('settingsOverlay')) closeSettings(); });
-$('btnLogin').addEventListener('click', login);
-$('btnSignup').addEventListener('click', signup);
+$('btnSendOtp').addEventListener('click', sendEmailOtp);
+$('btnVerifyOtp').addEventListener('click', verifyEmailOtp);
+$('btnResendOtp').addEventListener('click', sendEmailOtp);
+$('btnAppleLogin').addEventListener('click', () => signInWithOAuthProvider('apple'));
+$('btnGoogleLogin').addEventListener('click', () => signInWithOAuthProvider('google'));
+$('authOtp').addEventListener('input', e => { e.target.value = normalizeOtp(e.target.value); });
+$('authOtp').addEventListener('keydown', e => { if(e.key === 'Enter') verifyEmailOtp(); });
+$('authEmail').addEventListener('keydown', e => { if(e.key === 'Enter') sendEmailOtp(); });
 $('btnLogout').addEventListener('click', logout);
 $('btnSyncNow').addEventListener('click', syncLocalToCloud);
 $('btnShareDiag').addEventListener('click', runShareDiagnostics);
@@ -988,7 +1127,7 @@ $('btnRestoreReplace').addEventListener('click', () => applyRestore('replace'));
 $('btnRestoreCancel').addEventListener('click', closeRestoreChoice);
 $('restoreOverlay').addEventListener('click', e => { if(e.target === $('restoreOverlay')) closeRestoreChoice(); });
 
-applyTheme(currentTheme, false); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase();
+applyTheme(currentTheme, false); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); if(pendingOtpEmail){ $('authEmail').value = pendingOtpEmail; setOtpPanelVisible(true); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>

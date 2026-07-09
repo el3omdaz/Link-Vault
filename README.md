@@ -174,3 +174,15 @@ The Share Extension also uses the LinkVault dark theme, keeps the save controls 
 `linkvaultq8://auth-callback`
 
 ويُفضّل أن يكون قالب Confirm signup مستخدمًا للرابط الافتراضي `{{ .ConfirmationURL }}` حتى ينفذ Supabase التوثيق ثم يرجع للتطبيق. لا يمكن تعديل إعداد Dashboard من ملفات التطبيق أو باستخدام anon key.
+
+
+## تحديث 2026-07-09: رمز البريد وApple وGoogle
+
+تم استبدال تسجيل البريد وكلمة المرور بتسجيل بدون كلمة مرور:
+- إرسال رمز تحقق من 6 أرقام إلى البريد.
+- إنشاء الحساب تلقائيًا للمستخدم الجديد بعد التحقق.
+- تسجيل الدخول عبر Apple ID.
+- تسجيل الدخول عبر Google.
+- فتح OAuth داخل Capacitor Browser وإغلاقه بعد رجوع الجلسة إلى `linkvaultq8://auth-callback`.
+
+راجع ملف `AUTH_OTP_APPLE_GOOGLE_SETUP_2026-07-09.txt` لإكمال إعداد Email Template ومزودي Apple وGoogle داخل Supabase وApple Developer وGoogle Auth Platform.
