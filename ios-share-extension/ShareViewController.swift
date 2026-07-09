@@ -1,15 +1,26 @@
-
 import UIKit
 import UniformTypeIdentifiers
 
 final class ShareViewController: UIViewController, UITextViewDelegate {
     private let appGroupId = "group.com.linkvaultq8.shared"
+    private let pendingSharesKey = "linkvault.pendingShares.v2"
     private let collectionQueue = DispatchQueue(label: "com.linkvaultq8.share.collection")
+
+    private let appBackground = UIColor(red: 13/255, green: 13/255, blue: 20/255, alpha: 1)
+    private let appSurface = UIColor(red: 19/255, green: 19/255, blue: 31/255, alpha: 1)
+    private let appCard = UIColor(red: 26/255, green: 26/255, blue: 46/255, alpha: 1)
+    private let appBorder = UIColor(red: 42/255, green: 42/255, blue: 69/255, alpha: 1)
+    private let appAccent = UIColor(red: 124/255, green: 106/255, blue: 1, alpha: 1)
+    private let appAccent2 = UIColor(red: 168/255, green: 85/255, blue: 247/255, alpha: 1)
+    private let appText = UIColor(red: 238/255, green: 238/255, blue: 1, alpha: 1)
+    private let appMuted = UIColor(red: 161/255, green: 161/255, blue: 199/255, alpha: 1)
+
     private var didStartExtraction = false
     private var didComplete = false
     private var didStartSave = false
-    private var selectedCategory: String? = nil
+    private var selectedCategory: String?
     private var categoryButtons: [UIButton] = []
+    private var keyboardBottomConstraint: NSLayoutConstraint!
 
     private struct SharedPayload {
         var url: String?
@@ -19,9 +30,21 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         var category: String?
     }
 
+    private struct PendingShareRecord: Codable {
+        let id: String
+        let url: String
+        let title: String
+        let text: String
+        let note: String
+        let category: String
+        let timestamp: Double
+    }
+
     private var payload = SharedPayload()
 
     private let cardView = UIView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let previewBox = UIView()
@@ -31,13 +54,18 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     private let categoryStack = UIStackView()
     private let noteTextView = UITextView()
     private let notePlaceholder = UILabel()
-    private let saveButton = UIButton(type: .system)
+    private let saveButton = GradientButton(type: .system)
     private let cancelButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        registerForKeyboardNotifications()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -49,68 +77,90 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     }
 
     private func configureUI() {
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.32)
+        overrideUserInterfaceStyle = .dark
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.58)
+
+        let dismissTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        dismissTap.cancelsTouchesInView = false
+        view.addGestureRecognizer(dismissTap)
 
         cardView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.backgroundColor = UIColor { trait in
-            trait.userInterfaceStyle == .dark
-            ? UIColor(red: 0.10, green: 0.11, blue: 0.15, alpha: 1.0)
-            : UIColor.white
-        }
+        cardView.backgroundColor = appSurface
         cardView.layer.cornerRadius = 24
+        cardView.layer.borderWidth = 1
+        cardView.layer.borderColor = appBorder.cgColor
         cardView.layer.masksToBounds = true
         view.addSubview(cardView)
 
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        stack.spacing = 12
-        stack.alignment = .fill
-        cardView.addSubview(stack)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.alwaysBounceVertical = false
+        scrollView.keyboardDismissMode = .interactive
+        scrollView.showsVerticalScrollIndicator = false
+        cardView.addSubview(scrollView)
+
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentView)
+
+        let formStack = UIStackView()
+        formStack.translatesAutoresizingMaskIntoConstraints = false
+        formStack.axis = .vertical
+        formStack.spacing = 12
+        formStack.alignment = .fill
+        contentView.addSubview(formStack)
 
         titleLabel.text = "حفظ الرابط"
         titleLabel.textAlignment = .center
+        titleLabel.textColor = appText
         titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
 
         subtitleLabel.text = "LinkVault Q8"
         subtitleLabel.textAlignment = .center
-        subtitleLabel.textColor = .secondaryLabel
+        subtitleLabel.textColor = appMuted
         subtitleLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         subtitleLabel.numberOfLines = 0
 
+        activityIndicator.color = appAccent
         activityIndicator.startAnimating()
 
-        previewBox.backgroundColor = UIColor.secondarySystemBackground
+        previewBox.backgroundColor = appCard
         previewBox.layer.cornerRadius = 14
         previewBox.layer.borderWidth = 1
-        previewBox.layer.borderColor = UIColor.separator.cgColor
+        previewBox.layer.borderColor = appBorder.cgColor
         previewBox.translatesAutoresizingMaskIntoConstraints = false
 
         previewTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         previewTitleLabel.text = "جاري قراءة الرابط..."
         previewTitleLabel.textAlignment = .right
+        previewTitleLabel.textColor = appText
         previewTitleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         previewTitleLabel.numberOfLines = 2
 
         previewURLLabel.translatesAutoresizingMaskIntoConstraints = false
         previewURLLabel.text = ""
         previewURLLabel.textAlignment = .right
-        previewURLLabel.textColor = .secondaryLabel
+        previewURLLabel.textColor = appMuted
         previewURLLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         previewURLLabel.numberOfLines = 2
+        previewURLLabel.semanticContentAttribute = .forceLeftToRight
 
         previewBox.addSubview(previewTitleLabel)
         previewBox.addSubview(previewURLLabel)
 
         titleField.translatesAutoresizingMaskIntoConstraints = false
-        titleField.placeholder = "العنوان"
+        titleField.attributedPlaceholder = NSAttributedString(
+            string: "العنوان",
+            attributes: [.foregroundColor: appMuted.withAlphaComponent(0.72)]
+        )
         titleField.textAlignment = .right
+        titleField.textColor = appText
+        titleField.tintColor = appAccent
         titleField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        titleField.backgroundColor = UIColor.secondarySystemBackground
+        titleField.backgroundColor = appCard
         titleField.layer.cornerRadius = 12
         titleField.layer.borderWidth = 1
-        titleField.layer.borderColor = UIColor.separator.cgColor
+        titleField.layer.borderColor = appBorder.cgColor
         titleField.clearButtonMode = .whileEditing
+        titleField.keyboardAppearance = .dark
         titleField.setPadding(left: 12, right: 12)
 
         categoryStack.axis = .horizontal
@@ -121,59 +171,91 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
 
         let noteWrap = UIView()
         noteWrap.translatesAutoresizingMaskIntoConstraints = false
-        noteWrap.backgroundColor = UIColor.secondarySystemBackground
+        noteWrap.backgroundColor = appCard
         noteWrap.layer.cornerRadius = 12
         noteWrap.layer.borderWidth = 1
-        noteWrap.layer.borderColor = UIColor.separator.cgColor
+        noteWrap.layer.borderColor = appBorder.cgColor
 
         noteTextView.translatesAutoresizingMaskIntoConstraints = false
         noteTextView.backgroundColor = .clear
         noteTextView.textAlignment = .right
-        noteTextView.font = UIFont.systemFont(ofSize: 15)
+        noteTextView.textColor = .white
+        noteTextView.tintColor = appAccent
+        noteTextView.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         noteTextView.delegate = self
-        noteTextView.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
-        noteTextView.isScrollEnabled = false
+        noteTextView.textContainerInset = UIEdgeInsets(top: 12, left: 10, bottom: 12, right: 10)
+        noteTextView.keyboardAppearance = .dark
+        noteTextView.isScrollEnabled = true
 
         notePlaceholder.translatesAutoresizingMaskIntoConstraints = false
         notePlaceholder.text = "أضف ملاحظاتك هنا..."
         notePlaceholder.textAlignment = .right
-        notePlaceholder.textColor = .placeholderText
-        notePlaceholder.font = UIFont.systemFont(ofSize: 15)
+        notePlaceholder.textColor = appMuted.withAlphaComponent(0.72)
+        notePlaceholder.font = UIFont.systemFont(ofSize: 17)
 
         noteWrap.addSubview(noteTextView)
         noteWrap.addSubview(notePlaceholder)
 
+        [titleLabel, subtitleLabel, activityIndicator, previewBox, titleField, categoryStack, noteWrap].forEach {
+            formStack.addArrangedSubview($0)
+        }
+
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.setTitle("حفظ الرابط", for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        saveButton.backgroundColor = .systemGreen
         saveButton.layer.cornerRadius = 14
+        saveButton.layer.masksToBounds = true
+        saveButton.gradientColors = [appAccent.cgColor, appAccent2.cgColor]
         saveButton.isEnabled = false
         saveButton.alpha = 0.60
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
 
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.setTitle("إغلاق", for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        cancelButton.setTitleColor(.systemGreen, for: .normal)
-        cancelButton.backgroundColor = UIColor.secondarySystemBackground
+        cancelButton.setTitleColor(appAccent, for: .normal)
+        cancelButton.backgroundColor = appCard
         cancelButton.layer.cornerRadius = 14
+        cancelButton.layer.borderWidth = 1
+        cancelButton.layer.borderColor = appBorder.cgColor
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
 
-        [titleLabel, subtitleLabel, activityIndicator, previewBox, titleField, categoryStack, noteWrap, saveButton, cancelButton].forEach {
-            stack.addArrangedSubview($0)
-        }
+        let actionStack = UIStackView(arrangedSubviews: [saveButton, cancelButton])
+        actionStack.translatesAutoresizingMaskIntoConstraints = false
+        actionStack.axis = .vertical
+        actionStack.spacing = 10
+        cardView.addSubview(actionStack)
+
+        keyboardBottomConstraint = cardView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -12)
+        let preferredHeight = cardView.heightAnchor.constraint(equalToConstant: 570)
+        preferredHeight.priority = .defaultHigh
+        let minimumHeight = cardView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300)
+        minimumHeight.priority = UILayoutPriority(700)
 
         NSLayoutConstraint.activate([
             cardView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 18),
             cardView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -18),
-            cardView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            cardView.topAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
-            cardView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
+            cardView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            keyboardBottomConstraint,
+            preferredHeight,
+            minimumHeight,
 
-            stack.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 20),
-            stack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
-            stack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
-            stack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -18),
+            scrollView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 18),
+            scrollView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            scrollView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            scrollView.bottomAnchor.constraint(equalTo: actionStack.topAnchor, constant: -14),
+
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+
+            formStack.topAnchor.constraint(equalTo: contentView.topAnchor),
+            formStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            formStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            formStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             previewBox.heightAnchor.constraint(greaterThanOrEqualToConstant: 78),
             previewTitleLabel.topAnchor.constraint(equalTo: previewBox.topAnchor, constant: 12),
@@ -187,18 +269,61 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
             titleField.heightAnchor.constraint(equalToConstant: 48),
             categoryStack.heightAnchor.constraint(equalToConstant: 46),
 
-            noteWrap.heightAnchor.constraint(greaterThanOrEqualToConstant: 92),
+            noteWrap.heightAnchor.constraint(equalToConstant: 108),
             noteTextView.topAnchor.constraint(equalTo: noteWrap.topAnchor),
             noteTextView.leadingAnchor.constraint(equalTo: noteWrap.leadingAnchor),
             noteTextView.trailingAnchor.constraint(equalTo: noteWrap.trailingAnchor),
             noteTextView.bottomAnchor.constraint(equalTo: noteWrap.bottomAnchor),
-            notePlaceholder.topAnchor.constraint(equalTo: noteWrap.topAnchor, constant: 14),
-            notePlaceholder.trailingAnchor.constraint(equalTo: noteWrap.trailingAnchor, constant: -14),
-            notePlaceholder.leadingAnchor.constraint(greaterThanOrEqualTo: noteWrap.leadingAnchor, constant: 14),
+            notePlaceholder.topAnchor.constraint(equalTo: noteWrap.topAnchor, constant: 15),
+            notePlaceholder.trailingAnchor.constraint(equalTo: noteWrap.trailingAnchor, constant: -16),
+            notePlaceholder.leadingAnchor.constraint(greaterThanOrEqualTo: noteWrap.leadingAnchor, constant: 16),
 
+            actionStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            actionStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            actionStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -18),
             saveButton.heightAnchor.constraint(equalToConstant: 52),
             cancelButton.heightAnchor.constraint(equalToConstant: 48)
         ])
+    }
+
+    private func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillChangeFrame(_:)),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide(_:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let converted = view.convert(frame, from: nil)
+        let overlap = max(0, view.bounds.maxY - converted.minY)
+        updateKeyboardConstraint(to: -(overlap + 10), notification: notification)
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        updateKeyboardConstraint(to: -12, notification: notification)
+    }
+
+    private func updateKeyboardConstraint(to constant: CGFloat, notification: Notification) {
+        keyboardBottomConstraint.constant = constant
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+        let curveValue = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 7
+        let options = UIView.AnimationOptions(rawValue: curveValue << 16)
+        UIView.animate(withDuration: duration, delay: 0, options: options) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     private func buildCategoryButtons() {
@@ -228,9 +353,9 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     private func updateCategorySelection() {
         for button in categoryButtons {
             let selected = (button.tag == 0 && selectedCategory == nil) || button.title(for: .normal) == selectedCategory
-            button.backgroundColor = selected ? UIColor.systemGreen.withAlphaComponent(0.14) : UIColor.secondarySystemBackground
-            button.setTitleColor(selected ? .systemGreen : .label, for: .normal)
-            button.layer.borderColor = selected ? UIColor.systemGreen.cgColor : UIColor.separator.cgColor
+            button.backgroundColor = selected ? appAccent.withAlphaComponent(0.20) : appCard
+            button.setTitleColor(selected ? .white : appMuted, for: .normal)
+            button.layer.borderColor = selected ? appAccent.cgColor : appBorder.cgColor
         }
     }
 
@@ -345,7 +470,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
             previewTitleLabel.text = resolvedTitle
             previewURLLabel.text = candidate
             titleField.text = resolvedTitle
-            subtitleLabel.text = "أضف ملاحظة أو اختر تصنيف ثم احفظ"
+            subtitleLabel.text = "أضف ملاحظة أو اختر تصنيفًا ثم احفظ"
             saveButton.isEnabled = true
             saveButton.alpha = 1.0
         } else if let text = payload.text, !text.isEmpty {
@@ -374,10 +499,10 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         if let title = payload.title?.trimmingCharacters(in: .whitespacesAndNewlines), !title.isEmpty {
             return title
         }
-        if let parsed = URL(string: url) {
-            if let host = parsed.host?.replacingOccurrences(of: "www.", with: ""), !host.isEmpty {
-                return host
-            }
+        if let parsed = URL(string: url),
+           let host = parsed.host?.replacingOccurrences(of: "www.", with: ""),
+           !host.isEmpty {
+            return host
         }
         return "رابط محفوظ"
     }
@@ -385,6 +510,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     @objc private func saveButtonTapped() {
         if didComplete || didStartSave { return }
         didStartSave = true
+        view.endEditing(true)
         saveButton.isEnabled = false
         saveButton.alpha = 0.60
         cancelButton.isEnabled = false
@@ -398,46 +524,9 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         currentPayload.category = selectedCategory
         payload = currentPayload
 
-        let saved = savePayloadToAppGroup(currentPayload)
-        if saved {
-            subtitleLabel.text = "تم الحفظ بنجاح. جاري محاولة فتح LinkVault..."
-        } else {
-            subtitleLabel.text = "تعذر حفظ النسخة المشتركة. سنحاول فتح LinkVault مباشرة."
-        }
-
-        openContainingApp(with: currentPayload, appGroupSaved: saved)
-    }
-
-    private func openContainingApp(with payload: SharedPayload, appGroupSaved: Bool) {
-        guard let deepLink = makeDeepLinkURL(from: payload) else {
-            completeAfterSave(appGroupSaved)
-            return
-        }
-
-        guard let context = extensionContext else {
-            completeAfterSave(appGroupSaved)
-            return
-        }
-
-        context.open(deepLink) { [weak self] success in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                if success {
-                    self.subtitleLabel.text = "تم فتح LinkVault."
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                        self.completeOnce()
-                    }
-                } else {
-                    self.completeAfterSave(appGroupSaved)
-                }
-            }
-        }
-    }
-
-    private func completeAfterSave(_ saved: Bool) {
-        if saved {
-            subtitleLabel.text = "تم حفظ الرابط. افتح LinkVault يدويًا وسيظهر الرابط."
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) { [weak self] in
+        if appendPayloadToAppGroup(currentPayload) {
+            subtitleLabel.text = "تم حفظ الرابط بنجاح ✓"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
                 self?.completeOnce()
             }
         } else {
@@ -449,32 +538,6 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         }
     }
 
-    private func makeDeepLinkURL(from payload: SharedPayload) -> URL? {
-        let extractedURL = payload.url ?? Self.firstURL(in: payload.text ?? "") ?? ""
-        let text = payload.text ?? ""
-        let title = payload.title ?? ""
-        let note = payload.note ?? ""
-        let category = payload.category ?? ""
-
-        guard !extractedURL.isEmpty || !text.isEmpty else { return nil }
-
-        var components = URLComponents()
-        components.scheme = "linkvaultq8"
-        components.host = "share"
-
-        var queryItems = [URLQueryItem]()
-        if !extractedURL.isEmpty { queryItems.append(URLQueryItem(name: "url", value: extractedURL)) }
-        if !title.isEmpty { queryItems.append(URLQueryItem(name: "title", value: title)) }
-        if !text.isEmpty { queryItems.append(URLQueryItem(name: "text", value: text)) }
-        if !note.isEmpty { queryItems.append(URLQueryItem(name: "note", value: note)) }
-        if !category.isEmpty { queryItems.append(URLQueryItem(name: "cat", value: category)) }
-        queryItems.append(URLQueryItem(name: "source", value: "share_extension"))
-        queryItems.append(URLQueryItem(name: "ts", value: String(Int(Date().timeIntervalSince1970))))
-        components.queryItems = queryItems
-
-        return components.url
-    }
-
     @objc private func cancelButtonTapped() {
         completeOnce()
     }
@@ -483,7 +546,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         notePlaceholder.isHidden = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    private func savePayloadToAppGroup(_ payload: SharedPayload) -> Bool {
+    private func appendPayloadToAppGroup(_ payload: SharedPayload) -> Bool {
         let extractedURL = payload.url ?? Self.firstURL(in: payload.text ?? "") ?? ""
         let text = payload.text ?? ""
         let title = payload.title ?? ""
@@ -493,14 +556,56 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         guard !extractedURL.isEmpty || !text.isEmpty else { return false }
         guard let defaults = UserDefaults(suiteName: appGroupId) else { return false }
 
-        defaults.set(extractedURL, forKey: "linkvault.pendingShare.url")
-        defaults.set(title, forKey: "linkvault.pendingShare.title")
-        defaults.set(text, forKey: "linkvault.pendingShare.text")
-        defaults.set(note, forKey: "linkvault.pendingShare.note")
-        defaults.set(category, forKey: "linkvault.pendingShare.category")
-        defaults.set(Date().timeIntervalSince1970, forKey: "linkvault.pendingShare.timestamp")
+        var records = loadPendingRecords(from: defaults)
+        migrateLegacyPayloadIfNeeded(defaults: defaults, records: &records)
+
+        let newRecord = PendingShareRecord(
+            id: UUID().uuidString,
+            url: extractedURL,
+            title: title,
+            text: text,
+            note: note,
+            category: category,
+            timestamp: Date().timeIntervalSince1970
+        )
+        records.append(newRecord)
+
+        guard let encoded = try? JSONEncoder().encode(records) else { return false }
+        defaults.set(encoded, forKey: pendingSharesKey)
         defaults.synchronize()
         return true
+    }
+
+    private func loadPendingRecords(from defaults: UserDefaults) -> [PendingShareRecord] {
+        guard let data = defaults.data(forKey: pendingSharesKey),
+              let records = try? JSONDecoder().decode([PendingShareRecord].self, from: data) else {
+            return []
+        }
+        return records.sorted { $0.timestamp < $1.timestamp }
+    }
+
+    private func migrateLegacyPayloadIfNeeded(defaults: UserDefaults, records: inout [PendingShareRecord]) {
+        let legacyURL = defaults.string(forKey: "linkvault.pendingShare.url") ?? ""
+        let legacyText = defaults.string(forKey: "linkvault.pendingShare.text") ?? ""
+        guard !legacyURL.isEmpty || !legacyText.isEmpty else { return }
+
+        let legacyTimestamp = defaults.double(forKey: "linkvault.pendingShare.timestamp")
+        records.append(PendingShareRecord(
+            id: UUID().uuidString,
+            url: legacyURL,
+            title: defaults.string(forKey: "linkvault.pendingShare.title") ?? "",
+            text: legacyText,
+            note: defaults.string(forKey: "linkvault.pendingShare.note") ?? "",
+            category: defaults.string(forKey: "linkvault.pendingShare.category") ?? "",
+            timestamp: legacyTimestamp > 0 ? legacyTimestamp : Date().timeIntervalSince1970
+        ))
+
+        defaults.removeObject(forKey: "linkvault.pendingShare.url")
+        defaults.removeObject(forKey: "linkvault.pendingShare.title")
+        defaults.removeObject(forKey: "linkvault.pendingShare.text")
+        defaults.removeObject(forKey: "linkvault.pendingShare.note")
+        defaults.removeObject(forKey: "linkvault.pendingShare.category")
+        defaults.removeObject(forKey: "linkvault.pendingShare.timestamp")
     }
 
     private func completeOnce() {
@@ -516,14 +621,43 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     }
 }
 
+private final class GradientButton: UIButton {
+    var gradientColors: [CGColor] = [] {
+        didSet { gradientLayer.colors = gradientColors }
+    }
+
+    private let gradientLayer = CAGradientLayer()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureGradient()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configureGradient()
+    }
+
+    private func configureGradient() {
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        layer.insertSublayer(gradientLayer, at: 0)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.frame = bounds
+    }
+}
+
 private extension UITextField {
     func setPadding(left: CGFloat, right: CGFloat) {
-        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: left, height: 1))
-        self.leftView = leftView
-        self.leftViewMode = .always
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: left, height: 1))
+        leftView = leftPaddingView
+        leftViewMode = .always
 
-        let rightView = UIView(frame: CGRect(x: 0, y: 0, width: right, height: 1))
-        self.rightView = rightView
-        self.rightViewMode = .always
+        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: right, height: 1))
+        rightView = rightPaddingView
+        rightViewMode = .always
     }
 }

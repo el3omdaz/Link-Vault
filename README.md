@@ -153,4 +153,6 @@ This package enables App Group entitlements by default. The app and Share Extens
 
 ## Share save reliability update
 
-This package changes the iOS share flow so tapping **حفظ في LinkVault** saves the URL to the App Group and then opens the main app via `linkvaultq8://share`. The app opens the Add Link modal from the deep link, then clears the pending App Group payload only after it has been consumed. This prevents the previous failure mode where the share sheet closed but the pending URL disappeared before the app displayed it.
+This package saves links from the iOS Share Extension into a persistent App Group queue without attempting to open the main app. Every new share is appended to the queue instead of replacing the previous link. When LinkVault is opened, the app imports all queued links in order and removes only the entries that were imported successfully.
+
+The Share Extension also uses the LinkVault dark theme, keeps the save controls above the keyboard, and allows the form content to scroll while notes are being entered.

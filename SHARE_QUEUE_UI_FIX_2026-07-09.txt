@@ -1,0 +1,19 @@
+LinkVault iOS Share Extension update — 2026-07-09
+
+Applied changes:
+- Moved the Share Extension card toward the top safe area.
+- Added keyboard-aware layout so Save and Close stay above the keyboard.
+- Made the form scrollable while editing notes.
+- Updated the Share Extension to the LinkVault dark purple theme.
+- Removed all attempts to open the containing app after saving.
+- Replaced single pending-link storage with a persistent App Group queue.
+- Added ordered multi-link import when the main app opens or resumes.
+- Added prefix-safe queue clearing so newly shared links are not removed accidentally.
+- Kept backward compatibility with the old single pending-share keys.
+- Increased note text size inside the app and changed it to white.
+
+App Group:
+group.com.linkvaultq8.shared
+
+Queue key:
+linkvault.pendingShares.v2
