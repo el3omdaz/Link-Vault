@@ -4,6 +4,8 @@ import UniformTypeIdentifiers
 final class ShareViewController: UIViewController, UITextViewDelegate {
     private let appGroupId = "group.com.linkvaultq8.shared"
     private let pendingSharesKey = "linkvault.pendingShares.v2"
+    private let categoriesKey = "linkvault.categories.v1"
+    private let languageKey = "linkvault.language.v1"
     private let collectionQueue = DispatchQueue(label: "com.linkvaultq8.share.collection")
 
     private let appBackground = UIColor(red: 13/255, green: 13/255, blue: 20/255, alpha: 1)
@@ -19,8 +21,30 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     private var didComplete = false
     private var didStartSave = false
     private var selectedCategory: String?
-    private var categoryButtons: [UIButton] = []
+    private var categoryOptions: [String] = []
     private var keyboardBottomConstraint: NSLayoutConstraint!
+    private var appLanguage = "en"
+    private var isArabic: Bool { appLanguage == "ar" }
+
+    private func tr(_ arabic: String, _ english: String) -> String {
+        isArabic ? arabic : english
+    }
+
+    private func resolveAppLanguage() {
+        let saved = UserDefaults(suiteName: appGroupId)?.string(forKey: languageKey) ?? "device"
+        if saved == "ar" || saved == "en" {
+            appLanguage = saved
+        } else {
+            let preferred = Locale.preferredLanguages.first?.lowercased() ?? ""
+            appLanguage = preferred.hasPrefix("ar") ? "ar" : "en"
+        }
+    }
+
+    private func displayCategory(_ value: String) -> String {
+        guard !isArabic else { return value }
+        let names = ["أفلام":"Movies", "مسلسلات":"TV Shows", "يوتيوب":"YouTube", "تعليم":"Education", "طبخ":"Cooking", "مشتريات":"Shopping", "أفكار":"Ideas", "أخرى":"Other"]
+        return names[value] ?? value
+    }
 
     private struct SharedPayload {
         var url: String?
@@ -52,6 +76,8 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     private let previewURLLabel = UILabel()
     private let titleField = UITextField()
     private let categoryStack = UIStackView()
+    private let categoryButton = UIButton(type: .system)
+    private let customCategoryField = UITextField()
     private let noteTextView = UITextView()
     private let notePlaceholder = UILabel()
     private let saveButton = GradientButton(type: .system)
@@ -60,6 +86,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        resolveAppLanguage()
         configureUI()
         registerForKeyboardNotifications()
     }
@@ -79,6 +106,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     private func configureUI() {
         overrideUserInterfaceStyle = .dark
         view.backgroundColor = UIColor.black.withAlphaComponent(0.58)
+        view.semanticContentAttribute = isArabic ? .forceRightToLeft : .forceLeftToRight
 
         let dismissTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissTap.cancelsTouchesInView = false
@@ -108,7 +136,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         formStack.alignment = .fill
         contentView.addSubview(formStack)
 
-        titleLabel.text = "حفظ الرابط"
+        titleLabel.text = tr("حفظ الرابط", "Save link")
         titleLabel.textAlignment = .center
         titleLabel.textColor = appText
         titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
@@ -129,8 +157,8 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         previewBox.translatesAutoresizingMaskIntoConstraints = false
 
         previewTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        previewTitleLabel.text = "جاري قراءة الرابط..."
-        previewTitleLabel.textAlignment = .right
+        previewTitleLabel.text = tr("جاري قراءة الرابط...", "Reading link...")
+        previewTitleLabel.textAlignment = isArabic ? .right : .left
         previewTitleLabel.textColor = appText
         previewTitleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         previewTitleLabel.numberOfLines = 2
@@ -148,10 +176,10 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
 
         titleField.translatesAutoresizingMaskIntoConstraints = false
         titleField.attributedPlaceholder = NSAttributedString(
-            string: "العنوان",
+            string: tr("العنوان", "Title"),
             attributes: [.foregroundColor: appMuted.withAlphaComponent(0.72)]
         )
-        titleField.textAlignment = .right
+        titleField.textAlignment = isArabic ? .right : .left
         titleField.textColor = appText
         titleField.tintColor = appAccent
         titleField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -163,11 +191,11 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         titleField.keyboardAppearance = .dark
         titleField.setPadding(left: 12, right: 12)
 
-        categoryStack.axis = .horizontal
+        categoryStack.axis = .vertical
         categoryStack.spacing = 8
-        categoryStack.distribution = .fillEqually
+        categoryStack.distribution = .fill
         categoryStack.alignment = .fill
-        buildCategoryButtons()
+        configureCategoryPicker()
 
         let noteWrap = UIView()
         noteWrap.translatesAutoresizingMaskIntoConstraints = false
@@ -178,7 +206,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
 
         noteTextView.translatesAutoresizingMaskIntoConstraints = false
         noteTextView.backgroundColor = .clear
-        noteTextView.textAlignment = .right
+        noteTextView.textAlignment = isArabic ? .right : .left
         noteTextView.textColor = .white
         noteTextView.tintColor = appAccent
         noteTextView.font = UIFont.systemFont(ofSize: 17, weight: .regular)
@@ -188,8 +216,8 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         noteTextView.isScrollEnabled = true
 
         notePlaceholder.translatesAutoresizingMaskIntoConstraints = false
-        notePlaceholder.text = "أضف ملاحظاتك هنا..."
-        notePlaceholder.textAlignment = .right
+        notePlaceholder.text = tr("أضف ملاحظاتك هنا...", "Add your notes here...")
+        notePlaceholder.textAlignment = isArabic ? .right : .left
         notePlaceholder.textColor = appMuted.withAlphaComponent(0.72)
         notePlaceholder.font = UIFont.systemFont(ofSize: 17)
 
@@ -201,7 +229,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         }
 
         saveButton.translatesAutoresizingMaskIntoConstraints = false
-        saveButton.setTitle("حفظ الرابط", for: .normal)
+        saveButton.setTitle(tr("حفظ الرابط", "Save link"), for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         saveButton.layer.cornerRadius = 14
@@ -212,7 +240,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
 
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.setTitle("إغلاق", for: .normal)
+        cancelButton.setTitle(tr("إغلاق", "Close"), for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         cancelButton.setTitleColor(appAccent, for: .normal)
         cancelButton.backgroundColor = appCard
@@ -267,7 +295,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
             previewURLLabel.bottomAnchor.constraint(lessThanOrEqualTo: previewBox.bottomAnchor, constant: -12),
 
             titleField.heightAnchor.constraint(equalToConstant: 48),
-            categoryStack.heightAnchor.constraint(equalToConstant: 46),
+            categoryStack.heightAnchor.constraint(greaterThanOrEqualToConstant: 46),
 
             noteWrap.heightAnchor.constraint(equalToConstant: 108),
             noteTextView.topAnchor.constraint(equalTo: noteWrap.topAnchor),
@@ -326,37 +354,82 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         view.endEditing(true)
     }
 
-    private func buildCategoryButtons() {
-        let categories = ["تلقائي", "يوتيوب", "طبخ", "أخرى"]
-        categoryButtons.removeAll()
-        for (index, category) in categories.enumerated() {
-            let button = UIButton(type: .system)
-            button.tag = index
-            button.setTitle(category, for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-            button.layer.cornerRadius = 12
-            button.layer.borderWidth = 1
-            button.addTarget(self, action: #selector(categoryTapped(_:)), for: .touchUpInside)
-            categoryStack.addArrangedSubview(button)
-            categoryButtons.append(button)
-        }
-        updateCategorySelection()
+    private func configureCategoryPicker() {
+        categoryOptions = loadCategoriesFromAppGroup()
+
+        categoryButton.translatesAutoresizingMaskIntoConstraints = false
+        categoryButton.setTitle(tr("التصنيف: تلقائي", "Type: Automatic"), for: .normal)
+        categoryButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        categoryButton.contentHorizontalAlignment = isArabic ? .right : .left
+        categoryButton.backgroundColor = appCard
+        categoryButton.setTitleColor(appText, for: .normal)
+        categoryButton.layer.cornerRadius = 12
+        categoryButton.layer.borderWidth = 1
+        categoryButton.layer.borderColor = appBorder.cgColor
+        categoryButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        categoryButton.showsMenuAsPrimaryAction = true
+        categoryStack.addArrangedSubview(categoryButton)
+
+        customCategoryField.translatesAutoresizingMaskIntoConstraints = false
+        customCategoryField.attributedPlaceholder = NSAttributedString(
+            string: tr("اكتب اسم النوع الجديد", "Enter a new type name"),
+            attributes: [.foregroundColor: appMuted.withAlphaComponent(0.72)]
+        )
+        customCategoryField.textAlignment = isArabic ? .right : .left
+        customCategoryField.textColor = appText
+        customCategoryField.tintColor = appAccent
+        customCategoryField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        customCategoryField.backgroundColor = appCard
+        customCategoryField.layer.cornerRadius = 12
+        customCategoryField.layer.borderWidth = 1
+        customCategoryField.layer.borderColor = appBorder.cgColor
+        customCategoryField.keyboardAppearance = .dark
+        customCategoryField.setPadding(left: 12, right: 12)
+        customCategoryField.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        customCategoryField.isHidden = true
+        categoryStack.addArrangedSubview(customCategoryField)
+
+        updateCategoryMenu()
     }
 
-    @objc private func categoryTapped(_ sender: UIButton) {
-        let categories = ["تلقائي", "يوتيوب", "طبخ", "أخرى"]
-        let picked = categories[sender.tag]
-        selectedCategory = picked == "تلقائي" ? nil : picked
-        updateCategorySelection()
+    private func loadCategoriesFromAppGroup() -> [String] {
+        let fallback = ["أفلام", "مسلسلات", "يوتيوب", "تعليم", "طبخ", "مشتريات", "أفكار", "أخرى"]
+        guard let defaults = UserDefaults(suiteName: appGroupId) else { return fallback }
+        return normalizeCategories(defaults.stringArray(forKey: categoriesKey) ?? fallback)
     }
 
-    private func updateCategorySelection() {
-        for button in categoryButtons {
-            let selected = (button.tag == 0 && selectedCategory == nil) || button.title(for: .normal) == selectedCategory
-            button.backgroundColor = selected ? appAccent.withAlphaComponent(0.20) : appCard
-            button.setTitleColor(selected ? .white : appMuted, for: .normal)
-            button.layer.borderColor = selected ? appAccent.cgColor : appBorder.cgColor
+    private func normalizeCategories(_ raw: [String]) -> [String] {
+        var seen: [String] = []
+        for item in raw {
+            let value = item.trimmingCharacters(in: .whitespacesAndNewlines)
+            if value.isEmpty || value == "أخرى" { continue }
+            if !seen.contains(value) { seen.append(value) }
         }
+        seen.append("أخرى")
+        return seen
+    }
+
+    private func updateCategoryMenu() {
+        var actions: [UIAction] = [
+            UIAction(title: tr("تلقائي", "Automatic"), state: selectedCategory == nil ? .on : .off) { [weak self] _ in
+                self?.selectCategory(nil)
+            }
+        ]
+        for category in categoryOptions {
+            actions.append(UIAction(title: displayCategory(category), state: selectedCategory == category ? .on : .off) { [weak self] _ in
+                self?.selectCategory(category)
+            })
+        }
+        categoryButton.menu = UIMenu(title: tr("اختر النوع", "Choose type"), children: actions)
+        let title = selectedCategory == nil ? tr("التصنيف: تلقائي", "Type: Automatic") : "\(tr("التصنيف", "Type")): \(displayCategory(selectedCategory ?? ""))"
+        categoryButton.setTitle(title, for: .normal)
+        customCategoryField.isHidden = selectedCategory != "أخرى"
+        if selectedCategory == "أخرى" { customCategoryField.becomeFirstResponder() }
+    }
+
+    private func selectCategory(_ category: String?) {
+        selectedCategory = category
+        updateCategoryMenu()
     }
 
     private func extractSharedContent() {
@@ -470,14 +543,14 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
             previewTitleLabel.text = resolvedTitle
             previewURLLabel.text = candidate
             titleField.text = resolvedTitle
-            subtitleLabel.text = "أضف ملاحظة أو اختر تصنيفًا ثم احفظ"
+            subtitleLabel.text = tr("أضف ملاحظة أو اختر تصنيفًا ثم احفظ", "Add a note or choose a type, then save")
             saveButton.isEnabled = true
             saveButton.alpha = 1.0
         } else if let text = payload.text, !text.isEmpty {
-            previewTitleLabel.text = "نص مشارك"
+            previewTitleLabel.text = tr("نص مشارك", "Shared text")
             previewURLLabel.text = text
             titleField.text = payload.title ?? ""
-            subtitleLabel.text = "أضف ملاحظة ثم احفظ"
+            subtitleLabel.text = tr("أضف ملاحظة ثم احفظ", "Add a note, then save")
             saveButton.isEnabled = true
             saveButton.alpha = 1.0
         } else {
@@ -488,9 +561,9 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     private func showNoContentState() {
         activityIndicator.stopAnimating()
         activityIndicator.isHidden = true
-        previewTitleLabel.text = "لا يوجد رابط واضح"
-        previewURLLabel.text = "جرّب المشاركة من Safari أو YouTube أو انسخ الرابط كنص."
-        subtitleLabel.text = "لم نتمكن من قراءة رابط من المشاركة"
+        previewTitleLabel.text = tr("لا يوجد رابط واضح", "No clear link found")
+        previewURLLabel.text = tr("جرّب المشاركة من Safari أو YouTube أو انسخ الرابط كنص.", "Try sharing from Safari or YouTube, or copy the link as text.")
+        subtitleLabel.text = tr("لم نتمكن من قراءة رابط من المشاركة", "We could not read a link from this share")
         saveButton.isEnabled = false
         saveButton.alpha = 0.60
     }
@@ -504,7 +577,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
            !host.isEmpty {
             return host
         }
-        return "رابط محفوظ"
+        return tr("رابط محفوظ", "Saved link")
     }
 
     @objc private func saveButtonTapped() {
@@ -514,18 +587,23 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         saveButton.isEnabled = false
         saveButton.alpha = 0.60
         cancelButton.isEnabled = false
-        subtitleLabel.text = "جاري حفظ الرابط..."
+        subtitleLabel.text = tr("جاري حفظ الرابط...", "Saving link...")
 
         var currentPayload = payload
         let editedTitle = titleField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if !editedTitle.isEmpty { currentPayload.title = editedTitle }
         let note = noteTextView.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if !note.isEmpty { currentPayload.note = note }
-        currentPayload.category = selectedCategory
+        if selectedCategory == "أخرى" {
+            let custom = customCategoryField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            currentPayload.category = custom.isEmpty ? "أخرى" : custom
+        } else {
+            currentPayload.category = selectedCategory
+        }
         payload = currentPayload
 
         if appendPayloadToAppGroup(currentPayload) {
-            subtitleLabel.text = "تم حفظ الرابط بنجاح ✓"
+            subtitleLabel.text = tr("تم حفظ الرابط بنجاح ✓", "Link saved successfully ✓")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
                 self?.completeOnce()
             }
@@ -534,7 +612,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
             saveButton.isEnabled = true
             saveButton.alpha = 1.0
             cancelButton.isEnabled = true
-            subtitleLabel.text = "تعذر الحفظ. تأكد من App Group ثم جرّب مرة ثانية."
+            subtitleLabel.text = tr("تعذر الحفظ. تأكد من App Group ثم جرّب مرة ثانية.", "Could not save. Check the App Group and try again.")
         }
     }
 

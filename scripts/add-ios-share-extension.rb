@@ -89,6 +89,11 @@ plistbuddy('-c', 'Add :LSApplicationQueriesSchemes:1 string linkvault')
 plistbuddy('-c', 'Delete :ITSAppUsesNonExemptEncryption')
 plistbuddy('-c', 'Add :ITSAppUsesNonExemptEncryption bool false')
 
+# Camera access is required only for scanning QR codes inside LinkVault.
+plistbuddy('-c', 'Delete :NSCameraUsageDescription')
+plistbuddy('-c', 'Add :NSCameraUsageDescription string LinkVault uses the camera to scan QR codes and save links.')
+
+
 project = Xcodeproj::Project.open(PROJECT_PATH)
 app_target = project.targets.find { |t| t.name == 'App' }
 abort 'Could not find App target in iOS project' unless app_target

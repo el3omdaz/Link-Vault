@@ -1,0 +1,16 @@
+LinkVault editions
+
+Full personal edition:
+- APP_EDITION: full
+- Unlimited links
+- Unlimited custom categories
+
+Commercial free edition:
+- APP_EDITION: commercial
+- 5 saved links maximum
+- 3 custom categories maximum beyond the built-in categories
+- Link metadata and display view switching are available in all editions
+- Favorites are available in all editions
+
+Recommended Pro unlock later:
+- Remove the above limits via StoreKit entitlement or subscription status.

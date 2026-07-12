@@ -1,0 +1,2 @@
+This package is configured as APP_EDITION: full
+Full = no local limits. Commercial = free limits: 5 links and 3 custom categories.

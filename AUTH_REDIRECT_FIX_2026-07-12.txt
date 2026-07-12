@@ -1,0 +1,14 @@
+LinkVault authentication redirect update
+
+What changed:
+- Email OTP now passes emailRedirectTo to Supabase.
+- Google and Apple OAuth now always use the app redirect URL and open the generated provider URL.
+- Native callback remains: linkvaultq8://auth-callback
+
+Required Supabase dashboard setup:
+1. Authentication > URL Configuration > Additional Redirect URLs must include:
+   linkvaultq8://auth-callback
+2. For Google and Apple providers, confirm the provider credentials are enabled in Supabase.
+3. In Xcode, confirm the app URL scheme includes linkvaultq8.
+
+If Supabase does not include the custom callback URL, OAuth can still open a Supabase web page instead of returning to the app.

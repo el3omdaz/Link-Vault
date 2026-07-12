@@ -7,11 +7,17 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
     public let jsName = "PendingShare"
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "getPendingShare", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "clearPendingShare", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "clearPendingShare", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "setCategories", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getCategories", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "setLanguage", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getLanguage", returnType: CAPPluginReturnPromise)
     ]
 
     private let appGroupId = "group.com.linkvaultq8.shared"
     private let pendingSharesKey = "linkvault.pendingShares.v2"
+    private let categoriesKey = "linkvault.categories.v1"
+    private let languageKey = "linkvault.language.v1"
 
     private let legacyURLKey = "linkvault.pendingShare.url"
     private let legacyTitleKey = "linkvault.pendingShare.title"
@@ -92,6 +98,58 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
 
         defaults.synchronize()
         call.resolve(["cleared": true, "remaining": remaining.count])
+    }
+
+
+    @objc func setCategories(_ call: CAPPluginCall) {
+        guard let defaults = UserDefaults(suiteName: appGroupId) else {
+            call.resolve(["saved": false])
+            return
+        }
+        let raw = call.getArray("categories", String.self) ?? []
+        let categories = normalizeCategories(raw)
+        defaults.set(categories, forKey: categoriesKey)
+        defaults.synchronize()
+        call.resolve(["saved": true, "categories": categories])
+    }
+
+    @objc func getCategories(_ call: CAPPluginCall) {
+        guard let defaults = UserDefaults(suiteName: appGroupId) else {
+            call.resolve(["categories": []])
+            return
+        }
+        call.resolve(["categories": normalizeCategories(defaults.stringArray(forKey: categoriesKey) ?? [])])
+    }
+
+    @objc func setLanguage(_ call: CAPPluginCall) {
+        guard let defaults = UserDefaults(suiteName: appGroupId) else {
+            call.resolve(["saved": false])
+            return
+        }
+        let requested = call.getString("language") ?? "device"
+        let language = ["device", "ar", "en"].contains(requested) ? requested : "device"
+        defaults.set(language, forKey: languageKey)
+        defaults.synchronize()
+        call.resolve(["saved": true, "language": language])
+    }
+
+    @objc func getLanguage(_ call: CAPPluginCall) {
+        guard let defaults = UserDefaults(suiteName: appGroupId) else {
+            call.resolve(["language": "device"])
+            return
+        }
+        call.resolve(["language": defaults.string(forKey: languageKey) ?? "device"])
+    }
+
+    private func normalizeCategories(_ raw: [String]) -> [String] {
+        var seen: [String] = []
+        for item in raw {
+            let value = item.trimmingCharacters(in: .whitespacesAndNewlines)
+            if value.isEmpty || value == "أخرى" { continue }
+            if !seen.contains(value) { seen.append(value) }
+        }
+        seen.append("أخرى")
+        return seen
     }
 
     private func loadRecords(from defaults: UserDefaults) -> [PendingShareRecord] {

@@ -25,6 +25,7 @@ create table if not exists public.links (
   notes text,
   trailer_url text,
   thumbnail_url text,
+  is_favorite boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint links_title_not_blank check (length(trim(title)) > 0),
@@ -89,3 +90,7 @@ for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 drop policy if exists "links_delete_own" on public.links;
 create policy "links_delete_own" on public.links
 for delete using (auth.uid() = user_id);
+
+
+-- Migration for existing LinkVault databases
+alter table public.links add column if not exists is_favorite boolean not null default false;

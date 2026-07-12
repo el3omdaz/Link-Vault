@@ -1,0 +1,8 @@
+LinkVault language selector fix
+
+- Added App language selector in Settings: Device language, Arabic, English.
+- Device language uses Arabic only when the device is Arabic; all other languages default to English.
+- Manual selection is saved.
+- UI direction changes between RTL and LTR.
+- Share Extension receives the same language selection through the App Group.
+- Built-in type names are translated for display without changing stored data.

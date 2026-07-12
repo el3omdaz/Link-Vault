@@ -1,0 +1,8 @@
+QR link scanning added
+
+- QR button in the app header.
+- QR button beside the link field in Add Link.
+- Only valid http/https links are accepted.
+- The scanned URL opens in the normal Add Link form and metadata fetch starts automatically.
+- iOS camera usage description is added automatically by scripts/add-ios-share-extension.rb.
+- Package: @capacitor-mlkit/barcode-scanning@6.2.0 (Capacitor 6 compatible).
