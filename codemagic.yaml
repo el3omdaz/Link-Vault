@@ -29,8 +29,70 @@ workflows:
     scripts:
       - name: Install npm dependencies
         script: |
-          npm config set registry https://registry.npmjs.org/
-          npm ci --include=dev --no-audit --no-fund --prefer-online
+          set -euo pipefail
+          echo "BUILD_FIX_ID: linkvault-npm-clean-v2-20260713"
+          echo "Project directory: $(pwd)"
+          echo "Using package-lock: $(pwd)/package-lock.json"
+
+          # Use a clean npm configuration and a build-local cache so a stale
+          # Codemagic/global cache cannot reintroduce a private registry URL.
+          cat > "$PWD/.npmrc.ci" <<'EOF'
+          registry=https://registry.npmjs.org/
+          @capacitor-mlkit:registry=https://registry.npmjs.org/
+          @capacitor:registry=https://registry.npmjs.org/
+          @ionic:registry=https://registry.npmjs.org/
+          @revenuecat:registry=https://registry.npmjs.org/
+          audit=false
+          fund=false
+          update-notifier=false
+          fetch-retries=6
+          fetch-retry-factor=2
+          fetch-retry-mintimeout=15000
+          fetch-retry-maxtimeout=120000
+          fetch-timeout=600000
+          omit-lockfile-registry-resolved=true
+          EOF
+          export NPM_CONFIG_USERCONFIG="$PWD/.npmrc.ci"
+          export NPM_CONFIG_REGISTRY="https://registry.npmjs.org/"
+
+          # Remove every registry tarball URL from lockfiles. npm will resolve all
+          # package downloads through the public scoped registries above.
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          def strip_resolved(value):
+              if isinstance(value, dict):
+                  value.pop('resolved', None)
+                  for child in value.values():
+                      strip_resolved(child)
+              elif isinstance(value, list):
+                  for child in value:
+                      strip_resolved(child)
+
+          for path in Path('.').rglob('package-lock.json'):
+              data = json.loads(path.read_text(encoding='utf-8'))
+              strip_resolved(data)
+              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+              print(f'Prepared registry-neutral lockfile: {path}')
+          PY
+
+          if grep -R -n '"resolved"[[:space:]]*:' --include='package-lock.json' .; then
+            echo "Error: a lockfile still contains a resolved registry URL"
+            exit 1
+          fi
+
+          echo "QR package lock entry:"
+          grep -A4 -B1 'node_modules/@capacitor-mlkit/barcode-scanning' package-lock.json || true
+          echo "npm registry: $(npm config get registry)"
+          echo "QR scope registry: $(npm config get @capacitor-mlkit:registry)"
+          echo "RevenueCat scope registry: $(npm config get @revenuecat:registry)"
+
+          rm -rf node_modules "$PWD/.npm-cache"
+          npm cache clean --force || true
+          npm ci --include=dev --no-audit --no-fund --prefer-online \
+            --cache="$PWD/.npm-cache" \
+            --registry=https://registry.npmjs.org/
       - name: Add iOS platform if missing
         script: |
           test -d ios || npx --no-install cap add ios
@@ -93,8 +155,70 @@ workflows:
     scripts:
       - name: Install npm dependencies
         script: |
-          npm config set registry https://registry.npmjs.org/
-          npm ci --include=dev --no-audit --no-fund --prefer-online
+          set -euo pipefail
+          echo "BUILD_FIX_ID: linkvault-npm-clean-v2-20260713"
+          echo "Project directory: $(pwd)"
+          echo "Using package-lock: $(pwd)/package-lock.json"
+
+          # Use a clean npm configuration and a build-local cache so a stale
+          # Codemagic/global cache cannot reintroduce a private registry URL.
+          cat > "$PWD/.npmrc.ci" <<'EOF'
+          registry=https://registry.npmjs.org/
+          @capacitor-mlkit:registry=https://registry.npmjs.org/
+          @capacitor:registry=https://registry.npmjs.org/
+          @ionic:registry=https://registry.npmjs.org/
+          @revenuecat:registry=https://registry.npmjs.org/
+          audit=false
+          fund=false
+          update-notifier=false
+          fetch-retries=6
+          fetch-retry-factor=2
+          fetch-retry-mintimeout=15000
+          fetch-retry-maxtimeout=120000
+          fetch-timeout=600000
+          omit-lockfile-registry-resolved=true
+          EOF
+          export NPM_CONFIG_USERCONFIG="$PWD/.npmrc.ci"
+          export NPM_CONFIG_REGISTRY="https://registry.npmjs.org/"
+
+          # Remove every registry tarball URL from lockfiles. npm will resolve all
+          # package downloads through the public scoped registries above.
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          def strip_resolved(value):
+              if isinstance(value, dict):
+                  value.pop('resolved', None)
+                  for child in value.values():
+                      strip_resolved(child)
+              elif isinstance(value, list):
+                  for child in value:
+                      strip_resolved(child)
+
+          for path in Path('.').rglob('package-lock.json'):
+              data = json.loads(path.read_text(encoding='utf-8'))
+              strip_resolved(data)
+              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+              print(f'Prepared registry-neutral lockfile: {path}')
+          PY
+
+          if grep -R -n '"resolved"[[:space:]]*:' --include='package-lock.json' .; then
+            echo "Error: a lockfile still contains a resolved registry URL"
+            exit 1
+          fi
+
+          echo "QR package lock entry:"
+          grep -A4 -B1 'node_modules/@capacitor-mlkit/barcode-scanning' package-lock.json || true
+          echo "npm registry: $(npm config get registry)"
+          echo "QR scope registry: $(npm config get @capacitor-mlkit:registry)"
+          echo "RevenueCat scope registry: $(npm config get @revenuecat:registry)"
+
+          rm -rf node_modules "$PWD/.npm-cache"
+          npm cache clean --force || true
+          npm ci --include=dev --no-audit --no-fund --prefer-online \
+            --cache="$PWD/.npm-cache" \
+            --registry=https://registry.npmjs.org/
       - name: Check backend syntax
         script: |
           node --check backend/server.js

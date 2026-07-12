@@ -1,0 +1,15 @@
+LinkVault Full — npm registry fix
+
+تم إصلاح سبب فشل Codemagic في خطوة Install npm dependencies.
+
+التغييرات:
+- استبدال جميع روابط OpenAI Artifactory الداخلية في package-lock.json بروابط registry.npmjs.org العامة.
+- تثبيت npm registry العام داخل .npmrc وcodemagic.yaml.
+- تفعيل replace-registry-host=always لمنع حفظ عنوان Registry داخلي مستقبلًا.
+- زيادة مهلة الاتصال وإبقاء محاولات إعادة التنزيل.
+- إضافة فحص قبل npm ci يوقف البناء برسالة واضحة إذا عاد أي رابط داخلي إلى package-lock.json.
+
+الأمر المستخدم في Codemagic:
+npm ci --include=dev --no-audit --no-fund --prefer-online --registry=https://registry.npmjs.org/
+
+ملاحظة: تم التحقق من سلامة package-lock.json ومن عدم وجود أي رابط OpenAI داخلي. تعذر إكمال تنزيل npm فعليًا داخل بيئة التجهيز بسبب انقطاع اتصالها الخارجي أثناء الاختبار، لذلك التحقق النهائي للتنزيل يتم في Codemagic.

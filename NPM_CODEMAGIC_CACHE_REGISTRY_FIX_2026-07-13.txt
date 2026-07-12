@@ -1,0 +1,8 @@
+Codemagic npm registry/cache correction
+
+- Forces npmjs for default and scoped packages.
+- Uses an isolated per-build npm cache.
+- Cleans the global npm cache before installation.
+- Sanitizes every package-lock.json before npm ci.
+- Prints the exact registry and QR lock entry in the build log.
+- The tar/glob deprecation messages are warnings and do not fail the build.
