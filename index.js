@@ -1103,6 +1103,7 @@ async function verifyEmailOtp(){
     const { data, error } = await sbClient.auth.verifyOtp({ email, token, type:'email' });
     if(error) throw error;
     cloudUser = data.user || data.session?.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    updateAuthUi();
     pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); $('authOtp').value = ''; setOtpPanelVisible(false);
     updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل');
     updateSettingsStatus('✅ تم التحقق وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول');
@@ -1139,11 +1140,20 @@ async function signInWithOAuthProvider(provider){
     updateSettingsStatus(msg, 'danger-text'); toast(msg);
   }
 }
+
+function updateAuthUi(){
+  const signedIn = !!cloudUser;
+  const ids = ['btnAppleLogin','btnGoogleLogin','authEmail','btnSendOtp','authHint','authOtp','btnVerifyOtp','btnResendOtp'];
+  ids.forEach(id=>{ const el=$(id); if(el) el.style.display = signedIn ? 'none' : ''; });
+  const status = $('cloudStatus');
+  if(status && signedIn) status.textContent = 'Signed in';
+}
+
 async function logout(){
   if(sbClient) await sbClient.auth.signOut();
   await logoutRevenueCatUser();
   await closeAuthBrowser();
-  cloudUser = null; pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false);
+  cloudUser = null; updateAuthUi(); pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false);
   updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج');
 }
 
@@ -1196,6 +1206,7 @@ async function handleAuthCallbackUrl(raw){
     else if(access_token && refresh_token) result = await sbClient.auth.setSession({ access_token, refresh_token });
     else { const current = await sbClient.auth.getSession(); if(current.data?.session) result = current; else throw new Error('رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة'); }
     if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    updateAuthUi();
     updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم تسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); return true;
   }catch(e){ await closeAuthBrowser(); console.warn('Auth callback failed', e); updateSettingsStatus(`تعذر إكمال تسجيل الدخول: ${e?.message || e}`, 'danger-text'); toast('⚠️ تعذر إكمال تسجيل الدخول'); return false; }
 }
