@@ -1,0 +1,4 @@
+Build 33 App Store validation fixes applied:
+- Share Extension version/build now inherits the CI build values.
+- BUILD_NUMBER is explicitly aligned with the main app build.
+- MARKETING_VERSION is configurable from Codemagic variables.
