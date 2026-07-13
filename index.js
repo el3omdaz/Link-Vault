@@ -977,6 +977,13 @@ async function fetchTrailer(){
   btn.disabled = false; btn.innerHTML = old;
 }
 
+function updateAuthUI(){
+  const logged = !!cloudUser;
+  ['authEmail','btnSendOtp','btnAppleLogin','btnGoogleLogin','authHint'].forEach(id=>{ const el=$(id); if(el) el.style.display = logged ? 'none' : ''; });
+  const box=$('authBox');
+  if(box) box.classList.toggle('signed-in', logged);
+}
+
 function updateCloudStatus(kind='local', text='محلي'){
   const el = $('cloudStatus'); el.className = 'status-pill'; if(kind === 'online') el.classList.add('online'); if(kind === 'warn') el.classList.add('warn'); el.querySelector('span:last-child').textContent = text;
 }
@@ -989,10 +996,13 @@ async function initSupabase(){
   try{
     sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
     const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
-    if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
+    if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); }
+    updateAuthUI();
+    if(cloudUser){ await loadCloudData(); }
     else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.', 'warning-text'); }
     sbClient.auth.onAuthStateChange((event, session) => {
       cloudUser = session?.user || null;
+      updateAuthUI();
       if(cloudUser){
         identifyRevenueCatUser(cloudUser.id).catch(()=>{});
         updateCloudStatus('online','مزامن');
