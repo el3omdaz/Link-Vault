@@ -977,11 +977,44 @@ async function fetchTrailer(){
   btn.disabled = false; btn.innerHTML = old;
 }
 
-function updateAuthUI(){
-  const logged = !!cloudUser;
-  ['authEmail','btnSendOtp','btnAppleLogin','btnGoogleLogin','authHint'].forEach(id=>{ const el=$(id); if(el) el.style.display = logged ? 'none' : ''; });
-  const box=$('authBox');
-  if(box) box.classList.toggle('signed-in', logged);
+function authProviderName(user){
+  const provider = String(user?.app_metadata?.provider || user?.app_metadata?.providers?.[0] || user?.identities?.[0]?.provider || 'email').toLowerCase();
+  if(provider === 'apple') return 'Apple ID';
+  if(provider === 'google') return 'Google';
+  return currentLanguage === 'en' ? 'Email' : 'البريد الإلكتروني';
+}
+function resetOtpControls(){
+  clearInterval(otpCooldownTimer); otpCooldownTimer = null;
+  const send = $('btnSendOtp');
+  const resend = $('btnResendOtp');
+  if(send){ send.disabled = false; send.textContent = currentLanguage === 'en' ? 'Send verification code' : 'إرسال رمز التحقق'; }
+  if(resend){ resend.disabled = false; resend.textContent = currentLanguage === 'en' ? 'Resend code' : 'إعادة إرسال الرمز'; }
+}
+function renderAuthUI(){
+  const loggedIn = !!cloudUser;
+  const signedOutPanel = $('authSignedOutPanel');
+  const signedInPanel = $('authSignedInPanel');
+  const actions = $('accountActions');
+  if(signedOutPanel) signedOutPanel.hidden = loggedIn;
+  if(signedInPanel) signedInPanel.hidden = !loggedIn;
+  if(actions) actions.hidden = !loggedIn;
+  const box = $('authBox');
+  if(box) box.classList.toggle('signed-in', loggedIn);
+
+  if(loggedIn){
+    pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP);
+    if($('authOtp')) $('authOtp').value = '';
+    setOtpPanelVisible(false);
+    resetOtpControls();
+    const identity = cloudUser.email || cloudUser.user_metadata?.email || cloudUser.user_metadata?.full_name || cloudUser.id || '';
+    const provider = authProviderName(cloudUser);
+    if($('authSignedInTitle')) $('authSignedInTitle').textContent = currentLanguage === 'en' ? 'Signed in' : 'تم تسجيل الدخول';
+    if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = identity;
+    if($('authSignedInProvider')) $('authSignedInProvider').textContent = currentLanguage === 'en' ? `Signed in with ${provider}` : `تسجيل الدخول بواسطة ${provider}`;
+  }else{
+    if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = '';
+    if($('authSignedInProvider')) $('authSignedInProvider').textContent = '';
+  }
 }
 
 function updateCloudStatus(kind='local', text='محلي'){
@@ -992,17 +1025,15 @@ function updateSettingsStatus(msg, cls=''){
 }
 async function initSupabase(){
   const cfg = getSettings();
-  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
+  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ cloudUser = null; renderAuthUI(); updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
   try{
     sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
-    const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
-    if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); }
-    updateAuthUI();
-    if(cloudUser){ await loadCloudData(); }
+    const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
     else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.', 'warning-text'); }
     sbClient.auth.onAuthStateChange((event, session) => {
       cloudUser = session?.user || null;
-      updateAuthUI();
+      renderAuthUI();
       if(cloudUser){
         identifyRevenueCatUser(cloudUser.id).catch(()=>{});
         updateCloudStatus('online','مزامن');
@@ -1010,10 +1041,11 @@ async function initSupabase(){
         setTimeout(() => { if(event === 'SIGNED_IN') syncLocalToCloud(); else loadCloudData(); }, 0);
       }else{
         updateCloudStatus('warn','غير مسجل');
+        if(event === 'SIGNED_OUT') updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.');
       }
     });
     if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
-  }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
+  }catch(e){ cloudUser = null; renderAuthUI(); updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
 }
 function linkToRow(l){ return { id:l.id, user_id:cloudUser?.id, title:l.title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', is_favorite:!!l.favorite, created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
 function rowToLink(r){ return { id:r.id, title:r.title || '', url:r.url || '', cat:r.category_name || 'أخرى', note:r.notes || '', trailer:r.trailer_url || '', thumbnail:r.thumbnail_url || '', platform:r.platform || detectPlatform(r.url || '').label, favorite:!!r.is_favorite, ts:r.created_at ? new Date(r.created_at).getTime() : Date.now(), updatedAt:r.updated_at || nowIso() }; }
@@ -1024,7 +1056,18 @@ async function loadCloudData(){
     if(cr.error || lr.error) throw (cr.error || lr.error);
     if((cr.data || []).length){ cats = cr.data.map(x => x.name).filter(Boolean); }
     else { for(const c of cats) await upsertCategoryCloud(c); }
-    links = (lr.data || []).map(rowToLink);
+    const cloudLinks = (lr.data || []).map(rowToLink);
+    const cloudByUrl = new Map(cloudLinks.map(x => [canonicalUrl(x.url), x]));
+    const localLinks = links || [];
+    for(const local of localLinks){
+      const key = canonicalUrl(local.url);
+      if(!cloudByUrl.has(key) && cloudUser){
+        await upsertLinkCloud(local);
+        cloudLinks.push(local);
+        cloudByUrl.set(key, local);
+      }
+    }
+    links = cloudLinks;
     const upgraded = upgradeExistingOtherCategories();
     saveLocal(); renderTabs(); renderList(); updateCloudStatus('online','مزامن');
     if(upgraded) links.forEach(l => upsertLinkCloud(l).catch(()=>{}));
@@ -1102,7 +1145,7 @@ async function verifyEmailOtp(){
     button.disabled = true; button.textContent = 'جاري التحقق...';
     const { data, error } = await sbClient.auth.verifyOtp({ email, token, type:'email' });
     if(error) throw error;
-    cloudUser = data.user || data.session?.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    cloudUser = data.user || data.session?.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
     pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); $('authOtp').value = ''; setOtpPanelVisible(false);
     updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل');
     updateSettingsStatus('✅ تم التحقق وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول');
@@ -1143,11 +1186,11 @@ async function logout(){
   if(sbClient) await sbClient.auth.signOut();
   await logoutRevenueCatUser();
   await closeAuthBrowser();
-  cloudUser = null; pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false);
+  cloudUser = null; pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false); resetOtpControls(); if($('authEmail')) $('authEmail').value = ''; if($('authOtp')) $('authOtp').value = ''; renderAuthUI();
   updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج');
 }
 
-function openSettings(){ applyTheme(currentTheme, false); updateProUi(); $('settingsOverlay').classList.add('open'); if(APP_EDITION === 'commercial' && rcReady) refreshRevenueCatStatus(); }
+function openSettings(){ applyTheme(currentTheme, false); updateProUi(); renderAuthUI(); $('settingsOverlay').classList.add('open'); if(APP_EDITION === 'commercial' && rcReady) refreshRevenueCatStatus(); }
 function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
 
 let lastIncomingShareSignature = '';
@@ -1195,7 +1238,7 @@ async function handleAuthCallbackUrl(raw){
     if(code) result = await sbClient.auth.exchangeCodeForSession(code);
     else if(access_token && refresh_token) result = await sbClient.auth.setSession({ access_token, refresh_token });
     else { const current = await sbClient.auth.getSession(); if(current.data?.session) result = current; else throw new Error('رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة'); }
-    if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
     updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم تسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); return true;
   }catch(e){ await closeAuthBrowser(); console.warn('Auth callback failed', e); updateSettingsStatus(`تعذر إكمال تسجيل الدخول: ${e?.message || e}`, 'danger-text'); toast('⚠️ تعذر إكمال تسجيل الدخول'); return false; }
 }
@@ -1357,7 +1400,7 @@ $('btnClearSelection').addEventListener('click', clearSelectedLinks);
 $('btnDeleteSelected').addEventListener('click', deleteSelectedLinks);
 $('btnDeleteAll').addEventListener('click', deleteAllLinks);
 document.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
-$('languageSelect').addEventListener('change', e => { applyLanguageChoice(e.target.value, true); renderTabs(); renderList(); if($('catOverlay').classList.contains('open')) renderCatList(); translateTree(document.body, true); });
+$('languageSelect').addEventListener('change', e => { applyLanguageChoice(e.target.value, true); renderTabs(); renderList(); if($('catOverlay').classList.contains('open')) renderCatList(); translateTree(document.body, true); renderAuthUI(); });
 $('btnBackup').addEventListener('click', exportBackup);
 $('btnRestore').addEventListener('click', beginRestore);
 $('restoreFileInput').addEventListener('change', async e => { const file=e.target.files?.[0]; if(!file) return; try{ showRestoreChoice(validateBackup(JSON.parse(await file.text()))); }catch(err){ toast('⚠️ ملف النسخة الاحتياطية غير صالح'); } });
@@ -1366,5 +1409,5 @@ $('btnRestoreReplace').addEventListener('click', () => applyRestore('replace'));
 $('btnRestoreCancel').addEventListener('click', closeRestoreChoice);
 $('restoreOverlay').addEventListener('click', e => { if(e.target === $('restoreOverlay')) closeRestoreChoice(); });
 
-applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); if(pendingOtpEmail){ $('authEmail').value = pendingOtpEmail; setOtpPanelVisible(true); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
+applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); renderAuthUI(); if(pendingOtpEmail){ $('authEmail').value = pendingOtpEmail; setOtpPanelVisible(true); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
