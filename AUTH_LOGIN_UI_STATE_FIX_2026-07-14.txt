@@ -1,0 +1,9 @@
+LinkVault authentication UI state fix
+Date: 2026-07-14
+
+- The email, Apple, and Google sign-in controls are now hidden immediately after a valid session is detected.
+- A signed-in account card displays the active account identity and provider.
+- Sync and Sign out actions appear only while signed in.
+- Signing out restores all sign-in controls and clears stale OTP state.
+- Session UI is refreshed after startup, OAuth callback, OTP verification, auth state changes, language changes, and opening Settings.
+- The canonical page was copied to www/index.html because Capacitor builds from the www directory.
