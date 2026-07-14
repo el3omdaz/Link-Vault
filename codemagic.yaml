@@ -11,6 +11,7 @@ workflows:
       vars:
         BUNDLE_ID: "com.linkvaultq8.app"
         MARKETING_VERSION: "1.0"
+        BUILD_NUMBER: "38"
         SHARE_EXTENSION_BUNDLE_ID: "com.linkvaultq8.app.ShareExtension"
         APP_GROUP_ID: "group.com.linkvaultq8.shared"
         USE_APP_GROUPS: "true"
@@ -128,13 +129,10 @@ workflows:
       - name: Apply provisioning profiles to Xcode project
         script: |
           xcode-project use-profiles --project ios/App/App.xcodeproj
-      - name: Increment build number automatically
+      - name: Increment build number
         script: |
-          set -e
           cd ios/App
-          echo "Using Codemagic build number: $BUILD_NUMBER"
-          agvtool new-version -all "$BUILD_NUMBER"
-
+          agvtool new-version -all $BUILD_NUMBER || true
       - name: Build ipa for TestFlight
         script: |
           xcode-project build-ipa \

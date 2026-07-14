@@ -1056,18 +1056,7 @@ async function loadCloudData(){
     if(cr.error || lr.error) throw (cr.error || lr.error);
     if((cr.data || []).length){ cats = cr.data.map(x => x.name).filter(Boolean); }
     else { for(const c of cats) await upsertCategoryCloud(c); }
-    const cloudLinks = (lr.data || []).map(rowToLink);
-    const cloudByUrl = new Map(cloudLinks.map(x => [canonicalUrl(x.url), x]));
-    const localLinks = links || [];
-    for(const local of localLinks){
-      const key = canonicalUrl(local.url);
-      if(!cloudByUrl.has(key) && cloudUser){
-        await upsertLinkCloud(local);
-        cloudLinks.push(local);
-        cloudByUrl.set(key, local);
-      }
-    }
-    links = cloudLinks;
+    links = (lr.data || []).map(rowToLink);
     const upgraded = upgradeExistingOtherCategories();
     saveLocal(); renderTabs(); renderList(); updateCloudStatus('online','مزامن');
     if(upgraded) links.forEach(l => upsertLinkCloud(l).catch(()=>{}));
