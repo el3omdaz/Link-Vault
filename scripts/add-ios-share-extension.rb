@@ -188,7 +188,7 @@ extension_target.build_configurations.each do |config|
   end
   config.build_settings['MARKETING_VERSION'] = ENV.fetch('MARKETING_VERSION', '1.0')
   # Keep the extension build number identical to the app build for App Store validation.
-  config.build_settings['CURRENT_PROJECT_VERSION'] = ENV.fetch('BUILD_NUMBER', '36')
+  config.build_settings['CURRENT_PROJECT_VERSION'] = ENV.fetch('BUILD_NUMBER', '60')
 end
 
 # Add Swift source to extension target once.
