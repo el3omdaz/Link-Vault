@@ -1,0 +1,1 @@
+Updated Codemagic BUILD_NUMBER from 37 to 38 to satisfy App Store Connect bundle version requirement.
