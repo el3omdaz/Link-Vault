@@ -105,7 +105,6 @@ textarea.inp,.card-note{color:var(--note-text)}
 .auth-separator{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.76rem;font-weight:800;margin:14px 0 10px}.auth-separator::before,.auth-separator::after{content:'';height:1px;flex:1;background:var(--border)}
 .social-login{display:grid;grid-template-columns:1fr 1fr;gap:8px}.social-btn{border-radius:12px;padding:11px 10px;font-size:.86rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;min-height:45px}.social-btn.apple{background:#000;color:#fff;border:1px solid #000}.social-btn.google{background:#fff;color:#202124;border:1px solid #dadce0}.social-icon{font-size:1.05rem;line-height:1}
 .auth-hint{margin-top:8px;font-size:.73rem;line-height:1.6;color:var(--muted)}
-.auth-signed-out[hidden],.auth-signed-in[hidden],.account-actions[hidden]{display:none!important}.auth-signed-in{display:grid;gap:10px}.account-session-card{display:flex;align-items:center;gap:12px;padding:13px;background:linear-gradient(135deg,rgba(45,212,191,.10),rgba(124,106,255,.10));border:1px solid rgba(45,212,191,.26);border-radius:12px}.account-session-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(45,212,191,.16);border:1px solid rgba(45,212,191,.35);color:var(--green);font-size:1.25rem;font-weight:900}.account-session-copy{min-width:0;flex:1}.account-session-title{font-size:.92rem;font-weight:900;color:var(--green);margin-bottom:4px}.account-session-identity{font-size:.8rem;font-weight:800;color:var(--text);direction:ltr;text-align:left;overflow-wrap:anywhere}.account-session-provider{font-size:.72rem;color:var(--muted);margin-top:4px}.account-actions{margin-top:8px}
 .restore-summary{font-size:.84rem;line-height:1.7;color:var(--muted2);background:var(--card);border:1px solid var(--border);border-radius:11px;padding:10px;margin-top:8px}
 .restore-actions{display:grid;gap:8px;margin-top:13px}.restore-actions button{padding:11px;border-radius:10px;border:1px solid var(--border);font-weight:900;font-size:.87rem}.restore-actions .merge{background:var(--accent);color:#fff;border-color:var(--accent)}.restore-actions .replace{background:var(--danger-bg);color:var(--red);border-color:rgba(239,71,111,.35)}.restore-actions .cancel{background:var(--card);color:var(--muted2)}
 @media(max-width:430px){.favorite-filter-btn{padding:0 8px;font-size:.72rem}.manage-cats-btn{padding:0 8px;font-size:.7rem}.library-toolbar{gap:6px}.view-btn,.select-mode-btn{padding:7px 8px}.links-container.view-grid{gap:7px}.links-container.view-grid .card-body{padding:10px}.links-container.view-grid .platform-logo,.links-container.view-grid .platform-logo svg,.links-container.view-grid .platform-logo img{width:36px;height:36px}.links-container.view-grid .card-title{font-size:.84rem}.links-container.view-grid .card-url{font-size:.62rem}.links-container.view-grid .card-btn{font-size:.7rem}.links-container.view-grid .cat-badge,.links-container.view-grid .platform-badge{font-size:.6rem;padding:3px 6px}}
@@ -224,40 +223,27 @@ html[dir="ltr"] .paywall-plan{text-align:left}
     <div class="divider"></div>
     <div class="field-label">🔐 الحساب والمزامنة</div>
     <div class="auth-box" id="authBox">
-      <div class="auth-signed-out" id="authSignedOutPanel">
-        <div class="field-label">📧 البريد الإلكتروني</div>
-        <input class="inp" id="authEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="you@example.com">
-        <button class="btn-ai auth-primary" id="btnSendOtp">إرسال رمز التحقق</button>
+      <div class="field-label">📧 البريد الإلكتروني</div>
+      <input class="inp" id="authEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="you@example.com">
+      <button class="btn-ai auth-primary" id="btnSendOtp">إرسال رمز التحقق</button>
 
-        <div class="otp-panel" id="otpPanel" hidden>
-          <div class="field-label">🔢 رمز التحقق</div>
-          <div class="otp-row">
-            <input class="inp otp-input" id="authOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
-            <button class="btn-ai" id="btnVerifyOtp">تأكيد</button>
-          </div>
-          <button class="btn-cancel" id="btnResendOtp" style="margin-top:8px">إعادة إرسال الرمز</button>
+      <div class="otp-panel" id="otpPanel" hidden>
+        <div class="field-label">🔢 رمز التحقق</div>
+        <div class="otp-row">
+          <input class="inp otp-input" id="authOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+          <button class="btn-ai" id="btnVerifyOtp">تأكيد</button>
         </div>
-
-        <div class="auth-separator">أو</div>
-        <div class="social-login">
-          <button class="social-btn apple" id="btnAppleLogin"><span class="social-icon"></span><span>Apple ID</span></button>
-          <button class="social-btn google" id="btnGoogleLogin"><span class="social-icon">G</span><span>Google</span></button>
-        </div>
-        <div class="auth-hint" id="authHint">رمز البريد ينشئ الحساب تلقائيًا للمستخدم الجديد. لا توجد كلمة مرور.</div>
+        <button class="btn-cancel" id="btnResendOtp" style="margin-top:8px">إعادة إرسال الرمز</button>
       </div>
 
-      <div class="auth-signed-in" id="authSignedInPanel" hidden>
-        <div class="account-session-card">
-          <div class="account-session-icon">✓</div>
-          <div class="account-session-copy">
-            <div class="account-session-title" id="authSignedInTitle">تم تسجيل الدخول</div>
-            <div class="account-session-identity" id="authSignedInIdentity"></div>
-            <div class="account-session-provider" id="authSignedInProvider"></div>
-          </div>
-        </div>
+      <div class="auth-separator">أو</div>
+      <div class="social-login">
+        <button class="social-btn apple" id="btnAppleLogin"><span class="social-icon"></span><span>Apple ID</span></button>
+        <button class="social-btn google" id="btnGoogleLogin"><span class="social-icon">G</span><span>Google</span></button>
       </div>
+      <div class="auth-hint" id="authHint">رمز البريد ينشئ الحساب تلقائيًا للمستخدم الجديد. لا توجد كلمة مرور.</div>
     </div>
-    <div class="row account-actions" id="accountActions" hidden>
+    <div class="row" style="margin-top:8px">
       <button class="btn-ai" id="btnSyncNow">مزامنة الآن</button>
       <button class="btn-ai" id="btnLogout">تسجيل خروج</button>
     </div>
@@ -1366,46 +1352,6 @@ async function fetchTrailer(){
   btn.disabled = false; btn.innerHTML = old;
 }
 
-function authProviderName(user){
-  const provider = String(user?.app_metadata?.provider || user?.app_metadata?.providers?.[0] || user?.identities?.[0]?.provider || 'email').toLowerCase();
-  if(provider === 'apple') return 'Apple ID';
-  if(provider === 'google') return 'Google';
-  return currentLanguage === 'en' ? 'Email' : 'البريد الإلكتروني';
-}
-function resetOtpControls(){
-  clearInterval(otpCooldownTimer); otpCooldownTimer = null;
-  const send = $('btnSendOtp');
-  const resend = $('btnResendOtp');
-  if(send){ send.disabled = false; send.textContent = currentLanguage === 'en' ? 'Send verification code' : 'إرسال رمز التحقق'; }
-  if(resend){ resend.disabled = false; resend.textContent = currentLanguage === 'en' ? 'Resend code' : 'إعادة إرسال الرمز'; }
-}
-function renderAuthUI(){
-  const loggedIn = !!cloudUser;
-  const signedOutPanel = $('authSignedOutPanel');
-  const signedInPanel = $('authSignedInPanel');
-  const actions = $('accountActions');
-  if(signedOutPanel) signedOutPanel.hidden = loggedIn;
-  if(signedInPanel) signedInPanel.hidden = !loggedIn;
-  if(actions) actions.hidden = !loggedIn;
-  const box = $('authBox');
-  if(box) box.classList.toggle('signed-in', loggedIn);
-
-  if(loggedIn){
-    pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP);
-    if($('authOtp')) $('authOtp').value = '';
-    setOtpPanelVisible(false);
-    resetOtpControls();
-    const identity = cloudUser.email || cloudUser.user_metadata?.email || cloudUser.user_metadata?.full_name || cloudUser.id || '';
-    const provider = authProviderName(cloudUser);
-    if($('authSignedInTitle')) $('authSignedInTitle').textContent = currentLanguage === 'en' ? 'Signed in' : 'تم تسجيل الدخول';
-    if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = identity;
-    if($('authSignedInProvider')) $('authSignedInProvider').textContent = currentLanguage === 'en' ? `Signed in with ${provider}` : `تسجيل الدخول بواسطة ${provider}`;
-  }else{
-    if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = '';
-    if($('authSignedInProvider')) $('authSignedInProvider').textContent = '';
-  }
-}
-
 function updateCloudStatus(kind='local', text='محلي'){
   const el = $('cloudStatus'); el.className = 'status-pill'; if(kind === 'online') el.classList.add('online'); if(kind === 'warn') el.classList.add('warn'); el.querySelector('span:last-child').textContent = text;
 }
@@ -1414,15 +1360,14 @@ function updateSettingsStatus(msg, cls=''){
 }
 async function initSupabase(){
   const cfg = getSettings();
-  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ cloudUser = null; renderAuthUI(); updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
+  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
   try{
     sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
-    const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
     if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
     else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.', 'warning-text'); }
     sbClient.auth.onAuthStateChange((event, session) => {
       cloudUser = session?.user || null;
-      renderAuthUI();
       if(cloudUser){
         identifyRevenueCatUser(cloudUser.id).catch(()=>{});
         updateCloudStatus('online','مزامن');
@@ -1430,11 +1375,10 @@ async function initSupabase(){
         setTimeout(() => { if(event === 'SIGNED_IN') syncLocalToCloud(); else loadCloudData(); }, 0);
       }else{
         updateCloudStatus('warn','غير مسجل');
-        if(event === 'SIGNED_OUT') updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.');
       }
     });
     if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
-  }catch(e){ cloudUser = null; renderAuthUI(); updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
+  }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
 }
 function linkToRow(l){ return { id:l.id, user_id:cloudUser?.id, title:l.title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', is_favorite:!!l.favorite, created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
 function rowToLink(r){ return { id:r.id, title:r.title || '', url:r.url || '', cat:r.category_name || 'أخرى', note:r.notes || '', trailer:r.trailer_url || '', thumbnail:r.thumbnail_url || '', platform:r.platform || detectPlatform(r.url || '').label, favorite:!!r.is_favorite, ts:r.created_at ? new Date(r.created_at).getTime() : Date.now(), updatedAt:r.updated_at || nowIso() }; }
@@ -1523,7 +1467,7 @@ async function verifyEmailOtp(){
     button.disabled = true; button.textContent = 'جاري التحقق...';
     const { data, error } = await sbClient.auth.verifyOtp({ email, token, type:'email' });
     if(error) throw error;
-    cloudUser = data.user || data.session?.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    cloudUser = data.user || data.session?.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
     pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); $('authOtp').value = ''; setOtpPanelVisible(false);
     updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل');
     updateSettingsStatus('✅ تم التحقق وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول');
@@ -1564,11 +1508,11 @@ async function logout(){
   if(sbClient) await sbClient.auth.signOut();
   await logoutRevenueCatUser();
   await closeAuthBrowser();
-  cloudUser = null; pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false); resetOtpControls(); if($('authEmail')) $('authEmail').value = ''; if($('authOtp')) $('authOtp').value = ''; renderAuthUI();
+  cloudUser = null; pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false);
   updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج');
 }
 
-function openSettings(){ applyTheme(currentTheme, false); updateProUi(); renderAuthUI(); $('settingsOverlay').classList.add('open'); if(APP_EDITION === 'commercial' && rcReady) refreshRevenueCatStatus(); }
+function openSettings(){ applyTheme(currentTheme, false); updateProUi(); $('settingsOverlay').classList.add('open'); if(APP_EDITION === 'commercial' && rcReady) refreshRevenueCatStatus(); }
 function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
 
 let lastIncomingShareSignature = '';
@@ -1616,7 +1560,7 @@ async function handleAuthCallbackUrl(raw){
     if(code) result = await sbClient.auth.exchangeCodeForSession(code);
     else if(access_token && refresh_token) result = await sbClient.auth.setSession({ access_token, refresh_token });
     else { const current = await sbClient.auth.getSession(); if(current.data?.session) result = current; else throw new Error('رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة'); }
-    if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null; if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
     updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم تسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); return true;
   }catch(e){ await closeAuthBrowser(); console.warn('Auth callback failed', e); updateSettingsStatus(`تعذر إكمال تسجيل الدخول: ${e?.message || e}`, 'danger-text'); toast('⚠️ تعذر إكمال تسجيل الدخول'); return false; }
 }
@@ -1778,7 +1722,7 @@ $('btnClearSelection').addEventListener('click', clearSelectedLinks);
 $('btnDeleteSelected').addEventListener('click', deleteSelectedLinks);
 $('btnDeleteAll').addEventListener('click', deleteAllLinks);
 document.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
-$('languageSelect').addEventListener('change', e => { applyLanguageChoice(e.target.value, true); renderTabs(); renderList(); if($('catOverlay').classList.contains('open')) renderCatList(); translateTree(document.body, true); renderAuthUI(); });
+$('languageSelect').addEventListener('change', e => { applyLanguageChoice(e.target.value, true); renderTabs(); renderList(); if($('catOverlay').classList.contains('open')) renderCatList(); translateTree(document.body, true); });
 $('btnBackup').addEventListener('click', exportBackup);
 $('btnRestore').addEventListener('click', beginRestore);
 $('restoreFileInput').addEventListener('change', async e => { const file=e.target.files?.[0]; if(!file) return; try{ showRestoreChoice(validateBackup(JSON.parse(await file.text()))); }catch(err){ toast('⚠️ ملف النسخة الاحتياطية غير صالح'); } });
@@ -1787,7 +1731,7 @@ $('btnRestoreReplace').addEventListener('click', () => applyRestore('replace'));
 $('btnRestoreCancel').addEventListener('click', closeRestoreChoice);
 $('restoreOverlay').addEventListener('click', e => { if(e.target === $('restoreOverlay')) closeRestoreChoice(); });
 
-applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); renderAuthUI(); if(pendingOtpEmail){ $('authEmail').value = pendingOtpEmail; setOtpPanelVisible(true); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
+applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); if(pendingOtpEmail){ $('authEmail').value = pendingOtpEmail; setOtpPanelVisible(true); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
