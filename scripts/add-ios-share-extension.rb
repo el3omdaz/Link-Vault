@@ -33,27 +33,7 @@ FileUtils.cp('ios-share-extension/PendingSharePlugin.swift', 'ios/App/App/Pendin
 FileUtils.cp('ios-share-extension/LinkVaultBridgeViewController.swift', APP_BRIDGE_CONTROLLER)
 
 
-def write_app_entitlements(path, app_group_id)
-  FileUtils.mkdir_p(File.dirname(path))
-  File.write(path, <<~PLIST)
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-      <key>com.apple.developer.applesignin</key>
-      <array>
-        <string>Default</string>
-      </array>
-      <key>com.apple.security.application-groups</key>
-      <array>
-        <string>#{app_group_id}</string>
-      </array>
-    </dict>
-    </plist>
-  PLIST
-end
-
-def write_extension_entitlements(path, app_group_id)
+def write_app_group_entitlements(path, app_group_id)
   FileUtils.mkdir_p(File.dirname(path))
   File.write(path, <<~PLIST)
     <?xml version="1.0" encoding="UTF-8"?>
@@ -70,8 +50,8 @@ def write_extension_entitlements(path, app_group_id)
 end
 
 if USE_APP_GROUPS
-  write_app_entitlements(APP_ENTITLEMENTS, APP_GROUP_ID)
-  write_extension_entitlements(EXTENSION_ENTITLEMENTS, APP_GROUP_ID)
+  write_app_group_entitlements(APP_ENTITLEMENTS, APP_GROUP_ID)
+  write_app_group_entitlements(EXTENSION_ENTITLEMENTS, APP_GROUP_ID)
 else
   # This Share Extension passes the shared URL to the app through the linkvault:// URL scheme.
   # It does not require App Groups. Keeping App Group entitlements enabled can make archive fail
