@@ -1,1 +1,1 @@
-Replace these files in the project root, preserving paths, then commit and run Codemagic.
+Replace these files in the project root, preserving paths. Scanner 7.0.0 includes the required privacy manifest without the newer ML Kit 7 deployment-target requirement. Then commit and run Codemagic.
