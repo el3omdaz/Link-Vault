@@ -1445,21 +1445,9 @@ async function loadCloudData(){
     if(cr.error || lr.error) throw (cr.error || lr.error);
     if((cr.data || []).length){ cats = cr.data.map(x => x.name).filter(Boolean); }
     else { for(const c of cats) await upsertCategoryCloud(c); }
-    const cloudLinks = (lr.data || []).map(rowToLink);
-    const localById = new Map(links.map(l => [l.id, l]));
-    const merged = [...cloudLinks];
-    const cloudIds = new Set(cloudLinks.map(l => l.id));
-    // لا نستبدل البيانات المحلية إذا كانت السحابة فارغة أو ناقصة
-    // ندمج الروابط المحلية مع السحابة ونرفع المفقود منها
-    for(const local of localById.values()) {
-      if(!cloudIds.has(local.id)) merged.push(local);
-    }
-    links = merged;
+    links = (lr.data || []).map(rowToLink);
     const upgraded = upgradeExistingOtherCategories();
     saveLocal(); renderTabs(); renderList(); updateCloudStatus('online','مزامن');
-    for(const local of links) {
-      if(!cloudIds.has(local.id)) upsertLinkCloud(local).catch(()=>{});
-    }
     if(upgraded) links.forEach(l => upsertLinkCloud(l).catch(()=>{}));
   }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.', 'danger-text'); }
   syncing = false;
