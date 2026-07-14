@@ -128,12 +128,23 @@ workflows:
       - name: Apply provisioning profiles to Xcode project
         script: |
           xcode-project use-profiles --project ios/App/App.xcodeproj
-      - name: Increment build number automatically
+      - name: Set unique App Store build number automatically
         script: |
-          set -e
+          set -euo pipefail
           cd ios/App
-          echo "Using Codemagic build number: $BUILD_NUMBER"
-          agvtool new-version -all "$BUILD_NUMBER"
+
+          # App Store Connect keeps rejected/invalid builds, so Codemagic BUILD_NUMBER
+          # alone can collide with a previous upload. Use a monotonically sortable
+          # timestamp value to guarantee a new CFBundleVersion for every submission.
+          SAFE_BUILD_NUMBER=$(date -u +%Y%m%d%H%M)
+          CURRENT_BUILD=$(agvtool what-version -terse 2>/dev/null | head -1 || echo 0)
+
+          if [ "$SAFE_BUILD_NUMBER" -le "$CURRENT_BUILD" ]; then
+            SAFE_BUILD_NUMBER=$((CURRENT_BUILD + 1))
+          fi
+
+          echo "Setting iOS build number: $SAFE_BUILD_NUMBER"
+          agvtool new-version -all "$SAFE_BUILD_NUMBER"
 
       - name: Build ipa for TestFlight
         script: |
