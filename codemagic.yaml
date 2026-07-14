@@ -10,6 +10,8 @@ workflows:
         - code_signing
       vars:
         BUNDLE_ID: "com.linkvaultq8.app"
+        MARKETING_VERSION: "1.0"
+        BUILD_NUMBER: "62"
         SHARE_EXTENSION_BUNDLE_ID: "com.linkvaultq8.app.ShareExtension"
         APP_GROUP_ID: "group.com.linkvaultq8.shared"
         USE_APP_GROUPS: "true"
@@ -127,15 +129,25 @@ workflows:
       - name: Apply provisioning profiles to Xcode project
         script: |
           xcode-project use-profiles --project ios/App/App.xcodeproj
-      - name: Increment build number
+      - name: Increment build number automatically
         script: |
+          set -e
           cd ios/App
-          agvtool new-version -all $BUILD_NUMBER || true
+          echo "Using Codemagic build number: $BUILD_NUMBER"
+          agvtool new-version -all "$BUILD_NUMBER"
+
       - name: Build ipa for TestFlight
         script: |
           xcode-project build-ipa \
             --workspace "$XCODE_WORKSPACE" \
             --scheme "$XCODE_SCHEME"
+      - name: Verify Apple privacy manifests in final IPA
+        script: |
+          set -euo pipefail
+          IPA_PATH="$(find build/ios/ipa -name '*.ipa' -print -quit)"
+          test -n "$IPA_PATH"
+          unzip -l "$IPA_PATH" | grep -E 'GoogleToolboxForMac\.framework/.*/?PrivacyInfo\.xcprivacy|GoogleToolboxForMac\.framework/PrivacyInfo\.xcprivacy'
+          echo "GoogleToolboxForMac privacy manifest verified in final IPA."
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log

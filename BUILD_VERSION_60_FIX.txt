@@ -1,4 +1,0 @@
-Updated the iOS build number to 60 in every active build configuration:
-- Codemagic BUILD_NUMBER is set to 60.
-- The iOS Share Extension fallback CURRENT_PROJECT_VERSION is set to 60.
-- The main app and Share Extension remain aligned for App Store validation.

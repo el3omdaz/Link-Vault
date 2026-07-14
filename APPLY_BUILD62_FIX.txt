@@ -1,0 +1,1 @@
+Replace these files in the project root, preserving paths, then commit and run Codemagic.
