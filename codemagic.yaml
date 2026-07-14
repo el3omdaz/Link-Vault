@@ -11,6 +11,7 @@ workflows:
       vars:
         BUNDLE_ID: "com.linkvaultq8.app"
         MARKETING_VERSION: "1.0"
+        BUILD_NUMBER: "38"
         SHARE_EXTENSION_BUNDLE_ID: "com.linkvaultq8.app.ShareExtension"
         APP_GROUP_ID: "group.com.linkvaultq8.shared"
         USE_APP_GROUPS: "true"
@@ -128,24 +129,10 @@ workflows:
       - name: Apply provisioning profiles to Xcode project
         script: |
           xcode-project use-profiles --project ios/App/App.xcodeproj
-      - name: Set unique App Store build number automatically
+      - name: Increment build number
         script: |
-          set -euo pipefail
           cd ios/App
-
-          # App Store Connect keeps rejected/invalid builds, so Codemagic BUILD_NUMBER
-          # alone can collide with a previous upload. Use a monotonically sortable
-          # timestamp value to guarantee a new CFBundleVersion for every submission.
-          SAFE_BUILD_NUMBER=$(date -u +%Y%m%d%H%M)
-          CURRENT_BUILD=$(agvtool what-version -terse 2>/dev/null | head -1 || echo 0)
-
-          if [ "$SAFE_BUILD_NUMBER" -le "$CURRENT_BUILD" ]; then
-            SAFE_BUILD_NUMBER=$((CURRENT_BUILD + 1))
-          fi
-
-          echo "Setting iOS build number: $SAFE_BUILD_NUMBER"
-          agvtool new-version -all "$SAFE_BUILD_NUMBER"
-
+          agvtool new-version -all $BUILD_NUMBER || true
       - name: Build ipa for TestFlight
         script: |
           xcode-project build-ipa \
