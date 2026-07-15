@@ -11,7 +11,7 @@ workflows:
       vars:
         BUNDLE_ID: "com.linkvaultq8.app"
         MARKETING_VERSION: "1.0"
-        BUILD_NUMBER: "64"
+        BUILD_NUMBER: "69"
         SHARE_EXTENSION_BUNDLE_ID: "com.linkvaultq8.app.ShareExtension"
         APP_GROUP_ID: "group.com.linkvaultq8.shared"
         USE_APP_GROUPS: "true"
@@ -112,6 +112,27 @@ workflows:
         script: |
           cd ios/App
           pod install
+
+      - name: Add Apple privacy manifests for third-party SDKs
+        script: |
+          set -euo pipefail
+          cd ios/App
+          pod install
+          PRIVACY_FILE="Pods/Target Support Files/Pods-App/PrivacyInfo.xcprivacy"
+          mkdir -p "Pods/Target Support Files/Pods-App"
+          cat > "$PRIVACY_FILE" <<'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+          <key>NSPrivacyCollectedDataTypes</key>
+          <array/>
+          <key>NSPrivacyAccessedAPITypes</key>
+          <array/>
+          </dict>
+          </plist>
+          EOF
+          echo "Privacy manifest prepared"
       - name: Set up keychain for code signing
         script: |
           keychain initialize

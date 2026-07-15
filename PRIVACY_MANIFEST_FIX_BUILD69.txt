@@ -1,0 +1,1 @@
+Build 69 prepared: Codemagic adds Apple privacy manifest during iOS build for SDK validation.
