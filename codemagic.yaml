@@ -11,7 +11,7 @@ workflows:
       vars:
         BUNDLE_ID: "com.linkvaultq8.app"
         MARKETING_VERSION: "1.0"
-        BUILD_NUMBER: "69"
+        BUILD_NUMBER: "70"
         SHARE_EXTENSION_BUNDLE_ID: "com.linkvaultq8.app.ShareExtension"
         APP_GROUP_ID: "group.com.linkvaultq8.shared"
         USE_APP_GROUPS: "true"
@@ -133,6 +133,35 @@ workflows:
           </plist>
           EOF
           echo "Privacy manifest prepared"
+      - name: Fix GoogleToolboxForMac privacy manifest
+        script: |
+          set -euo pipefail
+          cd ios/App
+          FOUND=0
+          while IFS= read -r framework; do
+            if [ -d "$framework" ]; then
+              FOUND=1
+              echo "Found framework: $framework"
+              cat > "$framework/PrivacyInfo.xcprivacy" <<'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>NSPrivacyCollectedDataTypes</key>
+<array/>
+<key>NSPrivacyAccessedAPITypes</key>
+<array/>
+</dict>
+</plist>
+EOF
+              echo "Added PrivacyInfo.xcprivacy to $framework"
+            fi
+          done < <(find Pods -path "*GoogleToolboxForMac.framework" -type d 2>/dev/null || true)
+
+          if [ "$FOUND" -eq 0 ]; then
+            echo "GoogleToolboxForMac.framework not found in Pods"
+          fi
+
       - name: Set up keychain for code signing
         script: |
           keychain initialize
