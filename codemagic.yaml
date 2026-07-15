@@ -11,7 +11,7 @@ workflows:
       vars:
         BUNDLE_ID: "com.linkvaultq8.app"
         MARKETING_VERSION: "1.0"
-        BUILD_NUMBER: "70"
+        BUILD_NUMBER: "71"
         SHARE_EXTENSION_BUNDLE_ID: "com.linkvaultq8.app.ShareExtension"
         APP_GROUP_ID: "group.com.linkvaultq8.shared"
         USE_APP_GROUPS: "true"
@@ -112,6 +112,31 @@ workflows:
         script: |
           cd ios/App
           pod install
+
+      - name: Fix GoogleToolboxForMac privacy manifest
+        script: |
+          set -euo pipefail
+          cd ios/App
+          echo "Searching for GoogleToolboxForMac.framework"
+          FOUND=0
+          while IFS= read -r FRAMEWORK; do
+            FOUND=1
+            echo "Found: $FRAMEWORK"
+            printf '%s\n' \
+              '<?xml version="1.0" encoding="UTF-8"?>' \
+              '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
+              '<plist version="1.0">' \
+              '<dict>' \
+              '<key>NSPrivacyCollectedDataTypes</key>' \
+              '<array/>' \
+              '<key>NSPrivacyAccessedAPITypes</key>' \
+              '<array/>' \
+              '</dict>' \
+              '</plist>' > "$FRAMEWORK/PrivacyInfo.xcprivacy"
+          done < <(find . -name "GoogleToolboxForMac.framework" -type d)
+          if [ "$FOUND" = "0" ]; then
+            echo "GoogleToolboxForMac.framework not found"
+          fi
 
       - name: Add Apple privacy manifests for third-party SDKs
         script: |
