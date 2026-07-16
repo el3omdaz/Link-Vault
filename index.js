@@ -1070,9 +1070,10 @@ async function loadCloudData(){
     for(const local of localLinks){
       const key = canonicalUrl(local.url);
       if(!cloudByUrl.has(key) && cloudUser){
-        await upsertLinkCloud(local);
-        cloudLinks.push(local);
-        cloudByUrl.set(key, local);
+        if(await upsertLinkCloud(local)){
+          cloudLinks.push(local);
+          cloudByUrl.set(key, local);
+        }
       }
     }
     links = cloudLinks;
@@ -1082,7 +1083,7 @@ async function loadCloudData(){
   }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.', 'danger-text'); }
   syncing = false;
 }
-async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const row=linkToRow(l); let {error}=await sbClient.from('links').upsert(row,{onConflict:'id'}); if(error && /is_favorite.*schema cache|column.*is_favorite/i.test(error.message||'')){ delete row.is_favorite; ({error}=await sbClient.from('links').upsert(row,{onConflict:'id'})); } if(error) throw error; }
+async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return false; const row=linkToRow(l); let {error}=await sbClient.from('links').upsert(row,{onConflict:'id'}); if(error && /is_favorite.*schema cache|column.*is_favorite/i.test(error.message||'')){ delete row.is_favorite; ({error}=await sbClient.from('links').upsert(row,{onConflict:'id'})); } if(error && /row-level security|violates.*policy/i.test(error.message||'')){ const foreignId=l.id; links=links.filter(item=>item.id!==foreignId); saveLocal(); console.warn('Skipped link id owned by another account',foreignId); return false; } if(error) throw error; return true; }
 async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('links').delete().eq('user_id',cloudUser.id).eq('id',id); if(error) throw error; }
 async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').upsert({user_id:cloudUser.id,name},{onConflict:'user_id,name'}); if(error) throw error; }
 async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').delete().eq('user_id',cloudUser.id).eq('name',name); if(error) throw error; }
