@@ -409,6 +409,7 @@ const LS_UI = 'lv_ui_v1';
 const LS_PENDING_OTP = 'lv_pending_otp_email_v1';
 const LS_LANG = 'lv_language_v1';
 const LS_PROTECTED_CATS = 'lv_protected_cats_v1';
+const LS_ACTIVE_CLOUD_USER = 'lv_active_cloud_user_v1';
 const OTHER_CAT = 'أخرى';
 const FAVORITES_FILTER = 'favorites';
 const AUTH_REDIRECT_URL = 'linkvaultq8://auth-callback';
@@ -619,7 +620,11 @@ function normalizeUrl(v){ const s = String(v || '').trim(); if(!s) return ''; if
 function extractFirstUrl(text){ const m = String(text || '').match(/https?:\/\/[^\s]+/i); return m ? m[0].replace(/[\])}>,.]+$/,'') : ''; }
 function normalizeLinks(items){ return (items || []).map(x => ({ id:x.id || uid(), title:x.title || '', url:x.url || '', cat:x.cat || x.category_name || 'أخرى', note:x.note || x.notes || '', trailer:x.trailer || x.trailer_url || '', thumbnail:x.thumbnail || x.thumbnail_url || '', platform:x.platform || detectPlatform(x.url || '').label, ts:x.ts || (x.created_at ? new Date(x.created_at).getTime() : Date.now()), updatedAt:x.updatedAt || x.updated_at || nowIso(), favorite:!!(x.favorite || x.is_favorite) })).filter(x => x.url); }
 function normalizeCategories(list){ const seen=[]; (list||[]).map(x=>String(x||'').trim()).filter(Boolean).forEach(c=>{ if(c!==OTHER_CAT && !seen.includes(c)) seen.push(c); }); seen.push(OTHER_CAT); return seen; }
-function saveLocal(){ cats = normalizeCategories(cats); STORE.set(LS_LINKS, links); STORE.set(LS_CATS, cats); STORE.set(LS_PROTECTED_CATS, [...protectedCats]); syncCategoriesToNative().catch(()=>{}); }
+function accountStoreKey(base,userId){ return base + '_user_' + userId; }
+function persistAccountData(userId){ if(!userId) return; cats=normalizeCategories(cats); STORE.set(accountStoreKey(LS_LINKS,userId),links); STORE.set(accountStoreKey(LS_CATS,userId),cats); STORE.set(accountStoreKey(LS_PROTECTED_CATS,userId),[...protectedCats]); }
+function activateCloudAccount(user){ if(!user?.id) return; const userId=user.id; const linkKey=accountStoreKey(LS_LINKS,userId); const saved=STORE.get(linkKey,null); const previous=STORE.get(LS_ACTIVE_CLOUD_USER,''); if(saved===null){ if(!previous){ persistAccountData(userId); STORE.set(LS_LINKS,[]); STORE.set(LS_CATS,DEFAULT_CATS); } else { links=[]; cats=normalizeCategories(DEFAULT_CATS); protectedCats=new Set(DEFAULT_CATS.filter(c=>c!==OTHER_CAT)); persistAccountData(userId); } } else { links=normalizeLinks(saved); cats=normalizeCategories(STORE.get(accountStoreKey(LS_CATS,userId),DEFAULT_CATS)); protectedCats=new Set(STORE.get(accountStoreKey(LS_PROTECTED_CATS,userId),DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); } STORE.set(LS_ACTIVE_CLOUD_USER,userId); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList(); }
+function activateGuestAccount(){ links=normalizeLinks(STORE.get(LS_LINKS,[])); cats=normalizeCategories(STORE.get(LS_CATS,DEFAULT_CATS)); protectedCats=new Set(STORE.get(LS_PROTECTED_CATS,DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); currentCat='all'; selectedIds.clear(); renderTabs(); renderList(); }
+function saveLocal(){ cats=normalizeCategories(cats); if(cloudUser?.id) persistAccountData(cloudUser.id); else { STORE.set(LS_LINKS,links); STORE.set(LS_CATS,cats); STORE.set(LS_PROTECTED_CATS,[...protectedCats]); } syncCategoriesToNative().catch(()=>{}); }
 function getSettings(){ const fileCfg = window.LINKVAULT_CONFIG || {}; const local = STORE.get(LS_SETTINGS, {}); return { SUPABASE_URL: local.SUPABASE_URL || fileCfg.SUPABASE_URL || '', SUPABASE_ANON_KEY: local.SUPABASE_ANON_KEY || fileCfg.SUPABASE_ANON_KEY || '', BACKEND_URL: local.BACKEND_URL || fileCfg.BACKEND_URL || '' }; }
 function setSettings(v){ STORE.set(LS_SETTINGS, v); }
 function saveUiPrefs(){ uiPrefs = { theme:currentTheme, viewMode }; STORE.set(LS_UI, uiPrefs); }
@@ -1418,11 +1423,12 @@ async function initSupabase(){
   if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ cloudUser = null; renderAuthUI(); updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
   try{
     sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
-    const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
     if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
     else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.', 'warning-text'); }
     sbClient.auth.onAuthStateChange((event, session) => {
       cloudUser = session?.user || null;
+      if(cloudUser) activateCloudAccount(cloudUser);
       renderAuthUI();
       if(cloudUser){
         identifyRevenueCatUser(cloudUser.id).catch(()=>{});
@@ -1538,10 +1544,10 @@ async function verifyEmailOtp(){
     button.disabled = true; button.textContent = 'جاري التحقق...';
     const { data, error } = await sbClient.auth.verifyOtp({ email, token, type:'email' });
     if(error) throw error;
-    cloudUser = data.user || data.session?.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    cloudUser = data.user || data.session?.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
     pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); $('authOtp').value = ''; setOtpPanelVisible(false);
     updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل');
-    updateSettingsStatus('✅ تم التحقق وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول');
+    updateSettingsStatus('✅ تم التحقق وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(cloudUser) await synchronizeSignedInAccount('SIGNED_IN');
   }catch(e){
     const msg = e?.message || 'رمز التحقق غير صحيح أو انتهت صلاحيته';
     updateSettingsStatus(msg, 'danger-text'); toast('⚠️ ' + msg);
@@ -1576,10 +1582,11 @@ async function signInWithOAuthProvider(provider){
   }
 }
 async function logout(){
+  if(cloudUser?.id) persistAccountData(cloudUser.id);
   if(sbClient) await sbClient.auth.signOut();
   await logoutRevenueCatUser();
   await closeAuthBrowser();
-  cloudUser = null; pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false); resetOtpControls(); if($('authEmail')) $('authEmail').value = ''; if($('authOtp')) $('authOtp').value = ''; renderAuthUI();
+  cloudUser = null; activateGuestAccount(); pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false); resetOtpControls(); if($('authEmail')) $('authEmail').value = ''; if($('authOtp')) $('authOtp').value = ''; renderAuthUI();
   updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج');
 }
 
@@ -1631,8 +1638,8 @@ async function handleAuthCallbackUrl(raw){
     if(code) result = await sbClient.auth.exchangeCodeForSession(code);
     else if(access_token && refresh_token) result = await sbClient.auth.setSession({ access_token, refresh_token });
     else { const current = await sbClient.auth.getSession(); if(current.data?.session) result = current; else throw new Error('رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة'); }
-    if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null; renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
-    updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم تسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); return true;
+    if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+    updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم تسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(cloudUser) await synchronizeSignedInAccount('SIGNED_IN'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); return true;
   }catch(e){ await closeAuthBrowser(); console.warn('Auth callback failed', e); updateSettingsStatus(`تعذر إكمال تسجيل الدخول: ${e?.message || e}`, 'danger-text'); toast('⚠️ تعذر إكمال تسجيل الدخول'); return false; }
 }
 function routeDeepLink(raw){ try{ const u = new URL(raw); if(!isLinkVaultDeepLink(u)) return false; if(isAuthCallbackUrl(u)){ handleAuthCallbackUrl(raw); return true; } return handleIncomingShareFromParams(u.searchParams); }catch(e){ return false; } }
