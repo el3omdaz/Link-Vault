@@ -1,0 +1,49 @@
+LinkVault privacy manifest fix — build 72 (2026-07-15)
+
+Root cause found:
+- @capacitor-mlkit/barcode-scanning@6.2.0 pulls in Google ML Kit, which
+  depends on an old version of GoogleToolboxForMac that ships without a
+  PrivacyInfo.xcprivacy file. Apple flags this as ITMS-91061 on every
+  submission. There is no newer 6.x release that fixes this - the
+  maintainers only fixed it starting in the v7 line, which requires
+  Capacitor 7 (this app is on Capacitor 6).
+
+Why the build 69 fix did not work (build 71 was rejected with the
+identical error):
+- The "Add Apple privacy manifests for third-party SDKs" step in
+  codemagic.yaml wrote a PrivacyInfo.xcprivacy file to
+  "Pods/Target Support Files/Pods-App/". That folder is CocoaPods'
+  own build-config output, not part of any compiled framework. It is
+  never copied into GoogleToolboxForMac.framework, so Apple's check
+  still found that framework with no manifest.
+
+What changed for build 72:
+1. Removed @capacitor-mlkit/barcode-scanning from package.json and
+   package-lock.json entirely. This removes GoogleToolboxForMac and
+   the whole Google ML Kit pod chain (GoogleDataTransport, GTMSession
+   Fetcher, GoogleUtilities, nanopb, PromisesObjC) from the build -
+   all of those are also on Apple's manifest-required SDK list, so
+   this would likely have resurfaced with a different SDK name later.
+2. Replaced the native QR scanner with an in-app scanner built on
+   getUserMedia + jsQR (cdn.jsdelivr.net/npm/jsqr@1.4.0), loaded the
+   same way @supabase/supabase-js already is - a plain <script> tag.
+   Pure browser APIs, no CocoaPods, no privacy manifest exposure.
+   Same scanQrCode() entry point and downstream flow (openAddModal +
+   fetchMetadata) as before. NSCameraUsageDescription is already set
+   on the App target by scripts/add-ios-share-extension.rb, so no
+   native/Info.plist change was needed.
+3. Removed the broken privacy-manifest step in codemagic.yaml and
+   added a Podfile.lock grep inside "CocoaPods installation" that
+   fails the build immediately if GoogleToolboxForMac or any MLKit
+   pod ever reappears, instead of finding out from Apple days later.
+4. Bumped BUILD_NUMBER to 72.
+
+Before resubmitting:
+- Test QR scanning on a real TestFlight build - new code path, not
+  yet run on-device. It should prompt for camera permission the first
+  time exactly as before.
+- After the next CocoaPods installation step runs, the build log
+  should print "No GoogleToolboxForMac / ML Kit pods found - clear."
+  If it instead fails with the grep guard, something is still pulling
+  in a Google ML Kit pod and needs to be found the same way this one
+  was (search ios/App/Podfile.lock for the flagged name).
