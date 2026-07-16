@@ -37,6 +37,7 @@ let currentCat = 'all';
 let sbClient = null;
 let cloudUser = null;
 let syncing = false;
+let authSyncPromise = null;
 let toastTimer = null;
 let uiPrefs = STORE.get(LS_UI, { theme:'dark', viewMode:'cards' }) || { theme:'dark', viewMode:'cards' };
 let currentTheme = ['dark','light','beige'].includes(uiPrefs.theme) ? uiPrefs.theme : 'dark';
@@ -1038,7 +1039,7 @@ async function initSupabase(){
         identifyRevenueCatUser(cloudUser.id).catch(()=>{});
         updateCloudStatus('online','مزامن');
         updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text');
-        setTimeout(() => { if(event === 'SIGNED_IN') syncLocalToCloud(); else loadCloudData(); }, 0);
+        setTimeout(() => { synchronizeSignedInAccount(event).catch(showCloudError); }, 0);
       }else{
         updateCloudStatus('warn','غير مسجل');
         if(event === 'SIGNED_OUT') updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.');
@@ -1047,12 +1048,13 @@ async function initSupabase(){
     if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
   }catch(e){ cloudUser = null; renderAuthUI(); updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
 }
-function linkToRow(l){ return { id:l.id, user_id:cloudUser?.id, title:l.title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', is_favorite:!!l.favorite, created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
+function showCloudError(error){ console.warn('LinkVault cloud sync failed', error); updateCloudStatus('warn','خطأ مزامنة'); updateSettingsStatus('تعذر حفظ الروابط على الحساب: ' + (error?.message || error), 'danger-text'); }
+function linkToRow(l){ const title=String(l.title||'').trim()||(()=>{try{return new URL(l.url).hostname;}catch(e){return 'رابط محفوظ';}})(); return { id:l.id, user_id:cloudUser?.id, title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', is_favorite:!!l.favorite, created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
 function rowToLink(r){ return { id:r.id, title:r.title || '', url:r.url || '', cat:r.category_name || 'أخرى', note:r.notes || '', trailer:r.trailer_url || '', thumbnail:r.thumbnail_url || '', platform:r.platform || detectPlatform(r.url || '').label, favorite:!!r.is_favorite, ts:r.created_at ? new Date(r.created_at).getTime() : Date.now(), updatedAt:r.updated_at || nowIso() }; }
 async function loadCloudData(){
   if(!sbClient || !cloudUser || syncing) return; syncing = true;
   try{
-    const [cr, lr] = await Promise.all([ sbClient.from('categories').select('name').order('created_at',{ascending:true}), sbClient.from('links').select('*').order('created_at',{ascending:false}) ]);
+    const [cr, lr] = await Promise.all([ sbClient.from('categories').select('name').eq('user_id',cloudUser.id).order('created_at',{ascending:true}), sbClient.from('links').select('*').eq('user_id',cloudUser.id).order('created_at',{ascending:false}) ]);
     if(cr.error || lr.error) throw (cr.error || lr.error);
     if((cr.data || []).length){ cats = cr.data.map(x => x.name).filter(Boolean); }
     else { for(const c of cats) await upsertCategoryCloud(c); }
@@ -1074,10 +1076,11 @@ async function loadCloudData(){
   }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.', 'danger-text'); }
   syncing = false;
 }
-async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const row = linkToRow(l); const { error } = await sbClient.from('links').upsert(row, { onConflict:'id' }); if(error) console.warn(error); }
-async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; await sbClient.from('links').delete().eq('id', id); }
-async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; await sbClient.from('categories').upsert({ user_id:cloudUser.id, name }, { onConflict:'user_id,name' }); }
-async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; await sbClient.from('categories').delete().eq('name', name); }
+async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const { error }=await sbClient.from('links').upsert(linkToRow(l),{onConflict:'id'}); if(error) throw error; }
+async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('links').delete().eq('user_id',cloudUser.id).eq('id',id); if(error) throw error; }
+async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').upsert({user_id:cloudUser.id,name},{onConflict:'user_id,name'}); if(error) throw error; }
+async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').delete().eq('user_id',cloudUser.id).eq('name',name); if(error) throw error; }
+async function synchronizeSignedInAccount(event='SIGNED_IN'){ if(authSyncPromise) return authSyncPromise; authSyncPromise=event==='SIGNED_IN'?syncLocalToCloud():loadCloudData(); try{await authSyncPromise;}finally{authSyncPromise=null;} }
 async function syncLocalToCloud(){
   if(!sbClient || !cloudUser){ toast('⚠️ سجل دخول أولاً'); return; }
   updateSettingsStatus('جاري رفع البيانات المحلية...', 'warning-text');

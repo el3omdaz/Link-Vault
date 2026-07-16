@@ -14,7 +14,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <script src="app-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <style>
 :root {
   --bg:#0d0d14; --surface:#13131f; --card:#1a1a2e; --card2:#1f1f35;
@@ -427,6 +426,7 @@ let currentCat = 'all';
 let sbClient = null;
 let cloudUser = null;
 let syncing = false;
+let authSyncPromise = null;
 let toastTimer = null;
 let uiPrefs = STORE.get(LS_UI, { theme:'dark', viewMode:'cards' }) || { theme:'dark', viewMode:'cards' };
 let currentTheme = ['dark','light','beige'].includes(uiPrefs.theme) ? uiPrefs.theme : 'dark';
@@ -660,98 +660,52 @@ function qrCandidateToUrl(rawValue){
   const extracted = extractFirstUrl(raw);
   return normalizeUrl(extracted || raw);
 }
-let qrScanSession = null;
-
-function stopQrScan(){
-  const session = qrScanSession;
-  qrScanSession = null;
-  if(!session) return;
-  if(session.raf) cancelAnimationFrame(session.raf);
-  try{ session.stream.getTracks().forEach(t => t.stop()); }catch(e){}
-  if(session.onVisibility) document.removeEventListener('visibilitychange', session.onVisibility);
-  session.overlay?.remove();
-}
-
 async function scanQrCode(){
-  if(!isNativeApp()){
-    toast('⚠️ قراءة QR متاحة داخل تطبيق الآيفون');
-    return;
-  }
-  if(qrScanSession) return;
-  if(typeof jsQR !== 'function'){
-    toast('⚠️ قارئ QR غير متاح، تحقق من الاتصال بالإنترنت');
-    return;
-  }
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    toast('⚠️ قراءة QR غير مدعومة في هذا الجهاز');
-    return;
-  }
-
-  let stream;
   try{
-    stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' } });
-  }catch(e){
-    toast('⚠️ اسمح باستخدام الكاميرا لقراءة QR');
-    return;
-  }
-
-  const overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden;';
-  const video = document.createElement('video');
-  video.setAttribute('playsinline','');
-  video.setAttribute('autoplay','');
-  video.muted = true;
-  video.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-  const frame = document.createElement('div');
-  frame.style.cssText = 'position:absolute;width:min(70vw,280px);height:min(70vw,280px);border:3px solid rgba(255,255,255,.85);border-radius:20px;box-shadow:0 0 0 2000px rgba(0,0,0,.35);pointer-events:none;';
-  const closeBtn = document.createElement('button');
-  closeBtn.textContent = '✕ إلغاء';
-  closeBtn.style.cssText = 'position:absolute;top:calc(env(safe-area-inset-top,20px) + 16px);right:16px;background:rgba(20,20,30,.7);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:10px 18px;font-size:15px;font-family:inherit;';
-  const hint = document.createElement('div');
-  hint.textContent = 'وجّه الكاميرا نحو رمز QR';
-  hint.style.cssText = 'position:absolute;bottom:calc(env(safe-area-inset-bottom,20px) + 28px);left:0;right:0;text-align:center;color:#fff;font-size:14px;text-shadow:0 1px 4px rgba(0,0,0,.7);';
-  overlay.append(video, frame, closeBtn, hint);
-  document.body.appendChild(overlay);
-
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d', { willReadFrequently:true });
-  const session = { stream, overlay, raf:null, onVisibility:null };
-  qrScanSession = session;
-
-  closeBtn.onclick = () => stopQrScan();
-  session.onVisibility = () => { if(document.hidden) stopQrScan(); };
-  document.addEventListener('visibilitychange', session.onVisibility);
-
-  video.srcObject = stream;
-  try{ await video.play(); }catch(e){}
-
-  const tick = () => {
-    if(qrScanSession !== session) return;
-    if(video.readyState >= video.HAVE_ENOUGH_DATA && video.videoWidth){
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      let code = null;
-      try{
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts:'dontInvert' });
-      }catch(e){}
-      if(code && code.data){
-        const url = qrCandidateToUrl(code.data);
-        stopQrScan();
-        if(!/^https?:\/\//i.test(url)){
-          toast('⚠️ رمز QR لا يحتوي على رابط صالح');
-          return;
-        }
-        closeSettings();
-        openAddModal({ url });
-        setTimeout(() => fetchMetadata().catch(()=>{}), 260);
+    if(!isNativeApp()){
+      toast('⚠️ قراءة QR متاحة داخل تطبيق الآيفون');
+      return;
+    }
+    const scanner = getNativePlugin('BarcodeScanner');
+    if(!scanner || !scanner.scan){
+      toast('⚠️ قارئ QR غير متاح في هذا الإصدار');
+      return;
+    }
+    if(scanner.isSupported){
+      const support = await scanner.isSupported();
+      if(support && support.supported === false){
+        toast('⚠️ هذا الجهاز لا يدعم قراءة QR');
         return;
       }
     }
-    session.raf = requestAnimationFrame(tick);
-  };
-  session.raf = requestAnimationFrame(tick);
+    const platform = window.Capacitor?.getPlatform?.() || '';
+    if(platform === 'ios' && scanner.requestPermissions){
+      const permissions = await scanner.requestPermissions();
+      const cameraState = permissions?.camera;
+      if(cameraState !== 'granted' && cameraState !== 'limited'){
+        if(cameraState === 'denied' && scanner.openSettings && confirm('صلاحية الكاميرا مطلوبة لقراءة QR. فتح الإعدادات؟')) await scanner.openSettings();
+        else toast('⚠️ اسمح باستخدام الكاميرا لقراءة QR');
+        return;
+      }
+    }
+    const result = await scanner.scan({ formats:['QR_CODE'] });
+    const rawValue = result?.barcodes?.[0]?.rawValue || result?.barcodes?.[0]?.displayValue || '';
+    if(!rawValue){ toast('ℹ️ لم يتم العثور على رمز QR'); return; }
+    const url = qrCandidateToUrl(rawValue);
+    if(!/^https?:\/\//i.test(url)){
+      toast('⚠️ رمز QR لا يحتوي على رابط صالح');
+      return;
+    }
+    closeSettings();
+    openAddModal({ url });
+    setTimeout(() => fetchMetadata().catch(()=>{}), 260);
+  }catch(e){
+    const cancelled = String(e?.message || e || '').toLowerCase().includes('cancel');
+    if(!cancelled){
+      console.warn('QR scan failed', e);
+      toast('⚠️ تعذرت قراءة رمز QR');
+    }
+  }
 }
 
 function getRevenueCatConfig(){
@@ -1474,7 +1428,7 @@ async function initSupabase(){
         identifyRevenueCatUser(cloudUser.id).catch(()=>{});
         updateCloudStatus('online','مزامن');
         updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text');
-        setTimeout(() => { if(event === 'SIGNED_IN') syncLocalToCloud(); else loadCloudData(); }, 0);
+        setTimeout(() => { synchronizeSignedInAccount(event).catch(showCloudError); }, 0);
       }else{
         updateCloudStatus('warn','غير مسجل');
         if(event === 'SIGNED_OUT') updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.');
@@ -1483,12 +1437,13 @@ async function initSupabase(){
     if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
   }catch(e){ cloudUser = null; renderAuthUI(); updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
 }
-function linkToRow(l){ return { id:l.id, user_id:cloudUser?.id, title:l.title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', is_favorite:!!l.favorite, created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
+function showCloudError(error){ console.warn('LinkVault cloud sync failed', error); updateCloudStatus('warn','خطأ مزامنة'); updateSettingsStatus('تعذر حفظ الروابط على الحساب: ' + (error?.message || error), 'danger-text'); }
+function linkToRow(l){ const title=String(l.title||'').trim()||(()=>{try{return new URL(l.url).hostname;}catch(e){return 'رابط محفوظ';}})(); return { id:l.id, user_id:cloudUser?.id, title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', is_favorite:!!l.favorite, created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
 function rowToLink(r){ return { id:r.id, title:r.title || '', url:r.url || '', cat:r.category_name || 'أخرى', note:r.notes || '', trailer:r.trailer_url || '', thumbnail:r.thumbnail_url || '', platform:r.platform || detectPlatform(r.url || '').label, favorite:!!r.is_favorite, ts:r.created_at ? new Date(r.created_at).getTime() : Date.now(), updatedAt:r.updated_at || nowIso() }; }
 async function loadCloudData(){
   if(!sbClient || !cloudUser || syncing) return; syncing = true;
   try{
-    const [cr, lr] = await Promise.all([ sbClient.from('categories').select('name').order('created_at',{ascending:true}), sbClient.from('links').select('*').order('created_at',{ascending:false}) ]);
+    const [cr, lr] = await Promise.all([ sbClient.from('categories').select('name').eq('user_id',cloudUser.id).order('created_at',{ascending:true}), sbClient.from('links').select('*').eq('user_id',cloudUser.id).order('created_at',{ascending:false}) ]);
     if(cr.error || lr.error) throw (cr.error || lr.error);
     if((cr.data || []).length){ cats = cr.data.map(x => x.name).filter(Boolean); }
     else { for(const c of cats) await upsertCategoryCloud(c); }
@@ -1511,10 +1466,11 @@ async function loadCloudData(){
   }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.', 'danger-text'); }
   syncing = false;
 }
-async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const row = linkToRow(l); const { error } = await sbClient.from('links').upsert(row, { onConflict:'id' }); if(error) console.warn(error); }
-async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; await sbClient.from('links').delete().eq('id', id); }
-async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; await sbClient.from('categories').upsert({ user_id:cloudUser.id, name }, { onConflict:'user_id,name' }); }
-async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; await sbClient.from('categories').delete().eq('name', name); }
+async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const { error }=await sbClient.from('links').upsert(linkToRow(l),{onConflict:'id'}); if(error) throw error; }
+async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('links').delete().eq('user_id',cloudUser.id).eq('id',id); if(error) throw error; }
+async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').upsert({user_id:cloudUser.id,name},{onConflict:'user_id,name'}); if(error) throw error; }
+async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').delete().eq('user_id',cloudUser.id).eq('name',name); if(error) throw error; }
+async function synchronizeSignedInAccount(event='SIGNED_IN'){ if(authSyncPromise) return authSyncPromise; authSyncPromise=event==='SIGNED_IN'?syncLocalToCloud():loadCloudData(); try{await authSyncPromise;}finally{authSyncPromise=null;} }
 async function syncLocalToCloud(){
   if(!sbClient || !cloudUser){ toast('⚠️ سجل دخول أولاً'); return; }
   updateSettingsStatus('جاري رفع البيانات المحلية...', 'warning-text');
