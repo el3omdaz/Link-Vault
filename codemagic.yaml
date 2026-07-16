@@ -11,7 +11,6 @@ workflows:
       vars:
         BUNDLE_ID: "com.linkvaultq8.app"
         MARKETING_VERSION: "1.0"
-        BUILD_NUMBER: "69"
         SHARE_EXTENSION_BUNDLE_ID: "com.linkvaultq8.app.ShareExtension"
         APP_GROUP_ID: "group.com.linkvaultq8.shared"
         USE_APP_GROUPS: "true"
@@ -154,8 +153,9 @@ workflows:
         script: |
           set -e
           cd ios/App
-          echo "Using Codemagic build number: $BUILD_NUMBER"
-          agvtool new-version -all "$BUILD_NUMBER"
+          NEXT_BUILD_NUMBER=$((CM_BUILD_NUMBER + 69))
+          echo "Using unique iOS build number: $NEXT_BUILD_NUMBER"
+          agvtool new-version -all "$NEXT_BUILD_NUMBER"
 
       - name: Build ipa for TestFlight
         script: |
