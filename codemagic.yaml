@@ -153,7 +153,14 @@ workflows:
         script: |
           set -e
           cd ios/App
-          NEXT_BUILD_NUMBER=$((CM_BUILD_NUMBER + 72))
+          if [ -n "${APP_STORE_APPLE_ID:-}" ]; then
+            LATEST_BUILD_NUMBER=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID")
+            NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
+          else
+            NEXT_BUILD_NUMBER=$((CM_BUILD_NUMBER + 1000))
+            echo "APP_STORE_APPLE_ID is not set; using safe Codemagic fallback."
+          fi
+          if [ "$NEXT_BUILD_NUMBER" -lt 73 ]; then NEXT_BUILD_NUMBER=73; fi
           echo "Using unique iOS build number: $NEXT_BUILD_NUMBER"
           agvtool new-version -all "$NEXT_BUILD_NUMBER"
 
