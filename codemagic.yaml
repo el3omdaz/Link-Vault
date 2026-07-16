@@ -153,7 +153,7 @@ workflows:
         script: |
           set -e
           cd ios/App
-          NEXT_BUILD_NUMBER=$((CM_BUILD_NUMBER + 69))
+          NEXT_BUILD_NUMBER=$((CM_BUILD_NUMBER + 72))
           echo "Using unique iOS build number: $NEXT_BUILD_NUMBER"
           agvtool new-version -all "$NEXT_BUILD_NUMBER"
 
