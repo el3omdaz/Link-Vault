@@ -1466,7 +1466,7 @@ async function loadCloudData(){
   }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.', 'danger-text'); }
   syncing = false;
 }
-async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const { error }=await sbClient.from('links').upsert(linkToRow(l),{onConflict:'id'}); if(error) throw error; }
+async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return; const row=linkToRow(l); let {error}=await sbClient.from('links').upsert(row,{onConflict:'id'}); if(error && /is_favorite.*schema cache|column.*is_favorite/i.test(error.message||'')){ delete row.is_favorite; ({error}=await sbClient.from('links').upsert(row,{onConflict:'id'})); } if(error) throw error; }
 async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('links').delete().eq('user_id',cloudUser.id).eq('id',id); if(error) throw error; }
 async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').upsert({user_id:cloudUser.id,name},{onConflict:'user_id,name'}); if(error) throw error; }
 async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').delete().eq('user_id',cloudUser.id).eq('name',name); if(error) throw error; }
