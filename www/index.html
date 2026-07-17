@@ -1409,7 +1409,7 @@ if(panel) panel.hidden = !show;
 if(show && $('authOtp')) setTimeout(() => $('authOtp').focus(), 120);
 }
 function otpCooldownRemaining(){ return Math.max(0,Math.ceil(((Number(STORE.get(LS_OTP_COOLDOWN_UNTIL,0))||0)-Date.now())/1000)); }
-function startOtpCooldown(seconds=90){
+function startOtpCooldown(seconds=40){
 clearInterval(otpCooldownTimer); const until=Date.now()+Math.max(1,seconds)*1000; STORE.set(LS_OTP_COOLDOWN_UNTIL,until);
 const refresh=()=>{ const left=Math.max(0,Math.ceil((until-Date.now())/1000)),disabled=left>0,send=$('btnSendOtp'),resend=$('btnResendOtp'); if(send){send.disabled=disabled;send.textContent=disabled?'إعادة الإرسال بعد '+left+'ث':'إرسال رمز التحقق';} if(resend){resend.disabled=disabled;resend.textContent=disabled?'إعادة الإرسال بعد '+left+'ث':'إعادة إرسال الرمز';} if(!disabled){clearInterval(otpCooldownTimer);otpCooldownTimer=null;STORE.remove(LS_OTP_COOLDOWN_UNTIL);} };
 refresh(); otpCooldownTimer=setInterval(refresh,1000);
@@ -1425,7 +1425,7 @@ try{
 if(!await ensureAuthClient()) return; const wait=otpCooldownRemaining(); if(wait){startOtpCooldown(wait);toast('انتظر '+wait+' ثانية قبل إعادة الإرسال');return;}
 const email=$('authEmail').value.trim().toLowerCase(); if(!/^\S+@\S+\.\S+$/.test(email)){toast('⚠️ أدخل بريدًا إلكترونيًا صحيحًا');return;}
 button.disabled=true;button.textContent='جاري إرسال الرمز...'; const {error}=await sbClient.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:getAuthRedirectUrl()}}); if(error) throw error;
-pendingOtpEmail=email;STORE.set(LS_PENDING_OTP,email);setOtpPanelVisible(true);startOtpCooldown(90);updateSettingsStatus('📧 أرسلنا رمز تحقق إلى '+email+'. أدخل الرمز ولا تستخدم رابطًا قديمًا.','success-text');toast('📧 تم إرسال رمز التحقق');
+pendingOtpEmail=email;STORE.set(LS_PENDING_OTP,email);setOtpPanelVisible(true);startOtpCooldown(40);updateSettingsStatus('📧 أرسلنا رمز تحقق إلى '+email+'. أدخل الرمز ولا تستخدم رابطًا قديمًا.','success-text');toast('📧 تم إرسال رمز التحقق');
 }catch(e){ const limited=e?.status===429||/rate limit|too many|over_email_send_rate_limit/i.test((e?.code||'')+' '+(e?.message||'')); if(limited){startOtpCooldown(600);updateSettingsStatus('تم الوصول لحد إرسال البريد مؤقتًا. انتظر 10 دقائق ثم حاول مرة واحدة.','warning-text');toast('⚠️ انتظر 10 دقائق قبل إعادة الإرسال');} else {const msg=e?.message||'تعذر إرسال رمز التحقق';updateSettingsStatus(msg,'danger-text');toast(msg);button.disabled=false;button.textContent='إرسال رمز التحقق';} }
 }
 async function verifyEmailOtp(){
