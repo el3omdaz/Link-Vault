@@ -16,11 +16,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --bg:#0d0d14; --surface:#13131f; --card:#1a1a2e; --card2:#1f1f35;
-  --border:#2a2a45; --border2:#3b3b68; --accent:#7c6aff; --accent2:#a855f7;
-  --gold:#f5c842; --red:#ef476f; --green:#22d3a5; --blue:#38bdf8;
-  --text:#eeeeff; --muted:#74749c; --muted2:#a1a1c7; --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --radius:16px; --radius-sm:10px;
+--bg:#0d0d14; --surface:#13131f; --card:#1a1a2e; --card2:#1f1f35;
+--border:#2a2a45; --border2:#3b3b68; --accent:#7c6aff; --accent2:#a855f7;
+--gold:#f5c842; --red:#ef476f; --green:#22d3a5; --blue:#38bdf8;
+--text:#eeeeff; --muted:#74749c; --muted2:#a1a1c7; --safe-bottom: env(safe-area-inset-bottom, 0px);
+--radius:16px; --radius-sm:10px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text)}
@@ -46,8 +46,6 @@ button{cursor:pointer}
 .cat-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;backdrop-filter:blur(5px)}.cat-modal-overlay.open{opacity:1;pointer-events:all}.cat-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px;width:min(390px,92vw)}.cat-modal h3{font-size:1.03rem;font-weight:900;margin-bottom:8px}.cat-order-hint{font-size:.76rem;color:var(--muted2);line-height:1.6;margin-bottom:12px}.cat-actions{display:flex;gap:8px;margin-top:12px}.cat-actions button{flex:1;padding:11px;border-radius:10px;border:none;font-weight:900;font-size:.9rem}.cat-actions .confirm{background:var(--accent);color:#fff}.cat-actions .cancel2{background:var(--card);color:var(--muted2);border:1px solid var(--border)}.cat-list{margin-top:14px;display:grid;gap:7px;max-height:280px;overflow:auto}.cat-item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 9px}.cat-item-name{flex:1;min-width:0;font-size:.83rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cat-item-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}.cat-item button{min-width:31px;height:30px;border:1px solid var(--border);background:var(--card2);color:var(--muted2);border-radius:8px;padding:0 7px;font-size:.72rem;font-weight:900}.cat-item .edit-btn{color:var(--blue);border-color:rgba(80,150,255,.28);background:rgba(80,150,255,.07)}.cat-item .move-btn{font-size:.88rem}.cat-item .del-btn{color:var(--red);border-color:rgba(239,71,111,.35);background:rgba(239,71,111,.08)}.cat-item button:disabled{opacity:.28;cursor:not-allowed;filter:grayscale(.4)}
 .toast{position:fixed;bottom:calc(22px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(90px);background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:11px 18px;font-size:.86rem;font-weight:900;color:var(--text);z-index:999;transition:transform .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}.toast.show{transform:translateX(-50%) translateY(0)}.install-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:12px 18px calc(12px + var(--safe-bottom));display:flex;align-items:center;gap:12px;z-index:50;transform:translateY(100%);transition:.35s}.install-bar.show{transform:translateY(0)}.install-bar span{flex:1;font-size:.85rem;font-weight:900}.install-bar button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:9px;color:#fff;font-size:.8rem;font-weight:900;padding:7px 13px}.install-bar .close-install{background:none;border:none;font-size:18px;padding:0}.hidden{display:none!important}
 @media(max-width:560px){.header{gap:8px;padding-right:12px;padding-left:12px}.status-pill{max-width:46px;padding:7px}.status-pill span:last-child{display:none}.summary-row{grid-template-columns:repeat(3,1fr)}.card-actions{width:100%;margin-top:8px}.card-top{flex-wrap:wrap}.card-info{min-width:calc(100% - 56px)}.row{flex-direction:column}.sheet{padding-left:16px;padding-right:16px}.card-btn{flex:1;justify-content:center}.thumb-row{display:block}.thumb-row img{width:100%;height:150px;margin-top:4px}.link-card.card-open-hint::after{display:none}}
-
-
 /* LinkVault UI preferences: themes, view modes, selection, backup/restore */
 :root{--note-text:#fff;--toolbar-bg:rgba(19,19,31,.94);--danger-bg:rgba(239,71,111,.10)}
 html[data-theme="light"]{--bg:#f4f6fb;--surface:#ffffff;--card:#ffffff;--card2:#f1f3f9;--border:#dfe3ee;--border2:#c5cada;--accent:#6757e8;--accent2:#8b49d8;--gold:#b78400;--red:#d92d57;--green:#078f70;--blue:#087eae;--text:#171725;--muted:#76788b;--muted2:#4f5267;--note-text:#171725;--toolbar-bg:rgba(255,255,255,.95);--danger-bg:rgba(217,45,87,.08)}
@@ -109,8 +107,6 @@ textarea.inp,.card-note{color:var(--note-text)}
 .restore-summary{font-size:.84rem;line-height:1.7;color:var(--muted2);background:var(--card);border:1px solid var(--border);border-radius:11px;padding:10px;margin-top:8px}
 .restore-actions{display:grid;gap:8px;margin-top:13px}.restore-actions button{padding:11px;border-radius:10px;border:1px solid var(--border);font-weight:900;font-size:.87rem}.restore-actions .merge{background:var(--accent);color:#fff;border-color:var(--accent)}.restore-actions .replace{background:var(--danger-bg);color:var(--red);border-color:rgba(239,71,111,.35)}.restore-actions .cancel{background:var(--card);color:var(--muted2)}
 @media(max-width:430px){.favorite-filter-btn{padding:0 8px;font-size:.72rem}.manage-cats-btn{padding:0 8px;font-size:.7rem}.library-toolbar{gap:6px}.view-btn,.select-mode-btn{padding:7px 8px}.links-container.view-grid{gap:7px}.links-container.view-grid .card-body{padding:10px}.links-container.view-grid .platform-logo,.links-container.view-grid .platform-logo svg,.links-container.view-grid .platform-logo img{width:36px;height:36px}.links-container.view-grid .card-title{font-size:.84rem}.links-container.view-grid .card-url{font-size:.62rem}.links-container.view-grid .card-btn{font-size:.7rem}.links-container.view-grid .cat-badge,.links-container.view-grid .platform-badge{font-size:.6rem;padding:3px 6px}}
-
-
 .language-picker{display:grid;grid-template-columns:1fr;gap:8px}.language-picker .select-inp{font-weight:900}
 .language-current{font-size:.76rem;color:var(--muted);line-height:1.55;margin-top:7px}
 html[dir="ltr"] body{text-align:left}
@@ -118,295 +114,258 @@ html[dir="ltr"] .inp,html[dir="ltr"] .select-inp,html[dir="ltr"] textarea.inp{te
 html[dir="ltr"] .contact-user{direction:ltr;text-align:right}
 html[dir="ltr"] .search-wrap input{padding-left:42px;padding-right:42px}
 html[dir="ltr"] .cat-item-name,html[dir="ltr"] .card-info,html[dir="ltr"] .settings-status{text-align:left}
-
 html[dir="ltr"] .link-card.card-open-hint::after{content:'Tap to open link';left:auto;right:12px}
 html[dir="ltr"] .card-note{border-right:0;border-left:2px solid var(--accent);border-radius:var(--radius-sm) 0 0 var(--radius-sm)}
 html[dir="ltr"] .card-date{margin-right:0;margin-left:auto}
 html[dir="ltr"] .card-url,html[dir="ltr"] .trailer-row .t-url{text-align:left}
-
-
 .url-scan-row{display:flex;gap:8px;align-items:stretch}.url-scan-row .inp{flex:1;min-width:0}.qr-scan-btn{flex:0 0 auto;min-width:78px;border:1px solid rgba(56,189,248,.45);background:rgba(56,189,248,.12);color:var(--blue);border-radius:12px;font-size:.82rem;font-weight:900;padding:0 12px}.qr-scan-btn:hover{border-color:var(--blue);color:var(--text)}
 .pro-settings-section[hidden]{display:none!important}.pro-status{font-size:.83rem;color:var(--muted2);line-height:1.55;margin-bottom:10px}.pro-status.active{color:var(--green);font-weight:900}.pro-status.warning{color:var(--gold)}.pro-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pro-actions button{margin:0}
 .paywall-sheet{max-height:94vh}.paywall-hero{text-align:center;padding:4px 8px 16px}.paywall-icon{font-size:44px}.paywall-hero h2{font-size:1.35rem;font-weight:900;margin-top:4px}.paywall-hero p{font-size:.84rem;color:var(--muted2);line-height:1.6;margin-top:7px}.paywall-plans{display:grid;gap:10px}.paywall-plan{width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;text-align:start;background:var(--card);border:1px solid var(--border);border-radius:15px;color:var(--text);padding:14px}.paywall-plan:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px)}.paywall-plan:disabled{opacity:.5;cursor:not-allowed}.paywall-plan.best{border-color:rgba(124,106,255,.68);box-shadow:0 0 0 2px rgba(124,106,255,.08)}.paywall-plan-name{font-size:1rem;font-weight:900}.paywall-plan-sub{font-size:.72rem;color:var(--muted);margin-top:3px}.paywall-price{font-size:1.05rem;font-weight:900;color:var(--accent);direction:ltr;white-space:nowrap}.paywall-badge{display:inline-block;font-size:.65rem;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:3px 7px;border-radius:999px;margin-inline-start:6px}.paywall-message{font-size:.75rem;color:var(--muted);line-height:1.55;margin:12px 2px}.paywall-footer{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.paywall-footer button{margin:0}
 html[dir="ltr"] .paywall-plan{text-align:left}
 @media(max-width:390px){.qr-scan-btn{min-width:64px;padding:0 8px}.pro-actions,.paywall-footer{grid-template-columns:1fr}}
-
 </style>
 </head>
 <body>
 <div class="header">
-  <div class="header-logo">🔗</div>
-  <div>
-    <div class="header-title">Link<span>Vault</span></div>
-    <div class="header-sub">مكتبة روابطك الذكية</div>
-  </div>
-  <div class="header-spacer"></div>
-  <button class="icon-btn" id="btnSettings" title="الإعدادات">⚙️</button>
-  <div class="status-pill" id="cloudStatus" title="حالة المزامنة"><span class="status-dot"></span><span>محلي</span></div>
-  <button class="icon-btn" id="btnQrScan" title="قراءة رابط من QR" aria-label="قراءة QR">▣</button>
-  <button class="icon-btn btn-add" id="btnAdd" title="إضافة رابط">＋</button>
+<div class="header-logo">🔗</div>
+<div>
+<div class="header-title">Link<span>Vault</span></div>
+<div class="header-sub">مكتبة روابطك الذكية</div>
 </div>
-
+<div class="header-spacer"></div>
+<button class="icon-btn" id="btnSettings" title="الإعدادات">⚙️</button>
+<div class="status-pill" id="cloudStatus" title="حالة المزامنة"><span class="status-dot"></span><span>محلي</span></div>
+<button class="icon-btn" id="btnQrScan" title="قراءة رابط من QR" aria-label="قراءة QR">▣</button>
+<button class="icon-btn btn-add" id="btnAdd" title="إضافة رابط">＋</button>
+</div>
 <div class="tabs-bar" id="tabsBar"></div>
-
 <div class="search-bar">
-  <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input type="search" id="searchInp" placeholder="ابحث في الروابط والعناوين والملاحظات...">
-    <button class="search-clear" id="btnClearSearch" title="مسح البحث">✕</button>
-  </div>
+<div class="search-wrap">
+<span class="search-icon">🔍</span>
+<input type="search" id="searchInp" placeholder="ابحث في الروابط والعناوين والملاحظات...">
+<button class="search-clear" id="btnClearSearch" title="مسح البحث">✕</button>
 </div>
-
+</div>
 <div class="library-toolbar">
-  <div class="view-switch" aria-label="طريقة العرض">
-    <button class="view-btn" data-view="cards" title="بطاقات">▤ بطاقات</button>
-    <button class="view-btn" data-view="compact" title="مختصر">☷ مختصر</button>
-    <button class="view-btn" data-view="grid" title="شبكة">▦ شبكة</button>
-  </div>
-  <button class="select-mode-btn" id="btnSelectMode">☑ تحديد</button>
+<div class="view-switch" aria-label="طريقة العرض">
+<button class="view-btn" data-view="cards" title="بطاقات">▤ بطاقات</button>
+<button class="view-btn" data-view="compact" title="مختصر">☷ مختصر</button>
+<button class="view-btn" data-view="grid" title="شبكة">▦ شبكة</button>
+</div>
+<button class="select-mode-btn" id="btnSelectMode">☑ تحديد</button>
 </div>
 <div class="selection-bar" id="selectionBar">
-  <span class="selection-count" id="selectionCount">0 محدد</span>
-  <button class="selection-action" id="btnSelectVisible">تحديد الظاهر</button>
-  <button class="selection-action" id="btnClearSelection">إلغاء التحديد</button>
-  <button class="selection-action danger" id="btnDeleteSelected">حذف المحدد</button>
-  <button class="selection-action danger" id="btnDeleteAll">مسح الجميع</button>
+<span class="selection-count" id="selectionCount">0 محدد</span>
+<button class="selection-action" id="btnSelectVisible">تحديد الظاهر</button>
+<button class="selection-action" id="btnClearSelection">إلغاء التحديد</button>
+<button class="selection-action danger" id="btnDeleteSelected">حذف المحدد</button>
+<button class="selection-action danger" id="btnDeleteAll">مسح الجميع</button>
 </div>
-
 <div class="main" id="mainList"></div>
-
 <div class="overlay" id="overlay">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title" id="sheetTitle">إضافة رابط جديد</div>
-
-    <div class="field-label">🔗 الرابط</div>
-    <div class="url-scan-row"><input class="inp" id="inpUrl" type="url" placeholder="الصق الرابط هنا..."><button class="qr-scan-btn" id="btnQrScanInline" type="button">▣ قراءة QR</button></div>
-    <div class="ai-row"><button class="btn-ai" id="btnFetch">✨ جلب العنوان والصورة</button></div>
-    <div class="ai-status" id="aiStatus"></div>
-
-    <div class="field-label">📝 العنوان</div>
-    <input class="inp" id="inpTitle" placeholder="اكتب عنواناً للرابط...">
-
-    <div class="row">
-      <div>
-        <div class="field-label">🗂️ التصنيف</div>
-        <select class="select-inp" id="inpCat"></select>
-      </div>
-      <div>
-        <div class="field-label">🏷️ المنصة</div>
-        <input class="inp" id="inpPlatform" placeholder="تلقائي" disabled>
-      </div>
-    </div>
-
-    <div class="field-label">🖼️ صورة مصغرة (اختياري)</div>
-    <input class="inp" id="inpThumb" type="url" placeholder="https://...">
-
-    <div class="field-label">🎬 رابط التريلر (اختياري)</div><div class="hint">إذا ما عندك رابط التريلر، استخدم زر البحث وسيتم فتح نتائج يوتيوب تلقائيًا.</div>
-    <input class="inp" id="inpTrailer" type="url" placeholder="https://youtube.com/watch?v=...">
-    <div class="ai-row"><button class="btn-ai" id="btnTrailer">🎬 بحث عن تريلر رسمي في يوتيوب</button></div>
-
-    <div class="field-label">📌 ملاحظات</div>
-    <textarea class="inp" id="inpNote" placeholder="أي ملاحظات تريد إضافتها... مثل: شفته، مهم، للرجوع لاحقًا..."></textarea>
-
-    <button class="btn-save" id="btnSave">💾 حفظ</button>
-    <button class="btn-cancel" id="btnCancel">إلغاء</button>
-  </div>
+<div class="sheet">
+<div class="sheet-handle"></div>
+<div class="sheet-title" id="sheetTitle">إضافة رابط جديد</div>
+<div class="field-label">🔗 الرابط</div>
+<div class="url-scan-row"><input class="inp" id="inpUrl" type="url" placeholder="الصق الرابط هنا..."><button class="qr-scan-btn" id="btnQrScanInline" type="button">▣ قراءة QR</button></div>
+<div class="ai-row"><button class="btn-ai" id="btnFetch">✨ جلب العنوان والصورة</button></div>
+<div class="ai-status" id="aiStatus"></div>
+<div class="field-label">📝 العنوان</div>
+<input class="inp" id="inpTitle" placeholder="اكتب عنواناً للرابط...">
+<div class="row">
+<div>
+<div class="field-label">🗂️ التصنيف</div>
+<select class="select-inp" id="inpCat"></select>
 </div>
-
+<div>
+<div class="field-label">🏷️ المنصة</div>
+<input class="inp" id="inpPlatform" placeholder="تلقائي" disabled>
+</div>
+</div>
+<div class="field-label">🖼️ صورة مصغرة (اختياري)</div>
+<input class="inp" id="inpThumb" type="url" placeholder="https://...">
+<div class="field-label">🎬 رابط التريلر (اختياري)</div><div class="hint">إذا ما عندك رابط التريلر، استخدم زر البحث وسيتم فتح نتائج يوتيوب تلقائيًا.</div>
+<input class="inp" id="inpTrailer" type="url" placeholder="https://youtube.com/watch?v=...">
+<div class="ai-row"><button class="btn-ai" id="btnTrailer">🎬 بحث عن تريلر رسمي في يوتيوب</button></div>
+<div class="field-label">📌 ملاحظات</div>
+<textarea class="inp" id="inpNote" placeholder="أي ملاحظات تريد إضافتها... مثل: شفته، مهم، للرجوع لاحقًا..."></textarea>
+<button class="btn-save" id="btnSave">💾 حفظ</button>
+<button class="btn-cancel" id="btnCancel">إلغاء</button>
+</div>
+</div>
 <div class="overlay" id="settingsOverlay">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">⚙️ الإعدادات والمزامنة</div>
-
-    <div class="settings-status" id="settingsStatus">الوضع الحالي: حفظ محلي على الجهاز.</div>
-
-    <div class="divider"></div>
-    <div class="field-label">🔐 الحساب والمزامنة</div>
-    <div class="auth-box" id="authBox">
-      <div class="auth-signed-out" id="authSignedOutPanel">
-        <div class="field-label">📧 البريد الإلكتروني</div>
-        <input class="inp" id="authEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="you@example.com">
-        <button class="btn-ai auth-primary" id="btnSendOtp">إرسال رمز التحقق</button>
-
-        <div class="otp-panel" id="otpPanel" hidden>
-          <div class="field-label">🔢 رمز التحقق</div>
-          <div class="otp-row">
-            <input class="inp otp-input" id="authOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
-            <button class="btn-ai" id="btnVerifyOtp">تأكيد</button>
-          </div>
-          <button class="btn-cancel" id="btnResendOtp" style="margin-top:8px">إعادة إرسال الرمز</button>
-        </div>
-
-        <div class="auth-separator">أو</div>
-        <div class="social-login">
-          <button class="social-btn apple" id="btnAppleLogin"><span class="social-icon"></span><span>Apple ID</span></button>
-          <button class="social-btn google" id="btnGoogleLogin"><span class="social-icon">G</span><span>Google</span></button>
-        </div>
-        <div class="auth-hint" id="authHint">رمز البريد ينشئ الحساب تلقائيًا للمستخدم الجديد. لا توجد كلمة مرور.</div>
-      </div>
-
-      <div class="auth-signed-in" id="authSignedInPanel" hidden>
-        <div class="account-session-card">
-          <div class="account-session-icon">✓</div>
-          <div class="account-session-copy">
-            <div class="account-session-title" id="authSignedInTitle">تم تسجيل الدخول</div>
-            <div class="account-session-identity" id="authSignedInIdentity"></div>
-            <div class="account-session-provider" id="authSignedInProvider"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row account-actions" id="accountActions" hidden>
-      <button class="btn-ai" id="btnSyncNow">مزامنة الآن</button>
-      <button class="btn-ai" id="btnLogout">تسجيل خروج</button>
-    </div>
-
-
-
-    <div class="pro-settings-section" id="proSettingsSection" hidden>
-      <div class="divider"></div>
-      <div class="field-label">💎 LinkVault Pro</div>
-      <div class="settings-card">
-        <div class="pro-status" id="proStatus">الخطة المجانية: حتى 10 روابط و3 أنواع إضافية</div>
-        <div class="pro-actions">
-          <button class="btn-ai" id="btnOpenPaywall">💎 الترقية إلى Pro</button>
-          <button class="btn-ai" id="btnRestorePurchases">استرجاع المشتريات</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-    <div class="field-label">🌐 لغة التطبيق</div>
-    <div class="settings-card language-picker">
-      <select class="select-inp" id="languageSelect" aria-label="لغة التطبيق">
-        <option value="device">لغة الجهاز</option>
-        <option value="ar">العربية</option>
-        <option value="en">English</option>
-      </select>
-      <div class="language-current" id="languageCurrent">إذا كانت لغة الجهاز العربية سيعمل التطبيق بالعربية، وأي لغة أخرى تستخدم الإنجليزية تلقائيًا.</div>
-    </div>
-
-    <div class="divider"></div>
-    <div class="field-label">🎨 ثيم التطبيق</div>
-    <div class="theme-picker" id="themePicker">
-      <button class="theme-choice" data-theme="dark"><span class="theme-swatch dark"></span>داكن</button>
-      <button class="theme-choice" data-theme="light"><span class="theme-swatch light"></span>أبيض</button>
-      <button class="theme-choice" data-theme="beige"><span class="theme-swatch beige"></span>بيج</button>
-    </div>
-
-    <div class="divider"></div>
-    <div class="field-label">🗄️ النسخ الاحتياطي والاستعادة</div>
-    <div class="hint">النسخة تشمل الروابط والتصنيفات والملاحظات والصور والتريلرات، ولا تشمل كلمة المرور أو بيانات جلسة الدخول.</div>
-    <div class="backup-grid">
-      <button class="btn-ai" id="btnBackup">⬆️ باك أب</button>
-      <button class="btn-ai" id="btnRestore">⬇️ ريستور</button>
-    </div>
-
-    <div class="divider"></div>
-    <div class="field-label">ℹ️ عن التطبيق</div>
-    <div class="settings-card">
-      <div style="font-weight:900">LinkVault</div>
-      <div class="hint">التطبيق من عمل M. ALQattan</div>
-    </div>
-
-    <div class="divider"></div>
-    <div class="field-label">📬 تواصل معنا</div>
-    <div class="settings-card" id="contactLinks">
-      <div class="contact-grid"><a class="contact-link" href="https://www.instagram.com/QoooLxxx/" target="_blank" rel="noopener"><span>Instagram</span><span class="contact-user">@QoooLxxx</span></a>
-      <a class="contact-link" href="https://www.snapchat.com/add/QoooLxxxZ" target="_blank" rel="noopener"><span>Snapchat</span><span class="contact-user">@QoooLxxxZ</span></a>
-      <a class="contact-link" href="https://x.com/QoooLxxx" target="_blank" rel="noopener"><span>X</span><span class="contact-user">@QoooLxxx</span></a>
-      <a class="contact-link" href="https://www.facebook.com/share/193HAVPV7A/?mibextid=wwXIfr" target="_blank" rel="noopener"><span>Facebook</span><span class="contact-user" style="direction:rtl">تابعنا</span></a>
-      <a class="contact-link" href="https://wa.me/96594942410" target="_blank" rel="noopener"><span>WhatsApp</span><span class="contact-user">+965 9494 2410</span></a></div>
-    </div>
-    <div class="divider"></div>
-    <div class="field-label">🔧 تشخيص المشاركة (Share Extension)</div>
-    <div class="hint">اضغط هذا الزر بعد ما تشارك رابط من تطبيق ثاني (وقبل لا تسكر LinkVault)، عشان تشوف بالضبط وين المشكلة لو الرابط ما يوصل.</div>
-    <div class="ai-row"><button class="btn-ai" id="btnShareDiag">🔍 افحص الروابط المشتركة الآن</button></div>
-
-    <button class="btn-cancel" id="btnCloseSettings">إغلاق</button>
-  </div>
+<div class="sheet">
+<div class="sheet-handle"></div>
+<div class="sheet-title">⚙️ الإعدادات والمزامنة</div>
+<div class="settings-status" id="settingsStatus">الوضع الحالي: حفظ محلي على الجهاز.</div>
+<div class="divider"></div>
+<div class="field-label">🔐 الحساب والمزامنة</div>
+<div class="auth-box" id="authBox">
+<div class="auth-signed-out" id="authSignedOutPanel">
+<div class="field-label">📧 البريد الإلكتروني</div>
+<input class="inp" id="authEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="you@example.com">
+<button class="btn-ai auth-primary" id="btnSendOtp">إرسال رمز التحقق</button>
+<div class="otp-panel" id="otpPanel" hidden>
+<div class="field-label">🔢 رمز التحقق</div>
+<div class="otp-row">
+<input class="inp otp-input" id="authOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+<button class="btn-ai" id="btnVerifyOtp">تأكيد</button>
 </div>
-
+<button class="btn-cancel" id="btnResendOtp" style="margin-top:8px">إعادة إرسال الرمز</button>
+</div>
+<div class="auth-separator">أو</div>
+<div class="social-login">
+<button class="social-btn apple" id="btnAppleLogin"><span class="social-icon"></span><span>Apple ID</span></button>
+<button class="social-btn google" id="btnGoogleLogin"><span class="social-icon">G</span><span>Google</span></button>
+</div>
+<div class="auth-hint" id="authHint">رمز البريد ينشئ الحساب تلقائيًا للمستخدم الجديد. لا توجد كلمة مرور.</div>
+</div>
+<div class="auth-signed-in" id="authSignedInPanel" hidden>
+<div class="account-session-card">
+<div class="account-session-icon">✓</div>
+<div class="account-session-copy">
+<div class="account-session-title" id="authSignedInTitle">تم تسجيل الدخول</div>
+<div class="account-session-identity" id="authSignedInIdentity"></div>
+<div class="account-session-provider" id="authSignedInProvider"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row account-actions" id="accountActions" hidden>
+<button class="btn-ai" id="btnSyncNow">مزامنة الآن</button>
+<button class="btn-ai" id="btnLogout">تسجيل خروج</button>
+</div>
+<div class="pro-settings-section" id="proSettingsSection" hidden>
+<div class="divider"></div>
+<div class="field-label">💎 LinkVault Pro</div>
+<div class="settings-card">
+<div class="pro-status" id="proStatus">الخطة المجانية: حتى 10 روابط و3 أنواع إضافية</div>
+<div class="pro-actions">
+<button class="btn-ai" id="btnOpenPaywall">💎 الترقية إلى Pro</button>
+<button class="btn-ai" id="btnRestorePurchases">استرجاع المشتريات</button>
+</div>
+</div>
+</div>
+<div class="divider"></div>
+<div class="field-label">🌐 لغة التطبيق</div>
+<div class="settings-card language-picker">
+<select class="select-inp" id="languageSelect" aria-label="لغة التطبيق">
+<option value="device">لغة الجهاز</option>
+<option value="ar">العربية</option>
+<option value="en">English</option>
+</select>
+<div class="language-current" id="languageCurrent">إذا كانت لغة الجهاز العربية سيعمل التطبيق بالعربية، وأي لغة أخرى تستخدم الإنجليزية تلقائيًا.</div>
+</div>
+<div class="divider"></div>
+<div class="field-label">🎨 ثيم التطبيق</div>
+<div class="theme-picker" id="themePicker">
+<button class="theme-choice" data-theme="dark"><span class="theme-swatch dark"></span>داكن</button>
+<button class="theme-choice" data-theme="light"><span class="theme-swatch light"></span>أبيض</button>
+<button class="theme-choice" data-theme="beige"><span class="theme-swatch beige"></span>بيج</button>
+</div>
+<div class="divider"></div>
+<div class="field-label">🗄️ النسخ الاحتياطي والاستعادة</div>
+<div class="hint">النسخة تشمل الروابط والتصنيفات والملاحظات والصور والتريلرات، ولا تشمل كلمة المرور أو بيانات جلسة الدخول.</div>
+<div class="backup-grid">
+<button class="btn-ai" id="btnBackup">⬆️ باك أب</button>
+<button class="btn-ai" id="btnRestore">⬇️ ريستور</button>
+</div>
+<div class="divider"></div>
+<div class="field-label">ℹ️ عن التطبيق</div>
+<div class="settings-card">
+<div style="font-weight:900">LinkVault</div>
+<div class="hint">التطبيق من عمل M. ALQattan</div>
+</div>
+<div class="divider"></div>
+<div class="field-label">📬 تواصل معنا</div>
+<div class="settings-card" id="contactLinks">
+<div class="contact-grid"><a class="contact-link" href="https://www.instagram.com/QoooLxxx/" target="_blank" rel="noopener"><span>Instagram</span><span class="contact-user">@QoooLxxx</span></a>
+<a class="contact-link" href="https://www.snapchat.com/add/QoooLxxxZ" target="_blank" rel="noopener"><span>Snapchat</span><span class="contact-user">@QoooLxxxZ</span></a>
+<a class="contact-link" href="https://x.com/QoooLxxx" target="_blank" rel="noopener"><span>X</span><span class="contact-user">@QoooLxxx</span></a>
+<a class="contact-link" href="https://www.facebook.com/share/193HAVPV7A/?mibextid=wwXIfr" target="_blank" rel="noopener"><span>Facebook</span><span class="contact-user" style="direction:rtl">تابعنا</span></a>
+<a class="contact-link" href="https://wa.me/96594942410" target="_blank" rel="noopener"><span>WhatsApp</span><span class="contact-user">+965 9494 2410</span></a></div>
+</div>
+<div class="divider"></div>
+<div class="field-label">🔧 تشخيص المشاركة (Share Extension)</div>
+<div class="hint">اضغط هذا الزر بعد ما تشارك رابط من تطبيق ثاني (وقبل لا تسكر LinkVault)، عشان تشوف بالضبط وين المشكلة لو الرابط ما يوصل.</div>
+<div class="ai-row"><button class="btn-ai" id="btnShareDiag">🔍 افحص الروابط المشتركة الآن</button></div>
+<button class="btn-cancel" id="btnCloseSettings">إغلاق</button>
+</div>
+</div>
 <div class="cat-modal-overlay" id="catOverlay">
-  <div class="cat-modal">
-    <h3>🗂️ إدارة الأنواع</h3><div class="cat-order-hint">أضف نوعًا جديدًا أو عدّل الاسم أو غيّر الترتيب أو احذف أي نوع. خيار «أخرى» يبقى دائمًا في النهاية ويستقبل روابط النوع المحذوف.</div>
-    <input class="inp" id="inpNewCat" placeholder="اسم التصنيف: أفلام، طبخ، تعليم...">
-    <div class="cat-actions">
-      <button class="confirm" id="btnConfirmCat">إضافة</button>
-      <button class="cancel2" id="btnCancelCat">إلغاء</button>
-    </div>
-    <div class="cat-list" id="catList"></div>
-  </div>
+<div class="cat-modal">
+<h3>🗂️ إدارة الأنواع</h3><div class="cat-order-hint">أضف نوعًا جديدًا أو عدّل الاسم أو غيّر الترتيب أو احذف أي نوع. خيار «أخرى» يبقى دائمًا في النهاية ويستقبل روابط النوع المحذوف.</div>
+<input class="inp" id="inpNewCat" placeholder="اسم التصنيف: أفلام، طبخ، تعليم...">
+<div class="cat-actions">
+<button class="confirm" id="btnConfirmCat">إضافة</button>
+<button class="cancel2" id="btnCancelCat">إلغاء</button>
 </div>
-
-
+<div class="cat-list" id="catList"></div>
+</div>
+</div>
 <div class="overlay" id="paywallOverlay">
-  <div class="sheet paywall-sheet">
-    <div class="sheet-handle"></div>
-    <div class="paywall-hero">
-      <div class="paywall-icon">💎</div>
-      <h2>LinkVault Pro</h2>
-      <p>روابط وأنواع غير محدودة</p>
-    </div>
-    <div class="paywall-plans">
-      <button class="paywall-plan" data-rc-package="monthly" disabled>
-        <span><span class="paywall-plan-name">شهري</span><span class="paywall-plan-sub">شهريًا</span></span>
-        <span class="paywall-price" id="paywallMonthlyPrice">$1.99</span>
-      </button>
-      <button class="paywall-plan best" data-rc-package="annual" disabled>
-        <span><span class="paywall-plan-name">سنوي <span class="paywall-badge">الأفضل</span></span><span class="paywall-plan-sub">سنويًا</span></span>
-        <span class="paywall-price" id="paywallAnnualPrice">$14.99</span>
-      </button>
-      <button class="paywall-plan" data-rc-package="lifetime" disabled>
-        <span><span class="paywall-plan-name">مدى الحياة</span><span class="paywall-plan-sub">دفعة واحدة</span></span>
-        <span class="paywall-price" id="paywallLifetimePrice">$29.99</span>
-      </button>
-    </div>
-    <div class="paywall-message" id="paywallMessage">اختر الخطة المناسبة. السعر النهائي يظهر من App Store بعملة حسابك.</div>
-    <div class="paywall-footer">
-      <button class="btn-ai" id="btnPaywallRestore">استرجاع المشتريات</button>
-      <button class="btn-cancel" id="btnClosePaywall">إغلاق صفحة الاشتراك</button>
-    </div>
-  </div>
+<div class="sheet paywall-sheet">
+<div class="sheet-handle"></div>
+<div class="paywall-hero">
+<div class="paywall-icon">💎</div>
+<h2>LinkVault Pro</h2>
+<p>روابط وأنواع غير محدودة</p>
 </div>
-
+<div class="paywall-plans">
+<button class="paywall-plan" data-rc-package="monthly" disabled>
+<span><span class="paywall-plan-name">شهري</span><span class="paywall-plan-sub">شهريًا</span></span>
+<span class="paywall-price" id="paywallMonthlyPrice">$1.99</span>
+</button>
+<button class="paywall-plan best" data-rc-package="annual" disabled>
+<span><span class="paywall-plan-name">سنوي <span class="paywall-badge">الأفضل</span></span><span class="paywall-plan-sub">سنويًا</span></span>
+<span class="paywall-price" id="paywallAnnualPrice">$14.99</span>
+</button>
+<button class="paywall-plan" data-rc-package="lifetime" disabled>
+<span><span class="paywall-plan-name">مدى الحياة</span><span class="paywall-plan-sub">دفعة واحدة</span></span>
+<span class="paywall-price" id="paywallLifetimePrice">$29.99</span>
+</button>
+</div>
+<div class="paywall-message" id="paywallMessage">اختر الخطة المناسبة. السعر النهائي يظهر من App Store بعملة حسابك.</div>
+<div class="paywall-footer">
+<button class="btn-ai" id="btnPaywallRestore">استرجاع المشتريات</button>
+<button class="btn-cancel" id="btnClosePaywall">إغلاق صفحة الاشتراك</button>
+</div>
+</div>
+</div>
 <div class="toast" id="toast"></div>
 <input type="file" id="restoreFileInput" accept="application/json,.json" hidden>
-
 <div class="cat-modal-overlay" id="restoreOverlay">
-  <div class="cat-modal">
-    <h3>🗄️ استعادة النسخة الاحتياطية</h3>
-    <div class="restore-summary" id="restoreSummary"></div>
-    <div class="restore-actions">
-      <button class="merge" id="btnRestoreMerge">دمج مع البيانات الحالية</button>
-      <button class="replace" id="btnRestoreReplace">استبدال البيانات الحالية</button>
-      <button class="cancel" id="btnRestoreCancel">إلغاء</button>
-    </div>
-  </div>
+<div class="cat-modal">
+<h3>🗄️ استعادة النسخة الاحتياطية</h3>
+<div class="restore-summary" id="restoreSummary"></div>
+<div class="restore-actions">
+<button class="merge" id="btnRestoreMerge">دمج مع البيانات الحالية</button>
+<button class="replace" id="btnRestoreReplace">استبدال البيانات الحالية</button>
+<button class="cancel" id="btnRestoreCancel">إلغاء</button>
 </div>
-
+</div>
+</div>
 <script>
 const STORE = {
-  get(k, fallback=null){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch(e){ return fallback; } },
-  set(k, v){ localStorage.setItem(k, JSON.stringify(v)); },
-  remove(k){ localStorage.removeItem(k); }
+get(k, fallback=null){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch(e){ return fallback; } },
+set(k, v){ localStorage.setItem(k, JSON.stringify(v)); },
+remove(k){ localStorage.removeItem(k); }
 };
-
 const DEFAULT_CATS = ['أفلام','مسلسلات','يوتيوب','تعليم','طبخ','مشتريات','أفكار','أخرى'];
 const CATEGORY_RULES = [
-  { cat:'طبخ', words:['طبخ','مطبخ','وصفة','وصفات','مقادير','مكونات','بيتزا','عجينة','صلصة','جبن','خبز','كيك','حلويات','أكل','اكل','طعام','مندي','كبسة','رز','دجاج','لحم','سلطة','مشروب','قهوة','recipe','recipes','cooking','cook','food','pizza','ingredients','kitchen','baking'] },
-  { cat:'تعليم', words:['تعليم','شرح','درس','دروس','تعلم','محاضرة','كورس','دورة','اختبار','مدرسة','جامعة','رياضيات','كيمياء','فيزياء','برمجة','تدريب','tutorial','course','lesson','learn','education','explained','study','training'] },
-  { cat:'مشتريات', words:['شراء','تسوق','منتج','منتجات','سعر','خصم','كود خصم','عرض','متجر','سلة','أمازون','امازون','نون','طلبات','شي ان','شيء ان','buy','shop','shopping','store','price','discount','coupon','deal','product','amazon','noon'] },
-  { cat:'أفلام', words:['فيلم','افلام','أفلام','سينما','تريلر','trailer','movie','movies','film','cinema'] },
-  { cat:'مسلسلات', words:['مسلسل','مسلسلات','حلقة','موسم','episode','episodes','series','season'] },
-  { cat:'أفكار', words:['فكرة','افكار','أفكار','إلهام','الهام','تصميم','ديكور','مشروع','ابتكار','idea','ideas','inspiration','design','decor','project'] }
+{ cat:'طبخ', words:['طبخ','مطبخ','وصفة','وصفات','مقادير','مكونات','بيتزا','عجينة','صلصة','جبن','خبز','كيك','حلويات','أكل','اكل','طعام','مندي','كبسة','رز','دجاج','لحم','سلطة','مشروب','قهوة','recipe','recipes','cooking','cook','food','pizza','ingredients','kitchen','baking'] },
+{ cat:'تعليم', words:['تعليم','شرح','درس','دروس','تعلم','محاضرة','كورس','دورة','اختبار','مدرسة','جامعة','رياضيات','كيمياء','فيزياء','برمجة','تدريب','tutorial','course','lesson','learn','education','explained','study','training'] },
+{ cat:'مشتريات', words:['شراء','تسوق','منتج','منتجات','سعر','خصم','كود خصم','عرض','متجر','سلة','أمازون','امازون','نون','طلبات','شي ان','شيء ان','buy','shop','shopping','store','price','discount','coupon','deal','product','amazon','noon'] },
+{ cat:'أفلام', words:['فيلم','افلام','أفلام','سينما','تريلر','trailer','movie','movies','film','cinema'] },
+{ cat:'مسلسلات', words:['مسلسل','مسلسلات','حلقة','موسم','episode','episodes','series','season'] },
+{ cat:'أفكار', words:['فكرة','افكار','أفكار','إلهام','الهام','تصميم','ديكور','مشروع','ابتكار','idea','ideas','inspiration','design','decor','project'] }
 ];
 const LS_LINKS = 'lv_links_v2';
 const LS_CATS = 'lv_cats_v2';
 const LS_SETTINGS = 'lv_settings_v2';
 const LS_UI = 'lv_ui_v1';
 const LS_PENDING_OTP = 'lv_pending_otp_email_v1';
+const LS_OTP_COOLDOWN_UNTIL = 'lv_otp_cooldown_until_v1';
 const LS_LANG = 'lv_language_v1';
 const LS_PROTECTED_CATS = 'lv_protected_cats_v1';
 const LS_ACTIVE_CLOUD_USER = 'lv_active_cloud_user_v1';
@@ -416,7 +375,6 @@ const AUTH_REDIRECT_URL = 'linkvaultq8://auth-callback';
 const PLAN_LIMITS = { freeLinks:10, freeCustomCategories:3 };
 const APP_EDITION = (window.LINKVAULT_CONFIG && window.LINKVAULT_CONFIG.APP_EDITION) || 'full';
 const REVENUECAT_DEFAULT_PRICES = { monthly:'$1.99', annual:'$14.99', lifetime:'$29.99' };
-
 let legacyLinks = STORE.get('lv_links', []);
 let legacyCats = STORE.get('lv_cats', null);
 let links = normalizeLinks(STORE.get(LS_LINKS, legacyLinks || []));
@@ -438,71 +396,70 @@ let pendingRestoreData = null;
 let pendingAuthCallbackUrl = '';
 let pendingOtpEmail = STORE.get(LS_PENDING_OTP, '') || '';
 let otpCooldownTimer = null;
+let lastAuthCallbackUrl = '';
+let lastAuthCallbackAt = 0;
 let isPro = APP_EDITION === 'full';
 let rcReady = false;
 let rcCustomerInfo = null;
 let rcOffering = null;
 let rcPackages = { monthly:null, annual:null, lifetime:null };
-
 const I18N_EN = {"مكتبة روابطك الذكية":"Your smart link library","الإعدادات":"Settings","حالة المزامنة":"Sync status","إضافة رابط":"Add link","محلي":"Local","ابحث في الروابط والعناوين والملاحظات...":"Search links, titles, and notes...","مسح البحث":"Clear search","طريقة العرض":"View style","بطاقات":"Cards","مختصر":"Compact","شبكة":"Grid","☑ تحديد":"☑ Select","✕ إنهاء":"✕ Done","تحديد":"Select","تحديد الظاهر":"Select visible","إلغاء التحديد":"Clear selection","حذف المحدد":"Delete selected","مسح الجميع":"Delete all","إضافة رابط جديد":"Add new link","➕ إضافة رابط جديد":"➕ Add new link","✏️ تعديل الرابط":"✏️ Edit link","الرابط":"Link","الصق الرابط هنا...":"Paste the link here...","✨ جلب العنوان والصورة":"✨ Fetch title and image","📝 العنوان":"📝 Title","العنوان":"Title","اكتب عنواناً للرابط...":"Enter a title for the link...","🗂️ التصنيف":"🗂️ Type","التصنيف":"Type","🏷️ المنصة":"🏷️ Platform","المنصة":"Platform","تلقائي":"Automatic","🖼️ صورة مصغرة (اختياري)":"🖼️ Thumbnail (optional)","🎬 رابط التريلر (اختياري)":"🎬 Trailer link (optional)","إذا ما عندك رابط التريلر، استخدم زر البحث وسيتم فتح نتائج يوتيوب تلقائيًا.":"If you do not have a trailer link, use search to open YouTube results automatically.","🎬 بحث عن تريلر رسمي في يوتيوب":"🎬 Search YouTube for an official trailer","📌 ملاحظات":"📌 Notes","ملاحظات":"Notes","أي ملاحظات تريد إضافتها... مثل: شفته، مهم، للرجوع لاحقًا...":"Add any notes, such as watched, important, or save for later...","💾 حفظ":"💾 Save","حفظ":"Save","إلغاء":"Cancel","إغلاق":"Close","⚙️ الإعدادات والمزامنة":"⚙️ Settings and sync","الوضع الحالي: حفظ محلي على الجهاز.":"Current mode: saved locally on this device.","🔐 الحساب والمزامنة":"🔐 Account and sync","📧 البريد الإلكتروني":"📧 Email address","إرسال رمز التحقق":"Send verification code","🔢 رمز التحقق":"🔢 Verification code","تأكيد":"Confirm","إعادة إرسال الرمز":"Resend code","أو":"or","رمز البريد ينشئ الحساب تلقائيًا للمستخدم الجديد. لا توجد كلمة مرور.":"The email code automatically creates an account for a new user. No password is required.","مزامنة الآن":"Sync now","تسجيل خروج":"Sign out","🎨 ثيم التطبيق":"🎨 App theme","داكن":"Dark","أبيض":"Light","بيج":"Beige","🌐 لغة التطبيق":"🌐 App language","لغة التطبيق":"App language","لغة الجهاز":"Device language","العربية":"Arabic","إذا كانت لغة الجهاز العربية سيعمل التطبيق بالعربية، وأي لغة أخرى تستخدم الإنجليزية تلقائيًا.":"Arabic is used only when the device language is Arabic; every other device language defaults to English.","🗄️ النسخ الاحتياطي والاستعادة":"🗄️ Backup and restore","النسخة تشمل الروابط والتصنيفات والملاحظات والصور والتريلرات، ولا تشمل كلمة المرور أو بيانات جلسة الدخول.":"The backup includes links, types, notes, images, and trailers. It does not include passwords or sign-in session data.","⬆️ باك أب":"⬆️ Back up","⬇️ ريستور":"⬇️ Restore","ℹ️ عن التطبيق":"ℹ️ About the app","التطبيق من عمل M. ALQattan":"Created by M. ALQattan","📬 تواصل معنا":"📬 Contact us","تابعنا":"Follow us","🔧 تشخيص المشاركة (Share Extension)":"🔧 Share Extension diagnostics","اضغط هذا الزر بعد ما تشارك رابط من تطبيق ثاني (وقبل لا تسكر LinkVault)، عشان تشوف بالضبط وين المشكلة لو الرابط ما يوصل.":"Use this after sharing a link from another app to diagnose why it did not reach LinkVault.","🔍 افحص الروابط المشتركة الآن":"🔍 Check shared links now","🗂️ إدارة الأنواع":"🗂️ Manage types","إدارة الأنواع":"Manage types","⚙️ إدارة":"⚙️ Manage","إدارة":"Manage","أضف نوعًا جديدًا أو عدّل الاسم أو غيّر الترتيب أو احذف أي نوع. خيار «أخرى» يبقى دائمًا في النهاية ويستقبل روابط النوع المحذوف.":"Add a new type, rename it, reorder it, or delete any type. “Other” always stays last and receives links from a deleted type.","اسم التصنيف: أفلام، طبخ، تعليم...":"Type name: Movies, Cooking, Education...","إضافة":"Add","🗄️ استعادة النسخة الاحتياطية":"🗄️ Restore backup","دمج مع البيانات الحالية":"Merge with current data","استبدال البيانات الحالية":"Replace current data","أفلام":"Movies","مسلسلات":"TV Shows","يوتيوب":"YouTube","تعليم":"Education","طبخ":"Cooking","مشتريات":"Shopping","أفكار":"Ideas","أخرى":"Other","كل الأنواع":"All types","⭐ المفضلة":"⭐ Favorites","المفضلة":"Favorites","مفضلة":"Favorite","رابط":"Link","تصنيف":"Type","تريلر":"Trailer","لا نتائج":"No results","لا يوجد روابط بعد":"No links yet","جرب كلمة بحث مختلفة":"Try a different search term","اضغط + لإضافة رابط جديد":"Tap + to add a new link","أو شاركه من أي تطبيق آخر":"or share it from any other app","تحديد الرابط":"Select link","مشاركة":"Share","تعديل":"Edit","حذف":"Delete","صورة الرابط":"Link image","شاهد":"Watch","تعديل الاسم":"Rename","تحريك للأعلى":"Move up","تحريك للأسفل":"Move down","حذف النوع":"Delete type","(آخر القائمة)":"(last in list)","(أساسي)":"(built-in)","⚠️ الرابط مطلوب":"⚠️ A link is required","⚠️ الرابط لازم يبدأ بـ http أو https":"⚠️ The link must start with http or https","✅ تم التعديل":"✅ Updated","ℹ️ الرابط كان محفوظ، وتم تحديثه":"ℹ️ This link was already saved and has been updated","✅ تم الحفظ":"✅ Saved","حذف هذا الرابط؟":"Delete this link?","تم الحذف":"Deleted","اختر رابطًا واحدًا على الأقل":"Select at least one link","لا توجد روابط للحذف":"There are no links to delete","تم مسح جميع الروابط":"All links were deleted","نسخة LinkVault الاحتياطية":"LinkVault backup","✅ تم تجهيز النسخة الاحتياطية":"✅ Backup is ready","✅ تم حفظ النسخة الاحتياطية":"✅ Backup saved","⚠️ تعذر إنشاء النسخة الاحتياطية":"⚠️ Could not create the backup","ملف غير صالح":"Invalid file","سيتم استبدال جميع الروابط والتصنيفات الحالية. هل أنت متأكد؟":"All current links and types will be replaced. Are you sure?","✅ تمت استعادة النسخة واستبدال البيانات":"✅ Backup restored and current data replaced","✅ تم دمج النسخة الاحتياطية":"✅ Backup merged","✅ تمت مشاركة الرابط":"✅ Link shared","📋 تم نسخ الرابط. الصقه في التطبيق الذي تريد مشاركته.":"📋 Link copied. Paste it into the app where you want to share it.","انسخ هذا الرابط للمشاركة":"Copy this link to share","⚠️ أدخل اسم النوع":"⚠️ Enter a type name","⚠️ هذا الخيار موجود مسبقًا":"⚠️ This option already exists","⚠️ لا يمكن تعديل خيار أخرى":"⚠️ The Other option cannot be renamed","⚠️ اسم أخرى محجوز":"⚠️ The name Other is reserved","⚠️ هذا النوع موجود مسبقًا":"⚠️ This type already exists","⚠️ لا يمكن حذف خيار أخرى لأنه يستقبل روابط الأنواع المحذوفة":"⚠️ The Other type cannot be deleted because it receives links from deleted types","✅ تم حذف النوع ونقل روابطه إلى أخرى":"✅ Type deleted and its links moved to Other","✅ تم حذف النوع":"✅ Type deleted","✅ تم تحديث ترتيب الأنواع":"✅ Type order updated","⚠️ أدخل الرابط أولاً":"⚠️ Enter the link first","جاري الجلب...":"Fetching...","✅ تم جلب العنوان والصورة":"✅ Title and image fetched","ℹ️ لم أجد عنوان واضح، اكتب العنوان يدويًا":"ℹ️ No clear title was found. Enter it manually.","⚠️ تعذر الجلب. لو الرابط من إنستغرام/تيك توك/فيسبوك اكتب العنوان يدويًا.":"⚠️ Could not fetch details. For Instagram, TikTok, or Facebook, enter the title manually.","⚠️ أدخل العنوان أولاً":"⚠️ Enter the title first","جاري البحث...":"Searching...","✅ تم جلب التريلر":"✅ Trailer fetched","🎬 افتح النتيجة المناسبة وانسخ الرابط":"🎬 Open the correct result and copy its link","🎬 افتح الفيديو المناسب وانسخ رابطه هنا":"🎬 Open the correct video and paste its link here","مزامن":"Synced","غير مسجل":"Signed out","استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.":"Use email verification, Apple, or Google to enable sync.","خطأ":"Error","تعذر الاتصال بخدمة المزامنة.":"Could not connect to the sync service.","تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.":"Could not load synced data. Try again later.","⚠️ سجل دخول أولاً":"⚠️ Sign in first","جاري رفع البيانات المحلية...":"Uploading local data...","✅ تمت المزامنة بنجاح":"✅ Sync completed successfully","✅ تمت المزامنة":"✅ Synced","⚠️ خدمة الحساب غير متاحة حاليًا":"⚠️ Account service is currently unavailable","⚠️ أدخل بريدًا إلكترونيًا صحيحًا":"⚠️ Enter a valid email address","جاري إرسال الرمز...":"Sending code...","📧 تم إرسال رمز التحقق":"📧 Verification code sent","تعذر إرسال رمز التحقق":"Could not send the verification code","⚠️ أدخل رمز التحقق المكوّن من 6 أرقام":"⚠️ Enter the 6-digit verification code","جاري التحقق...":"Verifying...","✅ تم التحقق وتسجيل الدخول بنجاح.":"✅ Verified and signed in successfully.","✅ تم تسجيل الدخول":"✅ Signed in","رمز التحقق غير صحيح أو انتهت صلاحيته":"The verification code is incorrect or has expired","لم يتم إنشاء رابط تسجيل الدخول":"The sign-in link could not be created","تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.":"Signed out. Local links remain on this device.","تم تسجيل الخروج":"Signed out","رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة":"The sign-in link does not contain a valid session","✅ تم تسجيل الدخول بنجاح.":"✅ Signed in successfully.","⚠️ تعذر إكمال تسجيل الدخول":"⚠️ Could not complete sign-in","⚠️ ملف النسخة الاحتياطية غير صالح":"⚠️ The backup file is invalid","رابط محفوظ":"Saved link","✅ الرابط محفوظ مسبقًا وتم تحديث بياناته":"✅ The link was already saved and its details were updated","ℹ️ الرابط محفوظ مسبقًا":"ℹ️ The link is already saved","📲 ثبّت LinkVault كتطبيق":"📲 Install LinkVault as an app","تثبيت":"Install","تطبيق آيفون أصلي (native):":"Native iPhone app:","نعم ✅":"Yes ✅","لا ❌ (يبدو إنك بمتصفح ويب عادي)":"No ❌ (this appears to be a regular web browser)","إضافة PendingShare مسجلة بالتطبيق:":"PendingShare plugin registered:","لا ❌":"No ❌","⚠️ توجد بيانات مشاركة لكن تعذر استيرادها.":"⚠️ Shared data exists but could not be imported.","يعني: الـ plugin شغال، لكن لا توجد روابط محفوظة في App Group حاليًا. جرّب مشاركة رابط جديد ثم افتح التطبيق.":"The plugin is working, but there are no links currently stored in the App Group. Share a new link and reopen the app.","⚠️ صار خطأ فعلي أثناء الفحص:":"⚠️ A diagnostic error occurred:","LinkVault — مكتبة الروابط":"LinkVault — Link library","LinkVault — مكتبة روابطك الذكية":"LinkVault — Your smart link library","▤ بطاقات":"▤ Cards","☷ مختصر":"☷ Compact","▦ شبكة":"▦ Grid","🔗 الرابط":"🔗 Link","قائمة النوع":"Type list","التريلر":"Trailer","اضغط لفتح الرابط":"Tap to open link","السبب: PendingSharePlugin غير مسجل داخل Capacitor bridge. تأكد أن البناء الجديد شغّل scripts/add-ios-share-extension.rb وأن Main.storyboard صار يستخدم LinkVaultBridgeViewController.":"Reason: PendingSharePlugin is not registered in the Capacitor bridge. Make sure the new build ran scripts/add-ios-share-extension.rb and Main.storyboard uses LinkVaultBridgeViewController.","✅ تم استيراد الروابط المنتظرة داخل القائمة الآن.":"✅ Pending links were imported into the list."};
 const I18N_PATTERNS = [
-  [/^🔒 النسخة المجانية تسمح بـ (\d+) روابط فقط$/, '🔒 The free version allows only $1 links'],
-  [/^🔒 النسخة المجانية تسمح بـ (\d+) أنواع إضافية فقط$/, '🔒 The free version allows only $1 additional types'],
-  [/^(\d+) محدد$/, '$1 selected'],
-  [/^⭐ المفضلة(?:\s+(\d+))?$/, '⭐ Favorites $1'],
-  [/^✅ تم حفظ الرابط في (.+)$/, '✅ Link saved in $1'],
-  [/^حذف (\d+) رابط محدد؟ لا يمكن التراجع\.$/, 'Delete $1 selected links? This cannot be undone.'],
-  [/^تم حذف (\d+) رابط$/, 'Deleted $1 links'],
-  [/^مسح جميع الروابط وعددها (\d+)؟\nلا يمكن التراجع عن هذه العملية\.$/, 'Delete all $1 links?\nThis action cannot be undone.'],
-  [/^الملف يحتوي على (\d+) رابط و(\d+) تصنيف\. اختر الدمج للاحتفاظ بالبيانات الحالية، أو الاستبدال لمسحها ووضع النسخة مكانها\.$/, 'The file contains $1 links and $2 types. Choose Merge to keep current data, or Replace to overwrite it.'],
-  [/^✅ تمت إضافة (.+)$/, '✅ Added $1'],
-  [/^اكتب الاسم الجديد للنوع (.+)$/, 'Enter a new name for the type $1'],
-  [/^✅ تم تعديل النوع إلى (.+)$/, '✅ Type renamed to $1'],
-  [/^النوع (.+) يحتوي على (\d+) رابط\. سيتم نقلها إلى أخرى ثم حذف النوع\. متابعة؟$/, 'Type $1 contains $2 links. They will be moved to Other before the type is deleted. Continue?'],
-  [/^حذف النوع (.+)؟$/, 'Delete type $1?'],
-  [/^مسجل دخول: (.+)$/, 'Signed in: $1'],
-  [/^إعادة الإرسال بعد (\d+)ث$/, 'Resend in $1s'],
-  [/^📧 أرسلنا رمز تحقق إلى (.+)$/, '📧 A verification code was sent to $1'],
-  [/^جاري فتح تسجيل الدخول بواسطة (.+)\.\.\.$/, 'Opening $1 sign-in...'],
-  [/^تعذر تسجيل الدخول بواسطة (.+)$/, 'Could not sign in with $1'],
-  [/^تعذر إكمال تسجيل الدخول: (.+)$/, 'Could not complete sign-in: $1'],
-  [/^✅ تم استيراد (\d+) روابط محفوظة$/, '✅ Imported $1 saved links'],
-  [/^عدد الروابط المنتظرة في App Group: (\d+)$/, 'Pending links in App Group: $1'],
+[/^🔒 النسخة المجانية تسمح بـ (\d+) روابط فقط$/, '🔒 The free version allows only $1 links'],
+[/^🔒 النسخة المجانية تسمح بـ (\d+) أنواع إضافية فقط$/, '🔒 The free version allows only $1 additional types'],
+[/^(\d+) محدد$/, '$1 selected'],
+[/^⭐ المفضلة(?:\s+(\d+))?$/, '⭐ Favorites $1'],
+[/^✅ تم حفظ الرابط في (.+)$/, '✅ Link saved in $1'],
+[/^حذف (\d+) رابط محدد؟ لا يمكن التراجع\.$/, 'Delete $1 selected links? This cannot be undone.'],
+[/^تم حذف (\d+) رابط$/, 'Deleted $1 links'],
+[/^مسح جميع الروابط وعددها (\d+)؟\nلا يمكن التراجع عن هذه العملية\.$/, 'Delete all $1 links?\nThis action cannot be undone.'],
+[/^الملف يحتوي على (\d+) رابط و(\d+) تصنيف\. اختر الدمج للاحتفاظ بالبيانات الحالية، أو الاستبدال لمسحها ووضع النسخة مكانها\.$/, 'The file contains $1 links and $2 types. Choose Merge to keep current data, or Replace to overwrite it.'],
+[/^✅ تمت إضافة (.+)$/, '✅ Added $1'],
+[/^اكتب الاسم الجديد للنوع (.+)$/, 'Enter a new name for the type $1'],
+[/^✅ تم تعديل النوع إلى (.+)$/, '✅ Type renamed to $1'],
+[/^النوع (.+) يحتوي على (\d+) رابط\. سيتم نقلها إلى أخرى ثم حذف النوع\. متابعة؟$/, 'Type $1 contains $2 links. They will be moved to Other before the type is deleted. Continue?'],
+[/^حذف النوع (.+)؟$/, 'Delete type $1?'],
+[/^مسجل دخول: (.+)$/, 'Signed in: $1'],
+[/^إعادة الإرسال بعد (\d+)ث$/, 'Resend in $1s'],
+[/^📧 أرسلنا رمز تحقق إلى (.+)$/, '📧 A verification code was sent to $1'],
+[/^جاري فتح تسجيل الدخول بواسطة (.+)\.\.\.$/, 'Opening $1 sign-in...'],
+[/^تعذر تسجيل الدخول بواسطة (.+)$/, 'Could not sign in with $1'],
+[/^تعذر إكمال تسجيل الدخول: (.+)$/, 'Could not complete sign-in: $1'],
+[/^✅ تم استيراد (\d+) روابط محفوظة$/, '✅ Imported $1 saved links'],
+[/^عدد الروابط المنتظرة في App Group: (\d+)$/, 'Pending links in App Group: $1'],
 ];
 const BUILTIN_CATEGORY_EN = {'أفلام':'Movies','مسلسلات':'TV Shows','يوتيوب':'YouTube','تعليم':'Education','طبخ':'Cooking','مشتريات':'Shopping','أفكار':'Ideas','أخرى':'Other'};
-
 Object.assign(I18N_EN, {
-  'قراءة QR':'Scan QR',
-  'قراءة رابط من QR':'Scan a link from QR',
-  '⚠️ قراءة QR متاحة داخل تطبيق الآيفون':'⚠️ QR scanning is available in the iPhone app',
-  '⚠️ قارئ QR غير متاح في هذا الإصدار':'⚠️ The QR scanner is unavailable in this build',
-  '⚠️ هذا الجهاز لا يدعم قراءة QR':'⚠️ This device does not support QR scanning',
-  'صلاحية الكاميرا مطلوبة لقراءة QR. فتح الإعدادات؟':'Camera access is required to scan QR codes. Open Settings?',
-  '⚠️ اسمح باستخدام الكاميرا لقراءة QR':'⚠️ Allow camera access to scan QR codes',
-  'ℹ️ لم يتم العثور على رمز QR':'ℹ️ No QR code was found',
-  '⚠️ رمز QR لا يحتوي على رابط صالح':'⚠️ The QR code does not contain a valid link',
-  '⚠️ تعذرت قراءة رمز QR':'⚠️ The QR code could not be scanned',
-  '💎 LinkVault Pro':'💎 LinkVault Pro',
-  '💎 الترقية إلى Pro':'💎 Upgrade to Pro',
-  'استرجاع المشتريات':'Restore purchases',
-  'الخطة المجانية':'Free plan',
-  'شهري':'Monthly',
-  'سنوي':'Annual',
-  'مدى الحياة':'Lifetime',
-  'شهريًا':'per month',
-  'سنويًا':'per year',
-  'دفعة واحدة':'one-time payment',
-  'اختر الخطة المناسبة. السعر النهائي يظهر من App Store بعملة حسابك.':'Choose a plan. The final price is shown by the App Store in your account currency.',
-  'روابط وأنواع غير محدودة':'Unlimited links and types',
-  'إغلاق صفحة الاشتراك':'Close subscription page',
-  '✅ تم تفعيل LinkVault Pro':'✅ LinkVault Pro activated',
-  '✅ تم استرجاع مشترياتك':'✅ Your purchases were restored',
-  'ℹ️ لا توجد مشتريات Pro مرتبطة بهذا الحساب':'ℹ️ No Pro purchases are linked to this account',
-  '⚠️ تعذر استرجاع المشتريات':'⚠️ Purchases could not be restored',
-  '⚠️ تعذر إكمال عملية الشراء':'⚠️ The purchase could not be completed',
-  '⚠️ هذه الخطة غير مجهزة في RevenueCat':'⚠️ This plan is not configured in RevenueCat'
+'قراءة QR':'Scan QR',
+'قراءة رابط من QR':'Scan a link from QR',
+'⚠️ قراءة QR متاحة داخل تطبيق الآيفون':'⚠️ QR scanning is available in the iPhone app',
+'⚠️ قارئ QR غير متاح في هذا الإصدار':'⚠️ The QR scanner is unavailable in this build',
+'⚠️ هذا الجهاز لا يدعم قراءة QR':'⚠️ This device does not support QR scanning',
+'صلاحية الكاميرا مطلوبة لقراءة QR. فتح الإعدادات؟':'Camera access is required to scan QR codes. Open Settings?',
+'⚠️ اسمح باستخدام الكاميرا لقراءة QR':'⚠️ Allow camera access to scan QR codes',
+'ℹ️ لم يتم العثور على رمز QR':'ℹ️ No QR code was found',
+'⚠️ رمز QR لا يحتوي على رابط صالح':'⚠️ The QR code does not contain a valid link',
+'⚠️ تعذرت قراءة رمز QR':'⚠️ The QR code could not be scanned',
+'💎 LinkVault Pro':'💎 LinkVault Pro',
+'💎 الترقية إلى Pro':'💎 Upgrade to Pro',
+'استرجاع المشتريات':'Restore purchases',
+'الخطة المجانية':'Free plan',
+'شهري':'Monthly',
+'سنوي':'Annual',
+'مدى الحياة':'Lifetime',
+'شهريًا':'per month',
+'سنويًا':'per year',
+'دفعة واحدة':'one-time payment',
+'اختر الخطة المناسبة. السعر النهائي يظهر من App Store بعملة حسابك.':'Choose a plan. The final price is shown by the App Store in your account currency.',
+'روابط وأنواع غير محدودة':'Unlimited links and types',
+'إغلاق صفحة الاشتراك':'Close subscription page',
+'✅ تم تفعيل LinkVault Pro':'✅ LinkVault Pro activated',
+'✅ تم استرجاع مشترياتك':'✅ Your purchases were restored',
+'ℹ️ لا توجد مشتريات Pro مرتبطة بهذا الحساب':'ℹ️ No Pro purchases are linked to this account',
+'⚠️ تعذر استرجاع المشتريات':'⚠️ Purchases could not be restored',
+'⚠️ تعذر إكمال عملية الشراء':'⚠️ The purchase could not be completed',
+'⚠️ هذه الخطة غير مجهزة في RevenueCat':'⚠️ This plan is not configured in RevenueCat'
 });
-
 let languageChoice = STORE.get(LS_LANG, 'device') || 'device';
 if(!['device','ar','en'].includes(languageChoice)) languageChoice = 'device';
 let currentLanguage = 'en';
@@ -515,103 +472,101 @@ const nativePrompt = window.prompt.bind(window);
 function deviceLanguage(){ return String(navigator.language || navigator.languages?.[0] || '').toLowerCase().startsWith('ar') ? 'ar' : 'en'; }
 function resolveLanguage(choice){ return choice === 'ar' ? 'ar' : choice === 'en' ? 'en' : deviceLanguage(); }
 function translateUiCore(core){
-  if(currentLanguage !== 'en' || !core) return core;
-  if(Object.prototype.hasOwnProperty.call(I18N_EN, core)) return I18N_EN[core];
-  const numbered = core.match(/^(\d+)\.\s*(أفلام|مسلسلات|يوتيوب|تعليم|طبخ|مشتريات|أفكار|أخرى)$/);
-  if(numbered) return `${numbered[1]}. ${BUILTIN_CATEGORY_EN[numbered[2]] || numbered[2]}`;
-  for(const [regex, replacement] of I18N_PATTERNS){
-    if(regex.test(core)){
-      let translated = core.replace(regex, replacement);
-      for(const [arabic, english] of Object.entries(BUILTIN_CATEGORY_EN)) translated = translated.split(arabic).join(english);
-      return translated;
-    }
-  }
-  return core;
+if(currentLanguage !== 'en' || !core) return core;
+if(Object.prototype.hasOwnProperty.call(I18N_EN, core)) return I18N_EN[core];
+const numbered = core.match(/^(\d+)\.\s*(أفلام|مسلسلات|يوتيوب|تعليم|طبخ|مشتريات|أفكار|أخرى)$/);
+if(numbered) return `${numbered[1]}. ${BUILTIN_CATEGORY_EN[numbered[2]] || numbered[2]}`;
+for(const [regex, replacement] of I18N_PATTERNS){
+if(regex.test(core)){
+let translated = core.replace(regex, replacement);
+for(const [arabic, english] of Object.entries(BUILTIN_CATEGORY_EN)) translated = translated.split(arabic).join(english);
+return translated;
+}
+}
+return core;
 }
 function translateUiText(value){
-  const raw = String(value ?? '');
-  const match = raw.match(/^(\s*)([\s\S]*?)(\s*)$/);
-  if(!match) return raw;
-  return match[1] + translateUiCore(match[2]) + match[3];
+const raw = String(value ?? '');
+const match = raw.match(/^(\s*)([\s\S]*?)(\s*)$/);
+if(!match) return raw;
+return match[1] + translateUiCore(match[2]) + match[3];
 }
 function translateTextNode(node, force=false){
-  let original = i18nOriginalText.get(node);
-  if(original === undefined){ original = node.nodeValue || ''; i18nOriginalText.set(node, original); }
-  else if(!force){
-    const expected = currentLanguage === 'en' ? translateUiText(original) : original;
-    if((node.nodeValue || '') !== expected){ original = node.nodeValue || ''; i18nOriginalText.set(node, original); }
-  }
-  const target = currentLanguage === 'en' ? translateUiText(original) : original;
-  if(node.nodeValue !== target) node.nodeValue = target;
+let original = i18nOriginalText.get(node);
+if(original === undefined){ original = node.nodeValue || ''; i18nOriginalText.set(node, original); }
+else if(!force){
+const expected = currentLanguage === 'en' ? translateUiText(original) : original;
+if((node.nodeValue || '') !== expected){ original = node.nodeValue || ''; i18nOriginalText.set(node, original); }
+}
+const target = currentLanguage === 'en' ? translateUiText(original) : original;
+if(node.nodeValue !== target) node.nodeValue = target;
 }
 function translateAttributes(el, force=false){
-  const names = ['placeholder','title','aria-label'];
-  let originals = i18nOriginalAttrs.get(el);
-  if(!originals){ originals = {}; i18nOriginalAttrs.set(el, originals); }
-  for(const name of names){
-    if(!el.hasAttribute || !el.hasAttribute(name)) continue;
-    let original = originals[name];
-    const current = el.getAttribute(name) || '';
-    if(original === undefined){ original = current; originals[name] = original; }
-    else if(!force){
-      const expected = currentLanguage === 'en' ? translateUiText(original) : original;
-      if(current !== expected){ original = current; originals[name] = original; }
-    }
-    const target = currentLanguage === 'en' ? translateUiText(original) : original;
-    if(current !== target) el.setAttribute(name, target);
-  }
+const names = ['placeholder','title','aria-label'];
+let originals = i18nOriginalAttrs.get(el);
+if(!originals){ originals = {}; i18nOriginalAttrs.set(el, originals); }
+for(const name of names){
+if(!el.hasAttribute || !el.hasAttribute(name)) continue;
+let original = originals[name];
+const current = el.getAttribute(name) || '';
+if(original === undefined){ original = current; originals[name] = original; }
+else if(!force){
+const expected = currentLanguage === 'en' ? translateUiText(original) : original;
+if(current !== expected){ original = current; originals[name] = original; }
+}
+const target = currentLanguage === 'en' ? translateUiText(original) : original;
+if(current !== target) el.setAttribute(name, target);
+}
 }
 function translateTree(root=document.body, force=false){
-  if(!root) return;
-  if(root.nodeType === Node.TEXT_NODE){ translateTextNode(root, force); return; }
-  if(root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_NODE && root.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return;
-  if(root.nodeType === Node.ELEMENT_NODE) translateAttributes(root, force);
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
-    acceptNode(node){
-      const parent = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
-      if(parent && ['SCRIPT','STYLE','NOSCRIPT'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    }
-  });
-  let node;
-  while((node = walker.nextNode())){
-    if(node.nodeType === Node.TEXT_NODE) translateTextNode(node, force);
-    else translateAttributes(node, force);
-  }
+if(!root) return;
+if(root.nodeType === Node.TEXT_NODE){ translateTextNode(root, force); return; }
+if(root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_NODE && root.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return;
+if(root.nodeType === Node.ELEMENT_NODE) translateAttributes(root, force);
+const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+acceptNode(node){
+const parent = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+if(parent && ['SCRIPT','STYLE','NOSCRIPT'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+return NodeFilter.FILTER_ACCEPT;
+}
+});
+let node;
+while((node = walker.nextNode())){
+if(node.nodeType === Node.TEXT_NODE) translateTextNode(node, force);
+else translateAttributes(node, force);
+}
 }
 async function syncLanguageToNative(){
-  const plugin = getNativePlugin('PendingShare');
-  if(!plugin || !plugin.setLanguage) return;
-  try{ await plugin.setLanguage({ language:languageChoice }); }catch(e){ console.warn('Language sync to Share Extension failed', e); }
+const plugin = getNativePlugin('PendingShare');
+if(!plugin || !plugin.setLanguage) return;
+try{ await plugin.setLanguage({ language:languageChoice }); }catch(e){ console.warn('Language sync to Share Extension failed', e); }
 }
 function applyLanguageChoice(choice, persist=true){
-  languageChoice = ['device','ar','en'].includes(choice) ? choice : 'device';
-  currentLanguage = resolveLanguage(languageChoice);
-  if(persist) STORE.set(LS_LANG, languageChoice);
-  document.documentElement.lang = currentLanguage;
-  document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
-  document.title = currentLanguage === 'ar' ? 'LinkVault — مكتبة روابطك الذكية' : 'LinkVault — Your smart link library';
-  const selector = $('languageSelect'); if(selector) selector.value = languageChoice;
-  translateTree(document.body, true);
-  syncLanguageToNative();
+languageChoice = ['device','ar','en'].includes(choice) ? choice : 'device';
+currentLanguage = resolveLanguage(languageChoice);
+if(persist) STORE.set(LS_LANG, languageChoice);
+document.documentElement.lang = currentLanguage;
+document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+document.title = currentLanguage === 'ar' ? 'LinkVault — مكتبة روابطك الذكية' : 'LinkVault — Your smart link library';
+const selector = $('languageSelect'); if(selector) selector.value = languageChoice;
+translateTree(document.body, true);
+syncLanguageToNative();
 }
 function initLanguage(){
-  applyLanguageChoice(languageChoice, false);
-  if(languageObserver) languageObserver.disconnect();
-  languageObserver = new MutationObserver(records => {
-    for(const record of records){
-      if(record.type === 'characterData') translateTextNode(record.target, false);
-      else if(record.type === 'attributes') translateAttributes(record.target, false);
-      else for(const node of record.addedNodes) translateTree(node, false);
-    }
-  });
-  languageObserver.observe(document.body, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:['placeholder','title','aria-label']});
-  window.alert = msg => nativeAlert(currentLanguage === 'en' ? translateUiText(msg) : msg);
-  window.confirm = msg => nativeConfirm(currentLanguage === 'en' ? translateUiText(msg) : msg);
-  window.prompt = (msg, value) => nativePrompt(currentLanguage === 'en' ? translateUiText(msg) : msg, value);
+applyLanguageChoice(languageChoice, false);
+if(languageObserver) languageObserver.disconnect();
+languageObserver = new MutationObserver(records => {
+for(const record of records){
+if(record.type === 'characterData') translateTextNode(record.target, false);
+else if(record.type === 'attributes') translateAttributes(record.target, false);
+else for(const node of record.addedNodes) translateTree(node, false);
 }
-
-
+});
+languageObserver.observe(document.body, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:['placeholder','title','aria-label']});
+window.alert = msg => nativeAlert(currentLanguage === 'en' ? translateUiText(msg) : msg);
+window.confirm = msg => nativeConfirm(currentLanguage === 'en' ? translateUiText(msg) : msg);
+window.prompt = (msg, value) => nativePrompt(currentLanguage === 'en' ? translateUiText(msg) : msg, value);
+}
 function $(id){ return document.getElementById(id); }
 function uid(){ return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2)); }
 function nowIso(){ return new Date().toISOString(); }
@@ -641,540 +596,522 @@ function getVisibleLinks(){ const q = $('searchInp').value.trim().toLowerCase();
 function setSelectionMode(enabled){ selectionMode = !!enabled; if(!selectionMode) selectedIds.clear(); $('btnSelectMode').classList.toggle('active', selectionMode); $('btnSelectMode').textContent = selectionMode ? '✕ إنهاء' : '☑ تحديد'; $('selectionBar').classList.toggle('show', selectionMode); renderList(); }
 function toggleSelected(id){ if(selectedIds.has(id)) selectedIds.delete(id); else selectedIds.add(id); updateSelectionUi(); const card = document.querySelector(`.link-card[data-id="${CSS.escape(id)}"]`); if(card) card.classList.toggle('selected', selectedIds.has(id)); }
 function updateSelectionUi(){ selectedIds = new Set([...selectedIds].filter(id => links.some(l => l.id === id))); $('selectionCount').textContent = `${selectedIds.size} محدد`; $('btnDeleteSelected').disabled = selectedIds.size === 0; }
-
-
 function getNativePlugin(name){
-  const cap = window.Capacitor;
-  if(!cap) return null;
-  if(cap.Plugins && cap.Plugins[name]) return cap.Plugins[name];
-  if(typeof cap.registerPlugin === 'function'){
-    try{
-      const plugin = cap.registerPlugin(name);
-      cap.Plugins = cap.Plugins || {};
-      cap.Plugins[name] = plugin;
-      return plugin;
-    }catch(e){
-      return (cap.Plugins && cap.Plugins[name]) || null;
-    }
-  }
-  return null;
+const cap = window.Capacitor;
+if(!cap) return null;
+if(cap.Plugins && cap.Plugins[name]) return cap.Plugins[name];
+if(typeof cap.registerPlugin === 'function'){
+try{
+const plugin = cap.registerPlugin(name);
+cap.Plugins = cap.Plugins || {};
+cap.Plugins[name] = plugin;
+return plugin;
+}catch(e){
+return (cap.Plugins && cap.Plugins[name]) || null;
 }
-
+}
+return null;
+}
 function qrCandidateToUrl(rawValue){
-  const raw = String(rawValue || '').trim();
-  const extracted = extractFirstUrl(raw);
-  return normalizeUrl(extracted || raw);
+const raw = String(rawValue || '').trim();
+const extracted = extractFirstUrl(raw);
+return normalizeUrl(extracted || raw);
 }
 async function scanQrCode(){
-  try{
-    if(!isNativeApp()){
-      toast('⚠️ قراءة QR متاحة داخل تطبيق الآيفون');
-      return;
-    }
-    const scanner = getNativePlugin('BarcodeScanner');
-    if(!scanner || !scanner.scan){
-      toast('⚠️ قارئ QR غير متاح في هذا الإصدار');
-      return;
-    }
-    if(scanner.isSupported){
-      const support = await scanner.isSupported();
-      if(support && support.supported === false){
-        toast('⚠️ هذا الجهاز لا يدعم قراءة QR');
-        return;
-      }
-    }
-    const platform = window.Capacitor?.getPlatform?.() || '';
-    if(platform === 'ios' && scanner.requestPermissions){
-      const permissions = await scanner.requestPermissions();
-      const cameraState = permissions?.camera;
-      if(cameraState !== 'granted' && cameraState !== 'limited'){
-        if(cameraState === 'denied' && scanner.openSettings && confirm('صلاحية الكاميرا مطلوبة لقراءة QR. فتح الإعدادات؟')) await scanner.openSettings();
-        else toast('⚠️ اسمح باستخدام الكاميرا لقراءة QR');
-        return;
-      }
-    }
-    const result = await scanner.scan({ formats:['QR_CODE'] });
-    const rawValue = result?.barcodes?.[0]?.rawValue || result?.barcodes?.[0]?.displayValue || '';
-    if(!rawValue){ toast('ℹ️ لم يتم العثور على رمز QR'); return; }
-    const url = qrCandidateToUrl(rawValue);
-    if(!/^https?:\/\//i.test(url)){
-      toast('⚠️ رمز QR لا يحتوي على رابط صالح');
-      return;
-    }
-    closeSettings();
-    openAddModal({ url });
-    setTimeout(() => fetchMetadata().catch(()=>{}), 260);
-  }catch(e){
-    const cancelled = String(e?.message || e || '').toLowerCase().includes('cancel');
-    if(!cancelled){
-      console.warn('QR scan failed', e);
-      toast('⚠️ تعذرت قراءة رمز QR');
-    }
-  }
+try{
+if(!isNativeApp()){
+toast('⚠️ قراءة QR متاحة داخل تطبيق الآيفون');
+return;
 }
-
+const scanner = getNativePlugin('BarcodeScanner');
+if(!scanner || !scanner.scan){
+toast('⚠️ قارئ QR غير متاح في هذا الإصدار');
+return;
+}
+if(scanner.isSupported){
+const support = await scanner.isSupported();
+if(support && support.supported === false){
+toast('⚠️ هذا الجهاز لا يدعم قراءة QR');
+return;
+}
+}
+const platform = window.Capacitor?.getPlatform?.() || '';
+if(platform === 'ios' && scanner.requestPermissions){
+const permissions = await scanner.requestPermissions();
+const cameraState = permissions?.camera;
+if(cameraState !== 'granted' && cameraState !== 'limited'){
+if(cameraState === 'denied' && scanner.openSettings && confirm('صلاحية الكاميرا مطلوبة لقراءة QR. فتح الإعدادات؟')) await scanner.openSettings();
+else toast('⚠️ اسمح باستخدام الكاميرا لقراءة QR');
+return;
+}
+}
+const result = await scanner.scan({ formats:['QR_CODE'] });
+const rawValue = result?.barcodes?.[0]?.rawValue || result?.barcodes?.[0]?.displayValue || '';
+if(!rawValue){ toast('ℹ️ لم يتم العثور على رمز QR'); return; }
+const url = qrCandidateToUrl(rawValue);
+if(!/^https?:\/\//i.test(url)){
+toast('⚠️ رمز QR لا يحتوي على رابط صالح');
+return;
+}
+closeSettings();
+openAddModal({ url });
+setTimeout(() => fetchMetadata().catch(()=>{}), 260);
+}catch(e){
+const cancelled = String(e?.message || e || '').toLowerCase().includes('cancel');
+if(!cancelled){
+console.warn('QR scan failed', e);
+toast('⚠️ تعذرت قراءة رمز QR');
+}
+}
+}
 function getRevenueCatConfig(){
-  const cfg = window.LINKVAULT_CONFIG || {};
-  return {
-    apiKey:String(cfg.REVENUECAT_IOS_API_KEY || '').trim(),
-    entitlementId:String(cfg.REVENUECAT_ENTITLEMENT_ID || 'pro').trim() || 'pro',
-    offeringId:String(cfg.REVENUECAT_OFFERING_ID || '').trim()
-  };
+const cfg = window.LINKVAULT_CONFIG || {};
+return {
+apiKey:String(cfg.REVENUECAT_IOS_API_KEY || '').trim(),
+entitlementId:String(cfg.REVENUECAT_ENTITLEMENT_ID || 'pro').trim() || 'pro',
+offeringId:String(cfg.REVENUECAT_OFFERING_ID || '').trim()
+};
 }
 function hasRevenueCatKey(){
-  const key = getRevenueCatConfig().apiKey;
-  return /^appl_[A-Za-z0-9_-]{8,}$/.test(key) && !key.includes('REPLACE');
+const key = getRevenueCatConfig().apiKey;
+return /^appl_[A-Za-z0-9_-]{8,}$/.test(key) && !key.includes('REPLACE');
 }
 function revenueCatPlugin(){ return getNativePlugin('Purchases'); }
 function activeEntitlement(customerInfo){
-  const active = customerInfo?.entitlements?.active || {};
-  const configured = active[getRevenueCatConfig().entitlementId];
-  if(configured?.isActive) return configured;
-  return Object.values(active).find(item => item?.isActive) || null;
+const active = customerInfo?.entitlements?.active || {};
+const configured = active[getRevenueCatConfig().entitlementId];
+if(configured?.isActive) return configured;
+return Object.values(active).find(item => item?.isActive) || null;
 }
 function customerHasPro(customerInfo){ return !!activeEntitlement(customerInfo); }
 function updateProUi(){
-  const section = $('proSettingsSection');
-  if(section) section.hidden = APP_EDITION !== 'commercial';
-  const status = $('proStatus');
-  const button = $('btnOpenPaywall');
-  if(APP_EDITION !== 'commercial') return;
-  if(isPro){
-    const entitlement = activeEntitlement(rcCustomerInfo);
-    let detail = 'Pro مفعّل';
-    if(entitlement?.expirationDate) detail += ` حتى ${new Date(entitlement.expirationDate).toLocaleDateString(currentLanguage === 'ar' ? 'ar-KW' : 'en-US')}`;
-    else if(entitlement) detail += ' — مدى الحياة';
-    if(status){ status.textContent = `✅ ${detail}`; status.className = 'pro-status active'; }
-    if(button){ button.textContent = '✅ اشتراك Pro مفعّل'; button.disabled = true; }
-  }else{
-    if(status){ status.textContent = `الخطة المجانية: حتى ${PLAN_LIMITS.freeLinks} روابط و${PLAN_LIMITS.freeCustomCategories} أنواع إضافية`; status.className = 'pro-status'; }
-    if(button){ button.textContent = '💎 الترقية إلى Pro'; button.disabled = false; }
-  }
+const section = $('proSettingsSection');
+if(section) section.hidden = APP_EDITION !== 'commercial';
+const status = $('proStatus');
+const button = $('btnOpenPaywall');
+if(APP_EDITION !== 'commercial') return;
+if(isPro){
+const entitlement = activeEntitlement(rcCustomerInfo);
+let detail = 'Pro مفعّل';
+if(entitlement?.expirationDate) detail += ` حتى ${new Date(entitlement.expirationDate).toLocaleDateString(currentLanguage === 'ar' ? 'ar-KW' : 'en-US')}`;
+else if(entitlement) detail += ' — مدى الحياة';
+if(status){ status.textContent = `✅ ${detail}`; status.className = 'pro-status active'; }
+if(button){ button.textContent = '✅ اشتراك Pro مفعّل'; button.disabled = true; }
+}else{
+if(status){ status.textContent = `الخطة المجانية: حتى ${PLAN_LIMITS.freeLinks} روابط و${PLAN_LIMITS.freeCustomCategories} أنواع إضافية`; status.className = 'pro-status'; }
+if(button){ button.textContent = '💎 الترقية إلى Pro'; button.disabled = false; }
+}
 }
 function applyRevenueCatCustomerInfo(customerInfo){
-  rcCustomerInfo = customerInfo || null;
-  isPro = APP_EDITION === 'full' || customerHasPro(customerInfo);
-  updateProUi();
+rcCustomerInfo = customerInfo || null;
+isPro = APP_EDITION === 'full' || customerHasPro(customerInfo);
+updateProUi();
 }
 function packagePrice(aPackage, fallback){ return aPackage?.product?.priceString || fallback; }
 function resolveOffering(offerings){
-  const cfg = getRevenueCatConfig();
-  return (cfg.offeringId && offerings?.all?.[cfg.offeringId]) || offerings?.current || Object.values(offerings?.all || {})[0] || null;
+const cfg = getRevenueCatConfig();
+return (cfg.offeringId && offerings?.all?.[cfg.offeringId]) || offerings?.current || Object.values(offerings?.all || {})[0] || null;
 }
 function renderRevenueCatOffering(offering){
-  rcPackages = {
-    monthly: offering?.monthly || offering?.availablePackages?.find(p => p.packageType === 'MONTHLY') || null,
-    annual: offering?.annual || offering?.availablePackages?.find(p => p.packageType === 'ANNUAL') || null,
-    lifetime: offering?.lifetime || offering?.availablePackages?.find(p => p.packageType === 'LIFETIME') || null
-  };
-  const prices = {
-    monthly:packagePrice(rcPackages.monthly, '$1.99'),
-    annual:packagePrice(rcPackages.annual, '$14.99'),
-    lifetime:packagePrice(rcPackages.lifetime, '$29.99')
-  };
-  const map = { monthly:'paywallMonthlyPrice', annual:'paywallAnnualPrice', lifetime:'paywallLifetimePrice' };
-  Object.entries(map).forEach(([kind,id]) => { const el=$(id); if(el) el.textContent=prices[kind]; });
-  document.querySelectorAll('[data-rc-package]').forEach(btn => { btn.disabled = !rcPackages[btn.dataset.rcPackage] || !rcReady; });
-  const msg = $('paywallMessage');
-  if(msg) msg.textContent = offering ? 'اختر الخطة المناسبة. السعر النهائي يظهر من App Store بعملة حسابك.' : 'لم يتم العثور على باقات في RevenueCat.';
+rcPackages = {
+monthly: offering?.monthly || offering?.availablePackages?.find(p => p.packageType === 'MONTHLY') || null,
+annual: offering?.annual || offering?.availablePackages?.find(p => p.packageType === 'ANNUAL') || null,
+lifetime: offering?.lifetime || offering?.availablePackages?.find(p => p.packageType === 'LIFETIME') || null
+};
+const prices = {
+monthly:packagePrice(rcPackages.monthly, '$1.99'),
+annual:packagePrice(rcPackages.annual, '$14.99'),
+lifetime:packagePrice(rcPackages.lifetime, '$29.99')
+};
+const map = { monthly:'paywallMonthlyPrice', annual:'paywallAnnualPrice', lifetime:'paywallLifetimePrice' };
+Object.entries(map).forEach(([kind,id]) => { const el=$(id); if(el) el.textContent=prices[kind]; });
+document.querySelectorAll('[data-rc-package]').forEach(btn => { btn.disabled = !rcPackages[btn.dataset.rcPackage] || !rcReady; });
+const msg = $('paywallMessage');
+if(msg) msg.textContent = offering ? 'اختر الخطة المناسبة. السعر النهائي يظهر من App Store بعملة حسابك.' : 'لم يتم العثور على باقات في RevenueCat.';
 }
 async function loadRevenueCatOfferings(){
-  if(APP_EDITION !== 'commercial' || !rcReady) return null;
-  try{
-    const offerings = await revenueCatPlugin().getOfferings();
-    rcOffering = resolveOffering(offerings);
-    renderRevenueCatOffering(rcOffering);
-    return rcOffering;
-  }catch(e){
-    console.warn('RevenueCat offerings failed', e);
-    const msg=$('paywallMessage'); if(msg) msg.textContent='تعذر تحميل الأسعار. تأكد من إعداد Offering في RevenueCat.';
-    return null;
-  }
+if(APP_EDITION !== 'commercial' || !rcReady) return null;
+try{
+const offerings = await revenueCatPlugin().getOfferings();
+rcOffering = resolveOffering(offerings);
+renderRevenueCatOffering(rcOffering);
+return rcOffering;
+}catch(e){
+console.warn('RevenueCat offerings failed', e);
+const msg=$('paywallMessage'); if(msg) msg.textContent='تعذر تحميل الأسعار. تأكد من إعداد Offering في RevenueCat.';
+return null;
+}
 }
 async function refreshRevenueCatStatus(){
-  if(APP_EDITION !== 'commercial' || !rcReady) return;
-  try{
-    const result = await revenueCatPlugin().getCustomerInfo();
-    applyRevenueCatCustomerInfo(result?.customerInfo);
-  }catch(e){ console.warn('RevenueCat customer info failed', e); }
+if(APP_EDITION !== 'commercial' || !rcReady) return;
+try{
+const result = await revenueCatPlugin().getCustomerInfo();
+applyRevenueCatCustomerInfo(result?.customerInfo);
+}catch(e){ console.warn('RevenueCat customer info failed', e); }
 }
 async function initRevenueCat(){
-  updateProUi();
-  if(APP_EDITION !== 'commercial') return;
-  if(!isNativeApp()){
-    const status=$('proStatus'); if(status) status.textContent='الشراء متاح داخل تطبيق الآيفون.';
-    return;
-  }
-  if(!hasRevenueCatKey()){
-    const status=$('proStatus'); if(status){ status.textContent='⚠️ أضف RevenueCat Public SDK Key لتفعيل الشراء.'; status.className='pro-status warning'; }
-    return;
-  }
-  const purchases = revenueCatPlugin();
-  if(!purchases?.configure){
-    const status=$('proStatus'); if(status) status.textContent='⚠️ إضافة RevenueCat غير موجودة في البناء.';
-    return;
-  }
-  try{
-    await purchases.configure({ apiKey:getRevenueCatConfig().apiKey, appUserID:cloudUser?.id || null });
-    rcReady = true;
-    try{
-      await purchases.addCustomerInfoUpdateListener(info => applyRevenueCatCustomerInfo(info));
-    }catch(e){ console.warn('RevenueCat listener unavailable', e); }
-    await Promise.all([refreshRevenueCatStatus(), loadRevenueCatOfferings()]);
-  }catch(e){
-    console.warn('RevenueCat configuration failed', e);
-    const status=$('proStatus'); if(status){ status.textContent='⚠️ تعذر تشغيل RevenueCat. راجع المفتاح وإعدادات المنتجات.'; status.className='pro-status warning'; }
-  }
+updateProUi();
+if(APP_EDITION !== 'commercial') return;
+if(!isNativeApp()){
+const status=$('proStatus'); if(status) status.textContent='الشراء متاح داخل تطبيق الآيفون.';
+return;
+}
+if(!hasRevenueCatKey()){
+const status=$('proStatus'); if(status){ status.textContent='⚠️ أضف RevenueCat Public SDK Key لتفعيل الشراء.'; status.className='pro-status warning'; }
+return;
+}
+const purchases = revenueCatPlugin();
+if(!purchases?.configure){
+const status=$('proStatus'); if(status) status.textContent='⚠️ إضافة RevenueCat غير موجودة في البناء.';
+return;
+}
+try{
+await purchases.configure({ apiKey:getRevenueCatConfig().apiKey, appUserID:cloudUser?.id || null });
+rcReady = true;
+try{
+await purchases.addCustomerInfoUpdateListener(info => applyRevenueCatCustomerInfo(info));
+}catch(e){ console.warn('RevenueCat listener unavailable', e); }
+await Promise.all([refreshRevenueCatStatus(), loadRevenueCatOfferings()]);
+}catch(e){
+console.warn('RevenueCat configuration failed', e);
+const status=$('proStatus'); if(status){ status.textContent='⚠️ تعذر تشغيل RevenueCat. راجع المفتاح وإعدادات المنتجات.'; status.className='pro-status warning'; }
+}
 }
 async function identifyRevenueCatUser(userId){
-  if(!rcReady || !userId) return;
-  try{
-    const result = await revenueCatPlugin().logIn({ appUserID:userId });
-    applyRevenueCatCustomerInfo(result?.customerInfo);
-  }catch(e){ console.warn('RevenueCat login failed', e); }
+if(!rcReady || !userId) return;
+try{
+const result = await revenueCatPlugin().logIn({ appUserID:userId });
+applyRevenueCatCustomerInfo(result?.customerInfo);
+}catch(e){ console.warn('RevenueCat login failed', e); }
 }
 async function logoutRevenueCatUser(){
-  if(!rcReady) return;
-  try{
-    const result = await revenueCatPlugin().logOut();
-    applyRevenueCatCustomerInfo(result?.customerInfo);
-  }catch(e){ console.warn('RevenueCat logout failed', e); }
+if(!rcReady) return;
+try{
+const result = await revenueCatPlugin().logOut();
+applyRevenueCatCustomerInfo(result?.customerInfo);
+}catch(e){ console.warn('RevenueCat logout failed', e); }
 }
 async function openPaywall(){
-  if(APP_EDITION !== 'commercial') return;
-  $('paywallOverlay').classList.add('open');
-  updateProUi();
-  if(!hasRevenueCatKey()){
-    $('paywallMessage').textContent = 'أضف RevenueCat Public SDK Key في app-config.js أو متغير Codemagic لتفعيل الدفع.';
-    document.querySelectorAll('[data-rc-package]').forEach(btn => btn.disabled = true);
-    return;
-  }
-  if(!rcReady) await initRevenueCat();
-  if(rcReady) await loadRevenueCatOfferings();
+if(APP_EDITION !== 'commercial') return;
+$('paywallOverlay').classList.add('open');
+updateProUi();
+if(!hasRevenueCatKey()){
+$('paywallMessage').textContent = 'أضف RevenueCat Public SDK Key في app-config.js أو متغير Codemagic لتفعيل الدفع.';
+document.querySelectorAll('[data-rc-package]').forEach(btn => btn.disabled = true);
+return;
+}
+if(!rcReady) await initRevenueCat();
+if(rcReady) await loadRevenueCatOfferings();
 }
 function closePaywall(){ $('paywallOverlay').classList.remove('open'); }
 async function purchaseRevenueCatPackage(kind){
-  const aPackage = rcPackages[kind];
-  if(!rcReady || !aPackage){ toast('⚠️ هذه الخطة غير مجهزة في RevenueCat'); return; }
-  const button = document.querySelector(`[data-rc-package="${kind}"]`);
-  try{
-    if(button) button.disabled = true;
-    const result = await revenueCatPlugin().purchasePackage({ aPackage });
-    applyRevenueCatCustomerInfo(result?.customerInfo);
-    if(isPro){ closePaywall(); toast('✅ تم تفعيل LinkVault Pro'); }
-    else toast('⚠️ تمت العملية لكن صلاحية Pro غير مفعلة. راجع Entitlement في RevenueCat.');
-  }catch(e){
-    const cancelled = !!(e?.userCancelled || e?.userInfo?.userCancelled || String(e?.message || '').toLowerCase().includes('cancel'));
-    if(!cancelled){ console.warn('RevenueCat purchase failed', e); toast('⚠️ تعذر إكمال عملية الشراء'); }
-  }finally{
-    if(button) button.disabled = !rcPackages[kind] || !rcReady;
-  }
+const aPackage = rcPackages[kind];
+if(!rcReady || !aPackage){ toast('⚠️ هذه الخطة غير مجهزة في RevenueCat'); return; }
+const button = document.querySelector(`[data-rc-package="${kind}"]`);
+try{
+if(button) button.disabled = true;
+const result = await revenueCatPlugin().purchasePackage({ aPackage });
+applyRevenueCatCustomerInfo(result?.customerInfo);
+if(isPro){ closePaywall(); toast('✅ تم تفعيل LinkVault Pro'); }
+else toast('⚠️ تمت العملية لكن صلاحية Pro غير مفعلة. راجع Entitlement في RevenueCat.');
+}catch(e){
+const cancelled = !!(e?.userCancelled || e?.userInfo?.userCancelled || String(e?.message || '').toLowerCase().includes('cancel'));
+if(!cancelled){ console.warn('RevenueCat purchase failed', e); toast('⚠️ تعذر إكمال عملية الشراء'); }
+}finally{
+if(button) button.disabled = !rcPackages[kind] || !rcReady;
+}
 }
 async function restoreRevenueCatPurchases(){
-  if(APP_EDITION !== 'commercial') return;
-  if(!rcReady){ await initRevenueCat(); if(!rcReady) return; }
-  try{
-    const result = await revenueCatPlugin().restorePurchases();
-    applyRevenueCatCustomerInfo(result?.customerInfo);
-    toast(isPro ? '✅ تم استرجاع مشترياتك' : 'ℹ️ لا توجد مشتريات Pro مرتبطة بهذا الحساب');
-    if(isPro) closePaywall();
-  }catch(e){ console.warn('RevenueCat restore failed', e); toast('⚠️ تعذر استرجاع المشتريات'); }
+if(APP_EDITION !== 'commercial') return;
+if(!rcReady){ await initRevenueCat(); if(!rcReady) return; }
+try{
+const result = await revenueCatPlugin().restorePurchases();
+applyRevenueCatCustomerInfo(result?.customerInfo);
+toast(isPro ? '✅ تم استرجاع مشترياتك' : 'ℹ️ لا توجد مشتريات Pro مرتبطة بهذا الحساب');
+if(isPro) closePaywall();
+}catch(e){ console.warn('RevenueCat restore failed', e); toast('⚠️ تعذر استرجاع المشتريات'); }
 }
-
 function fallbackTitleFor(url, title='', text=''){
-  const cleanTitle = String(title || '').trim();
-  if(cleanTitle && cleanTitle !== url) return cleanTitle.slice(0, 180);
-  const withoutUrl = String(text || '').replace(url || '', '').trim().replace(/\s+/g, ' ');
-  if(withoutUrl) return withoutUrl.slice(0, 120);
-  const d = domainOf(url);
-  return d || url || 'رابط محفوظ';
+const cleanTitle = String(title || '').trim();
+if(cleanTitle && cleanTitle !== url) return cleanTitle.slice(0, 180);
+const withoutUrl = String(text || '').replace(url || '', '').trim().replace(/\s+/g, ' ');
+if(withoutUrl) return withoutUrl.slice(0, 120);
+const d = domainOf(url);
+return d || url || 'رابط محفوظ';
 }
 function normalizeArabicSearchText(value){
-  return String(value || '')
-    .toLowerCase()
-    .replace(/[ًٌٍَُِّْـ]/g, '')
-    .replace(/[إأآ]/g, 'ا')
-    .replace(/ة/g, 'ه')
-    .replace(/ى/g, 'ي')
-    .replace(/ؤ/g, 'و')
-    .replace(/ئ/g, 'ي')
-    .replace(/[^\p{L}\p{N}]+/gu, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+return String(value || '')
+.toLowerCase()
+.replace(/[ًٌٍَُِّْـ]/g, '')
+.replace(/[إأآ]/g, 'ا')
+.replace(/ة/g, 'ه')
+.replace(/ى/g, 'ي')
+.replace(/ؤ/g, 'و')
+.replace(/ئ/g, 'ي')
+.replace(/[^\p{L}\p{N}]+/gu, ' ')
+.replace(/\s+/g, ' ')
+.trim();
 }
 function categoryExists(name){ return cats.includes(name); }
 function fallbackCategory(){ return categoryExists('أخرى') ? 'أخرى' : (cats[0] || 'أخرى'); }
 function suggestCategoryForLink({ url='', title='', text='' } = {}){
-  const haystack = normalizeArabicSearchText([title, text, url, domainOf(url)].filter(Boolean).join(' '));
-  if(haystack){
-    for(const rule of CATEGORY_RULES){
-      if(!categoryExists(rule.cat)) continue;
-      const matched = rule.words.some(w => haystack.includes(normalizeArabicSearchText(w)));
-      if(matched) return rule.cat;
-    }
-  }
-  const platform = detectPlatform(url).id;
-  if(platform === 'youtube' && categoryExists('يوتيوب')) return 'يوتيوب';
-  return fallbackCategory();
+const haystack = normalizeArabicSearchText([title, text, url, domainOf(url)].filter(Boolean).join(' '));
+if(haystack){
+for(const rule of CATEGORY_RULES){
+if(!categoryExists(rule.cat)) continue;
+const matched = rule.words.some(w => haystack.includes(normalizeArabicSearchText(w)));
+if(matched) return rule.cat;
+}
+}
+const platform = detectPlatform(url).id;
+if(platform === 'youtube' && categoryExists('يوتيوب')) return 'يوتيوب';
+return fallbackCategory();
 }
 function upgradeExistingOtherCategories(){
-  let changed = false;
-  links = links.map(l => {
-    if(!l || !l.url) return l;
-    const current = l.cat || '';
-    if(current && current !== 'أخرى') return l;
-    const suggested = suggestCategoryForLink({ url:l.url, title:l.title, text:l.note });
-    if(suggested && suggested !== current && suggested !== 'أخرى'){
-      changed = true;
-      return { ...l, cat:suggested, updatedAt:l.updatedAt || nowIso() };
-    }
-    return l;
-  });
-  return changed;
+let changed = false;
+links = links.map(l => {
+if(!l || !l.url) return l;
+const current = l.cat || '';
+if(current && current !== 'أخرى') return l;
+const suggested = suggestCategoryForLink({ url:l.url, title:l.title, text:l.note });
+if(suggested && suggested !== current && suggested !== 'أخرى'){
+changed = true;
+return { ...l, cat:suggested, updatedAt:l.updatedAt || nowIso() };
+}
+return l;
+});
+return changed;
 }
 function withTimeout(promise, ms, fallback={}){
-  return Promise.race([
-    promise,
-    new Promise(resolve => setTimeout(() => resolve(fallback), ms))
-  ]);
+return Promise.race([
+promise,
+new Promise(resolve => setTimeout(() => resolve(fallback), ms))
+]);
 }
 async function getMetadataQuick(url){
-  try{
-    const data = await withTimeout(getMetadata(url), 2800, {});
-    return data || {};
-  }catch(e){
-    return {};
-  }
+try{
+const data = await withTimeout(getMetadata(url), 2800, {});
+return data || {};
+}catch(e){
+return {};
+}
 }
 function canonicalUrl(url){ return String(url || '').trim().replace(/\/$/, '').toLowerCase(); }
 async function saveSharedLinkDirectly(payload){
-  const rawUrl = payload.url || extractFirstUrl(payload.text || '') || '';
-  const url = normalizeUrl(rawUrl);
-  const text = String(payload.text || '').trim();
-  const manualNote = String(payload.note || '').trim();
-  let manualCat = String(payload.cat || payload.category || '').trim();
-  if(!url || !/^https?:\/\//i.test(url)) return false;
-
-  if(manualCat && !cats.includes(manualCat)){
-    if(!canAddCustomCategory(manualCat)) manualCat = '';
-    else cats = normalizeCategories([...cats, manualCat]);
-  }
-
-  const metadata = await getMetadataQuick(url);
-  const title = fallbackTitleFor(url, payload.title || metadata.title, [text, manualNote, metadata.title].filter(Boolean).join(' '));
-  const categoryText = [text, manualNote, payload.title, metadata.title, manualCat].filter(Boolean).join(' ');
-  const suggestedCat = suggestCategoryForLink({ url, title, text: categoryText });
-  const cat = manualCat || suggestedCat;
-  const thumbnail = payload.thumbnail || metadata.image || '';
-  const platform = payload.platform || metadata.platform || detectPlatform(url).label;
-  const note = manualNote || (text && text !== url ? text : '');
-
-  const existing = links.find(l => canonicalUrl(l.url) === canonicalUrl(url));
-  if(existing){
-    let changed = false;
-    const oldTitleLooksGeneric = !existing.title || existing.title === existing.url || existing.title === domainOf(existing.url);
-    if((oldTitleLooksGeneric || manualCat) && title && existing.title !== title){ existing.title = title; changed = true; }
-    if(((manualCat && existing.cat !== manualCat) || ((!existing.cat || existing.cat === 'أخرى') && cat && cat !== 'أخرى'))){ existing.cat = cat; changed = true; }
-    if(note && (!existing.note || existing.note !== note)){ existing.note = note; changed = true; }
-    if(!existing.thumbnail && thumbnail){ existing.thumbnail = thumbnail; changed = true; }
-    if(!existing.platform && platform){ existing.platform = platform; changed = true; }
-    if(changed){
-      existing.updatedAt = nowIso();
-      upsertLinkCloud(existing).catch(e => console.warn('Cloud upsert failed after duplicate share update', e));
-    }
-    currentCat = 'all';
-    saveLocal();
-    renderTabs();
-    renderList();
-    toast(changed ? '✅ الرابط محفوظ مسبقًا وتم تحديث بياناته' : 'ℹ️ الرابط محفوظ مسبقًا');
-    return true;
-  }
-
-  if(!canAddLink()) return false;
-  const item = {
-    id: uid(),
-    url,
-    title,
-    cat,
-    trailer: '',
-    note,
-    thumbnail,
-    platform,
-    favorite:false,
-    ts: Date.now(),
-    updatedAt: nowIso()
-  };
-  links.unshift(item);
-  currentCat = 'all';
-  saveLocal();
-  renderTabs();
-  renderList();
-  toast(`✅ تم حفظ الرابط في ${cat}`);
-  upsertLinkCloud(item).catch(e => console.warn('Cloud upsert failed after local share save', e));
-  return true;
+const rawUrl = payload.url || extractFirstUrl(payload.text || '') || '';
+const url = normalizeUrl(rawUrl);
+const text = String(payload.text || '').trim();
+const manualNote = String(payload.note || '').trim();
+let manualCat = String(payload.cat || payload.category || '').trim();
+if(!url || !/^https?:\/\//i.test(url)) return false;
+if(manualCat && !cats.includes(manualCat)){
+if(!canAddCustomCategory(manualCat)) manualCat = '';
+else cats = normalizeCategories([...cats, manualCat]);
 }
-
-
+const metadata = await getMetadataQuick(url);
+const title = fallbackTitleFor(url, payload.title || metadata.title, [text, manualNote, metadata.title].filter(Boolean).join(' '));
+const categoryText = [text, manualNote, payload.title, metadata.title, manualCat].filter(Boolean).join(' ');
+const suggestedCat = suggestCategoryForLink({ url, title, text: categoryText });
+const cat = manualCat || suggestedCat;
+const thumbnail = payload.thumbnail || metadata.image || '';
+const platform = payload.platform || metadata.platform || detectPlatform(url).label;
+const note = manualNote || (text && text !== url ? text : '');
+const existing = links.find(l => canonicalUrl(l.url) === canonicalUrl(url));
+if(existing){
+let changed = false;
+const oldTitleLooksGeneric = !existing.title || existing.title === existing.url || existing.title === domainOf(existing.url);
+if((oldTitleLooksGeneric || manualCat) && title && existing.title !== title){ existing.title = title; changed = true; }
+if(((manualCat && existing.cat !== manualCat) || ((!existing.cat || existing.cat === 'أخرى') && cat && cat !== 'أخرى'))){ existing.cat = cat; changed = true; }
+if(note && (!existing.note || existing.note !== note)){ existing.note = note; changed = true; }
+if(!existing.thumbnail && thumbnail){ existing.thumbnail = thumbnail; changed = true; }
+if(!existing.platform && platform){ existing.platform = platform; changed = true; }
+if(changed){
+existing.updatedAt = nowIso();
+upsertLinkCloud(existing).catch(e => console.warn('Cloud upsert failed after duplicate share update', e));
+}
+currentCat = 'all';
+saveLocal();
+renderTabs();
+renderList();
+toast(changed ? '✅ الرابط محفوظ مسبقًا وتم تحديث بياناته' : 'ℹ️ الرابط محفوظ مسبقًا');
+return true;
+}
+if(!canAddLink()) return false;
+const item = {
+id: uid(),
+url,
+title,
+cat,
+trailer: '',
+note,
+thumbnail,
+platform,
+favorite:false,
+ts: Date.now(),
+updatedAt: nowIso()
+};
+links.unshift(item);
+currentCat = 'all';
+saveLocal();
+renderTabs();
+renderList();
+toast(`✅ تم حفظ الرابط في ${cat}`);
+upsertLinkCloud(item).catch(e => console.warn('Cloud upsert failed after local share save', e));
+return true;
+}
 async function syncCategoriesToNative(){
-  const plugin = getNativePlugin('PendingShare');
-  if(!plugin || !plugin.setCategories) return;
-  await plugin.setCategories({ categories: normalizeCategories(cats) });
+const plugin = getNativePlugin('PendingShare');
+if(!plugin || !plugin.setCategories) return;
+await plugin.setCategories({ categories: normalizeCategories(cats) });
 }
-
 const PLATFORMS = [
-  { id:'youtube', test:u=>/youtube\.com|youtu\.be/.test(u), color:'#FF0000', label:'YouTube' },
-  { id:'instagram', test:u=>/instagram\.com/.test(u), color:'ig', label:'Instagram' },
-  { id:'facebook', test:u=>/facebook\.com|fb\.com/.test(u), color:'#1877F2', label:'Facebook' },
-  { id:'tiktok', test:u=>/tiktok\.com/.test(u), color:'#010101', label:'TikTok' },
-  { id:'twitter', test:u=>/twitter\.com|x\.com/.test(u), color:'#000000', label:'X / Twitter' },
-  { id:'reddit', test:u=>/reddit\.com/.test(u), color:'#FF4500', label:'Reddit' },
-  { id:'vimeo', test:u=>/vimeo\.com/.test(u), color:'#1AB7EA', label:'Vimeo' },
-  { id:'web', test:()=>true, color:'#6b6b90', label:'Web' }
+{ id:'youtube', test:u=>/youtube\.com|youtu\.be/.test(u), color:'#FF0000', label:'YouTube' },
+{ id:'instagram', test:u=>/instagram\.com/.test(u), color:'ig', label:'Instagram' },
+{ id:'facebook', test:u=>/facebook\.com|fb\.com/.test(u), color:'#1877F2', label:'Facebook' },
+{ id:'tiktok', test:u=>/tiktok\.com/.test(u), color:'#010101', label:'TikTok' },
+{ id:'twitter', test:u=>/twitter\.com|x\.com/.test(u), color:'#000000', label:'X / Twitter' },
+{ id:'reddit', test:u=>/reddit\.com/.test(u), color:'#FF4500', label:'Reddit' },
+{ id:'vimeo', test:u=>/vimeo\.com/.test(u), color:'#1AB7EA', label:'Vimeo' },
+{ id:'web', test:()=>true, color:'#6b6b90', label:'Web' }
 ];
 function detectPlatform(url){ const s = String(url || '').toLowerCase(); return PLATFORMS.find(p => p.test(s)) || PLATFORMS.at(-1); }
 function accentColor(url){ const p = detectPlatform(url); if(p.color === 'ig') return 'linear-gradient(90deg,#fdf497,#fd5949,#d6249f,#285AEB)'; return p.color; }
 function domainOf(url){ try { return new URL(url).hostname.replace(/^www\./,''); } catch(e){ return ''; } }
 function platformLogo(url){
-  const p = detectPlatform(url);
-  if(p.id === 'instagram') return `<svg viewBox="0 0 42 42"><defs><radialGradient id="ig" cx="30%" cy="107%" r="130%"><stop offset="0%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect width="42" height="42" rx="11" fill="url(#ig)"/><rect x="8" y="8" width="26" height="26" rx="8" fill="none" stroke="white" stroke-width="2.4"/><circle cx="21" cy="21" r="6.2" fill="none" stroke="white" stroke-width="2.4"/><circle cx="29" cy="13" r="1.8" fill="white"/></svg>`;
-  if(p.id === 'youtube') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#FF0000"/><path d="M33.5 15s-.3-2-1.2-2.9c-1.1-1.2-2.4-1.2-3-1.3-4.1-.3-10.3-.3-10.3-.3s-6.2 0-10.3.3c-.6.1-1.9.1-3 1.3C4.8 13 4.5 15 4.5 15s-.3 2.4-.3 4.8v2c0 2.4.3 4.8.3 4.8s.3 2 1.2 2.9c1.1 1.2 2.6 1.2 3.2 1.3 2.3.2 10.1.3 10.1.3s6.2 0 10.3-.3c.6-.1 1.9-.1 3-1.3.9-.9 1.2-2.9 1.2-2.9s.3-2.4.3-4.8v-2c0-2.4-.3-4.8-.3-4.8zM17.4 25.6v-9.3l8.8 4.7-8.8 4.6z" fill="white"/></svg>`;
-  if(p.id === 'facebook') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#1877F2"/><path d="M24 36V23.5h4.1l.7-5H24v-3.2c0-1.5.7-2.8 2.9-2.8h2.2V8.2S27.2 7.9 25.4 7.9c-4.4 0-7.3 2.7-7.3 7.5v3.1h-4.9v5h4.9V36H24z" fill="white"/></svg>`;
-  if(p.id === 'tiktok') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#010101"/><path d="M30.6 12.6c-2.3 0-4.1-1.7-4.4-4h-4.3v18.1a3.9 3.9 0 1 1-3.9-3.9c.4 0 .8.1 1.2.2v-4.4a8.3 8.3 0 1 0 7.1 8.2v-9.2c1.3.9 2.8 1.4 4.4 1.4v-6.4z" fill="white"/></svg>`;
-  if(p.id === 'twitter') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#000"/><path d="M9 9h7.4l6 8.2L29.4 9h3.1l-8.7 10.1L34 33h-7.4l-6.7-9.1L12.1 33H9l9.5-11.1L9 9zm5.4 2.4l13.4 19.2h1.8L16.2 11.4h-1.8z" fill="white"/></svg>`;
-  if(p.id === 'reddit') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#FF4500"/><circle cx="21" cy="22" r="10" fill="white"/><circle cx="17.5" cy="22" r="1.5" fill="#FF4500"/><circle cx="24.5" cy="22" r="1.5" fill="#FF4500"/><path d="M17.8 26.3c2 1.5 4.4 1.5 6.4 0" stroke="#FF4500" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="32" cy="15" r="3" fill="white"/><path d="M23.5 13.2c2.7-2 5.5-1.4 7.5.9" stroke="white" stroke-width="1.5" fill="none"/></svg>`;
-  const d = domainOf(url); const initials = (d || 'WEB').slice(0,2).toUpperCase();
-  return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="${p.color}"/><text x="21" y="27" font-size="13" font-weight="900" text-anchor="middle" fill="white">${escapeHtml(initials)}</text></svg>`;
+const p = detectPlatform(url);
+if(p.id === 'instagram') return `<svg viewBox="0 0 42 42"><defs><radialGradient id="ig" cx="30%" cy="107%" r="130%"><stop offset="0%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect width="42" height="42" rx="11" fill="url(#ig)"/><rect x="8" y="8" width="26" height="26" rx="8" fill="none" stroke="white" stroke-width="2.4"/><circle cx="21" cy="21" r="6.2" fill="none" stroke="white" stroke-width="2.4"/><circle cx="29" cy="13" r="1.8" fill="white"/></svg>`;
+if(p.id === 'youtube') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#FF0000"/><path d="M33.5 15s-.3-2-1.2-2.9c-1.1-1.2-2.4-1.2-3-1.3-4.1-.3-10.3-.3-10.3-.3s-6.2 0-10.3.3c-.6.1-1.9.1-3 1.3C4.8 13 4.5 15 4.5 15s-.3 2.4-.3 4.8v2c0 2.4.3 4.8.3 4.8s.3 2 1.2 2.9c1.1 1.2 2.6 1.2 3.2 1.3 2.3.2 10.1.3 10.1.3s6.2 0 10.3-.3c.6-.1 1.9-.1 3-1.3.9-.9 1.2-2.9 1.2-2.9s.3-2.4.3-4.8v-2c0-2.4-.3-4.8-.3-4.8zM17.4 25.6v-9.3l8.8 4.7-8.8 4.6z" fill="white"/></svg>`;
+if(p.id === 'facebook') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#1877F2"/><path d="M24 36V23.5h4.1l.7-5H24v-3.2c0-1.5.7-2.8 2.9-2.8h2.2V8.2S27.2 7.9 25.4 7.9c-4.4 0-7.3 2.7-7.3 7.5v3.1h-4.9v5h4.9V36H24z" fill="white"/></svg>`;
+if(p.id === 'tiktok') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#010101"/><path d="M30.6 12.6c-2.3 0-4.1-1.7-4.4-4h-4.3v18.1a3.9 3.9 0 1 1-3.9-3.9c.4 0 .8.1 1.2.2v-4.4a8.3 8.3 0 1 0 7.1 8.2v-9.2c1.3.9 2.8 1.4 4.4 1.4v-6.4z" fill="white"/></svg>`;
+if(p.id === 'twitter') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#000"/><path d="M9 9h7.4l6 8.2L29.4 9h3.1l-8.7 10.1L34 33h-7.4l-6.7-9.1L12.1 33H9l9.5-11.1L9 9zm5.4 2.4l13.4 19.2h1.8L16.2 11.4h-1.8z" fill="white"/></svg>`;
+if(p.id === 'reddit') return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="#FF4500"/><circle cx="21" cy="22" r="10" fill="white"/><circle cx="17.5" cy="22" r="1.5" fill="#FF4500"/><circle cx="24.5" cy="22" r="1.5" fill="#FF4500"/><path d="M17.8 26.3c2 1.5 4.4 1.5 6.4 0" stroke="#FF4500" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="32" cy="15" r="3" fill="white"/><path d="M23.5 13.2c2.7-2 5.5-1.4 7.5.9" stroke="white" stroke-width="1.5" fill="none"/></svg>`;
+const d = domainOf(url); const initials = (d || 'WEB').slice(0,2).toUpperCase();
+return `<svg viewBox="0 0 42 42"><rect width="42" height="42" rx="11" fill="${p.color}"/><text x="21" y="27" font-size="13" font-weight="900" text-anchor="middle" fill="white">${escapeHtml(initials)}</text></svg>`;
 }
-
 function renderTabs(){
-  const bar = $('tabsBar');
-  const favCount = links.filter(l=>l.favorite).length;
-  const selectedType = currentCat === 'all' || cats.includes(currentCat) ? currentCat : 'all';
-  const options = cats.map(c => `<option value="${escapeHtml(c)}" ${selectedType===c?'selected':''}>${escapeHtml(c)}</option>`).join('');
-  bar.innerHTML = `<div class="type-filter-wrap"><select class="type-filter-select" id="typeFilterSelect" aria-label="قائمة النوع"><option value="all" ${selectedType==='all'?'selected':''}>كل الأنواع</option>${options}</select></div>` +
-    `<button class="favorite-filter-btn ${currentCat===FAVORITES_FILTER?'active':''}" id="btnFavoritesFilter">⭐ المفضلة${favCount ? ' ' + favCount : ''}</button>` +
-    `<button class="manage-cats-btn" id="btnManageCats" title="إدارة الأنواع" aria-label="إدارة الأنواع">⚙️ إدارة</button>`;
-  $('typeFilterSelect').addEventListener('change', e => { currentCat = e.target.value; renderTabs(); renderList(); });
-  $('btnFavoritesFilter').addEventListener('click', () => { currentCat = currentCat === FAVORITES_FILTER ? 'all' : FAVORITES_FILTER; renderTabs(); renderList(); });
-  $('btnManageCats').addEventListener('click', openCatModal);
+const bar = $('tabsBar');
+const favCount = links.filter(l=>l.favorite).length;
+const selectedType = currentCat === 'all' || cats.includes(currentCat) ? currentCat : 'all';
+const options = cats.map(c => `<option value="${escapeHtml(c)}" ${selectedType===c?'selected':''}>${escapeHtml(c)}</option>`).join('');
+bar.innerHTML = `<div class="type-filter-wrap"><select class="type-filter-select" id="typeFilterSelect" aria-label="قائمة النوع"><option value="all" ${selectedType==='all'?'selected':''}>كل الأنواع</option>${options}</select></div>` +
+`<button class="favorite-filter-btn ${currentCat===FAVORITES_FILTER?'active':''}" id="btnFavoritesFilter">⭐ المفضلة${favCount ? ' ' + favCount : ''}</button>` +
+`<button class="manage-cats-btn" id="btnManageCats" title="إدارة الأنواع" aria-label="إدارة الأنواع">⚙️ إدارة</button>`;
+$('typeFilterSelect').addEventListener('change', e => { currentCat = e.target.value; renderTabs(); renderList(); });
+$('btnFavoritesFilter').addEventListener('click', () => { currentCat = currentCat === FAVORITES_FILTER ? 'all' : FAVORITES_FILTER; renderTabs(); renderList(); });
+$('btnManageCats').addEventListener('click', openCatModal);
 }
 function renderList(){
-  const q = $('searchInp').value.trim().toLowerCase();
-  const data = getVisibleLinks();
-  const el = $('mainList');
-  document.querySelectorAll('[data-view]').forEach(btn => btn.classList.toggle('active', btn.dataset.view === viewMode));
-  const stats = `<div class="summary-row"><div class="stat-card"><div class="stat-num">${links.length}</div><div class="stat-label">رابط</div></div><div class="stat-card"><div class="stat-num">${cats.length}</div><div class="stat-label">تصنيف</div></div><div class="stat-card"><div class="stat-num">${links.filter(x=>x.trailer).length}</div><div class="stat-label">تريلر</div></div></div>`;
-  el.classList.toggle('selection-active', selectionMode);
-  if(!data.length){ el.innerHTML = stats + `<div class="empty-state"><div class="empty-icon">🔗</div><h3>${q ? 'لا نتائج' : 'لا يوجد روابط بعد'}</h3><p>${q ? 'جرب كلمة بحث مختلفة' : 'اضغط + لإضافة رابط جديد<br>أو شاركه من أي تطبيق آخر'}</p></div>`; updateSelectionUi(); return; }
-  const cards = data.map(l => {
-    const platform = detectPlatform(l.url);
-    const selected = selectedIds.has(l.id);
-    return `<div class="link-card card-open-hint ${selected?'selected':''}" data-id="${escapeHtml(l.id)}"><button class="select-check" data-select-id="${escapeHtml(l.id)}" aria-label="تحديد الرابط">✓</button><div class="card-accent" style="background:${accentColor(l.url)}"></div><div class="card-body"><div class="card-top"><div class="platform-logo">${platformLogo(l.url)}</div><div class="card-info"><div class="card-title">${escapeHtml(l.title)}</div><div class="card-url">${escapeHtml(l.url)}</div></div><div class="card-actions"><button class="card-btn fav" data-id="${escapeHtml(l.id)}" data-action="fav" title="المفضلة"><span class="btn-icon">${l.favorite?'★':'☆'}</span><span class="btn-label">مفضلة</span></button><button class="card-btn share" data-id="${escapeHtml(l.id)}" data-action="share" title="مشاركة"><span class="btn-icon">📤</span><span class="btn-label">مشاركة</span></button><button class="card-btn trailer" data-id="${escapeHtml(l.id)}" data-action="trailer" title="التريلر"><span class="btn-icon">🎬</span><span class="btn-label">تريلر</span></button><button class="card-btn edit" data-id="${escapeHtml(l.id)}" data-action="edit" title="تعديل"><span class="btn-icon">✏️</span><span class="btn-label">تعديل</span></button><button class="card-btn del" data-id="${escapeHtml(l.id)}" data-action="del" title="حذف"><span class="btn-icon">🗑</span><span class="btn-label">حذف</span></button></div></div>${l.thumbnail ? `<div class="thumb-row"><img src="${escapeHtml(l.thumbnail)}" alt="صورة الرابط" loading="lazy"></div>` : ''}${l.note ? `<div class="card-note">📌 ${escapeHtml(l.note)}</div>` : ''}${l.trailer ? `<div class="trailer-row"><div class="t-icon">🎬</div><div class="t-info"><div class="t-title">تريلر</div><div class="t-url">${escapeHtml(l.trailer)}</div></div><a href="${escapeHtml(l.trailer)}" target="_blank" rel="noopener">▶ شاهد</a></div>` : ''}<div class="card-meta"><span class="cat-badge">${escapeHtml(l.cat)}</span><span class="platform-badge">${escapeHtml(platform.label)}</span><span class="card-date">${new Date(l.ts).toLocaleDateString(currentLanguage === 'ar' ? 'ar-KW' : 'en-US',{day:'numeric',month:'short'})}</span></div></div></div>`;
-  }).join('');
-  el.innerHTML = stats + `<div class="links-container view-${viewMode}">${cards}</div>`;
-  el.querySelectorAll('.link-card').forEach(card => card.addEventListener('click', e => {
-    if(e.target.closest('[data-action],a,button,input,textarea,select')) return;
-    const id = card.dataset.id;
-    if(selectionMode){ toggleSelected(id); return; }
-    const l = links.find(x => x.id === id);
-    if(l) window.open(l.url, '_blank');
-  }));
-  el.querySelectorAll('[data-select-id]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleSelected(btn.dataset.selectId); }));
-  el.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', async e => {
-    e.stopPropagation();
-    if(selectionMode){ toggleSelected(btn.dataset.id); return; }
-    const id = btn.dataset.id;
-    const action = btn.dataset.action;
-    const l = links.find(x => x.id === id);
-    if(!l) return;
-    if(action === 'fav') { l.favorite = !l.favorite; l.updatedAt = nowIso(); saveLocal(); renderTabs(); renderList(); upsertLinkCloud(l).catch(e=>console.warn('Cloud favorite update failed', e)); return; }
-    if(action === 'share') await shareLink(l);
-    if(action === 'trailer') { if(l.trailer) window.open(l.trailer, '_blank'); else { openEdit(id); setTimeout(()=>$('btnTrailer').click(), 150); } }
-    if(action === 'edit') openEdit(id);
-    if(action === 'del') await deleteLink(id);
-  }));
-  updateSelectionUi();
+const q = $('searchInp').value.trim().toLowerCase();
+const data = getVisibleLinks();
+const el = $('mainList');
+document.querySelectorAll('[data-view]').forEach(btn => btn.classList.toggle('active', btn.dataset.view === viewMode));
+const stats = `<div class="summary-row"><div class="stat-card"><div class="stat-num">${links.length}</div><div class="stat-label">رابط</div></div><div class="stat-card"><div class="stat-num">${cats.length}</div><div class="stat-label">تصنيف</div></div><div class="stat-card"><div class="stat-num">${links.filter(x=>x.trailer).length}</div><div class="stat-label">تريلر</div></div></div>`;
+el.classList.toggle('selection-active', selectionMode);
+if(!data.length){ el.innerHTML = stats + `<div class="empty-state"><div class="empty-icon">🔗</div><h3>${q ? 'لا نتائج' : 'لا يوجد روابط بعد'}</h3><p>${q ? 'جرب كلمة بحث مختلفة' : 'اضغط + لإضافة رابط جديد<br>أو شاركه من أي تطبيق آخر'}</p></div>`; updateSelectionUi(); return; }
+const cards = data.map(l => {
+const platform = detectPlatform(l.url);
+const selected = selectedIds.has(l.id);
+return `<div class="link-card card-open-hint ${selected?'selected':''}" data-id="${escapeHtml(l.id)}"><button class="select-check" data-select-id="${escapeHtml(l.id)}" aria-label="تحديد الرابط">✓</button><div class="card-accent" style="background:${accentColor(l.url)}"></div><div class="card-body"><div class="card-top"><div class="platform-logo">${platformLogo(l.url)}</div><div class="card-info"><div class="card-title">${escapeHtml(l.title)}</div><div class="card-url">${escapeHtml(l.url)}</div></div><div class="card-actions"><button class="card-btn fav" data-id="${escapeHtml(l.id)}" data-action="fav" title="المفضلة"><span class="btn-icon">${l.favorite?'★':'☆'}</span><span class="btn-label">مفضلة</span></button><button class="card-btn share" data-id="${escapeHtml(l.id)}" data-action="share" title="مشاركة"><span class="btn-icon">📤</span><span class="btn-label">مشاركة</span></button><button class="card-btn trailer" data-id="${escapeHtml(l.id)}" data-action="trailer" title="التريلر"><span class="btn-icon">🎬</span><span class="btn-label">تريلر</span></button><button class="card-btn edit" data-id="${escapeHtml(l.id)}" data-action="edit" title="تعديل"><span class="btn-icon">✏️</span><span class="btn-label">تعديل</span></button><button class="card-btn del" data-id="${escapeHtml(l.id)}" data-action="del" title="حذف"><span class="btn-icon">🗑</span><span class="btn-label">حذف</span></button></div></div>${l.thumbnail ? `<div class="thumb-row"><img src="${escapeHtml(l.thumbnail)}" alt="صورة الرابط" loading="lazy"></div>` : ''}${l.note ? `<div class="card-note">📌 ${escapeHtml(l.note)}</div>` : ''}${l.trailer ? `<div class="trailer-row"><div class="t-icon">🎬</div><div class="t-info"><div class="t-title">تريلر</div><div class="t-url">${escapeHtml(l.trailer)}</div></div><a href="${escapeHtml(l.trailer)}" target="_blank" rel="noopener">▶ شاهد</a></div>` : ''}<div class="card-meta"><span class="cat-badge">${escapeHtml(l.cat)}</span><span class="platform-badge">${escapeHtml(platform.label)}</span><span class="card-date">${new Date(l.ts).toLocaleDateString(currentLanguage === 'ar' ? 'ar-KW' : 'en-US',{day:'numeric',month:'short'})}</span></div></div></div>`;
+}).join('');
+el.innerHTML = stats + `<div class="links-container view-${viewMode}">${cards}</div>`;
+el.querySelectorAll('.link-card').forEach(card => card.addEventListener('click', e => {
+if(e.target.closest('[data-action],a,button,input,textarea,select')) return;
+const id = card.dataset.id;
+if(selectionMode){ toggleSelected(id); return; }
+const l = links.find(x => x.id === id);
+if(l) window.open(l.url, '_blank');
+}));
+el.querySelectorAll('[data-select-id]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleSelected(btn.dataset.selectId); }));
+el.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', async e => {
+e.stopPropagation();
+if(selectionMode){ toggleSelected(btn.dataset.id); return; }
+const id = btn.dataset.id;
+const action = btn.dataset.action;
+const l = links.find(x => x.id === id);
+if(!l) return;
+if(action === 'fav') { l.favorite = !l.favorite; l.updatedAt = nowIso(); saveLocal(); renderTabs(); renderList(); upsertLinkCloud(l).catch(e=>console.warn('Cloud favorite update failed', e)); return; }
+if(action === 'share') await shareLink(l);
+if(action === 'trailer') { if(l.trailer) window.open(l.trailer, '_blank'); else { openEdit(id); setTimeout(()=>$('btnTrailer').click(), 150); } }
+if(action === 'edit') openEdit(id);
+if(action === 'del') await deleteLink(id);
+}));
+updateSelectionUi();
 }
-
 function openAddModal(prefill={}){
-  editId = null;
-  $('sheetTitle').textContent = '➕ إضافة رابط جديد';
-  $('inpUrl').value = prefill.url || '';
-  $('inpTitle').value = prefill.title || '';
-  $('inpTrailer').value = prefill.trailer || '';
-  $('inpThumb').value = prefill.thumbnail || '';
-  $('inpNote').value = prefill.note || '';
-  $('aiStatus').textContent = '';
-  populateCatSelect(prefill.cat || suggestCategoryForLink({ url:prefill.url || '', title:prefill.title || '', text:prefill.note || '' }) || cats[0]);
-  updatePlatformField();
-  $('overlay').classList.add('open');
-  setTimeout(() => $('inpTitle').focus(), 150);
+editId = null;
+$('sheetTitle').textContent = '➕ إضافة رابط جديد';
+$('inpUrl').value = prefill.url || '';
+$('inpTitle').value = prefill.title || '';
+$('inpTrailer').value = prefill.trailer || '';
+$('inpThumb').value = prefill.thumbnail || '';
+$('inpNote').value = prefill.note || '';
+$('aiStatus').textContent = '';
+populateCatSelect(prefill.cat || suggestCategoryForLink({ url:prefill.url || '', title:prefill.title || '', text:prefill.note || '' }) || cats[0]);
+updatePlatformField();
+$('overlay').classList.add('open');
+setTimeout(() => $('inpTitle').focus(), 150);
 }
 function openEdit(id){
-  const l = links.find(x => x.id === id); if(!l) return;
-  editId = id;
-  $('sheetTitle').textContent = '✏️ تعديل الرابط';
-  $('inpUrl').value = l.url; $('inpTitle').value = l.title; $('inpTrailer').value = l.trailer || ''; $('inpThumb').value = l.thumbnail || ''; $('inpNote').value = l.note || ''; $('aiStatus').textContent = '';
-  populateCatSelect(l.cat); updatePlatformField(); $('overlay').classList.add('open');
+const l = links.find(x => x.id === id); if(!l) return;
+editId = id;
+$('sheetTitle').textContent = '✏️ تعديل الرابط';
+$('inpUrl').value = l.url; $('inpTitle').value = l.title; $('inpTrailer').value = l.trailer || ''; $('inpThumb').value = l.thumbnail || ''; $('inpNote').value = l.note || ''; $('aiStatus').textContent = '';
+populateCatSelect(l.cat); updatePlatformField(); $('overlay').classList.add('open');
 }
 function closeModal(){ $('overlay').classList.remove('open'); }
 function populateCatSelect(selected){ $('inpCat').innerHTML = cats.map(c => `<option value="${escapeHtml(c)}" ${c===selected?'selected':''}>${escapeHtml(c)}</option>`).join(''); }
 function updatePlatformField(){ const p = detectPlatform($('inpUrl').value); $('inpPlatform').value = p.label; }
-
 async function saveLinkFromForm(){
-  const url = normalizeUrl($('inpUrl').value);
-  let title = $('inpTitle').value.trim();
-  const cat = $('inpCat').value || 'أخرى';
-  const trailer = normalizeUrl($('inpTrailer').value);
-  const note = $('inpNote').value.trim();
-  const thumbnail = normalizeUrl($('inpThumb').value);
-  const platform = detectPlatform(url).label;
-
-  if(!url){ toast('⚠️ الرابط مطلوب'); return; }
-  if(!/^https?:\/\//i.test(url)){ toast('⚠️ الرابط لازم يبدأ بـ http أو https'); return; }
-  if(!title){
-    title = fallbackTitleFor(url, '', note);
-    $('inpTitle').value = title;
-  }
-
-  let cloudItem = null;
-  if(editId){
-    const idx = links.findIndex(x => x.id === editId);
-    if(idx !== -1){
-      links[idx] = { ...links[idx], url, title, cat, trailer, note, thumbnail, platform, updatedAt: nowIso() };
-      cloudItem = links[idx];
-    }
-    toast('✅ تم التعديل');
-  } else {
-    const existing = links.find(l => canonicalUrl(l.url) === canonicalUrl(url));
-    if(existing){
-      existing.title = title || existing.title;
-      existing.cat = cat || existing.cat;
-      existing.trailer = trailer || existing.trailer || '';
-      existing.note = note || existing.note || '';
-      existing.thumbnail = thumbnail || existing.thumbnail || '';
-      existing.platform = platform;
-      existing.updatedAt = nowIso();
-      cloudItem = existing;
-      toast('ℹ️ الرابط كان محفوظ، وتم تحديثه');
-    }else{
-      if(!canAddLink()) return;
-      cloudItem = { id: uid(), url, title, cat, trailer, note, thumbnail, platform, favorite:false, ts: Date.now(), updatedAt: nowIso() };
-      links.unshift(cloudItem);
-      toast('✅ تم الحفظ');
-    }
-  }
-
-  currentCat = 'all';
-  saveLocal();
-  closeModal();
-  renderTabs();
-  renderList();
-  if(cloudItem) upsertLinkCloud(cloudItem).catch(e => console.warn('Cloud upsert failed after local save', e));
+const url = normalizeUrl($('inpUrl').value);
+let title = $('inpTitle').value.trim();
+const cat = $('inpCat').value || 'أخرى';
+const trailer = normalizeUrl($('inpTrailer').value);
+const note = $('inpNote').value.trim();
+const thumbnail = normalizeUrl($('inpThumb').value);
+const platform = detectPlatform(url).label;
+if(!url){ toast('⚠️ الرابط مطلوب'); return; }
+if(!/^https?:\/\//i.test(url)){ toast('⚠️ الرابط لازم يبدأ بـ http أو https'); return; }
+if(!title){
+title = fallbackTitleFor(url, '', note);
+$('inpTitle').value = title;
+}
+let cloudItem = null;
+if(editId){
+const idx = links.findIndex(x => x.id === editId);
+if(idx !== -1){
+links[idx] = { ...links[idx], url, title, cat, trailer, note, thumbnail, platform, updatedAt: nowIso() };
+cloudItem = links[idx];
+}
+toast('✅ تم التعديل');
+} else {
+const existing = links.find(l => canonicalUrl(l.url) === canonicalUrl(url));
+if(existing){
+existing.title = title || existing.title;
+existing.cat = cat || existing.cat;
+existing.trailer = trailer || existing.trailer || '';
+existing.note = note || existing.note || '';
+existing.thumbnail = thumbnail || existing.thumbnail || '';
+existing.platform = platform;
+existing.updatedAt = nowIso();
+cloudItem = existing;
+toast('ℹ️ الرابط كان محفوظ، وتم تحديثه');
+}else{
+if(!canAddLink()) return;
+cloudItem = { id: uid(), url, title, cat, trailer, note, thumbnail, platform, favorite:false, ts: Date.now(), updatedAt: nowIso() };
+links.unshift(cloudItem);
+toast('✅ تم الحفظ');
+}
+}
+currentCat = 'all';
+saveLocal();
+closeModal();
+renderTabs();
+renderList();
+if(cloudItem) upsertLinkCloud(cloudItem).catch(e => console.warn('Cloud upsert failed after local save', e));
 }
 async function deleteLink(id){
-  if(!confirm('حذف هذا الرابط؟')) return;
-  links = links.filter(x => x.id !== id); saveLocal(); await deleteLinkCloud(id); renderList(); toast('تم الحذف');
+if(!confirm('حذف هذا الرابط؟')) return;
+links = links.filter(x => x.id !== id); saveLocal(); await deleteLinkCloud(id); renderList(); toast('تم الحذف');
 }
 async function deleteLinksCloud(ids){ if(!sbClient || !cloudUser || !ids.length) return; const { error } = await sbClient.from('links').delete().in('id', ids); if(error) console.warn(error); }
 async function deleteAllLinksCloud(){ if(!sbClient || !cloudUser) return; const { error } = await sbClient.from('links').delete().eq('user_id', cloudUser.id); if(error) console.warn(error); }
@@ -1185,274 +1122,267 @@ function clearSelectedLinks(){ selectedIds.clear(); updateSelectionUi(); renderL
 function backupPayload(){ return { app:'LinkVault', format:'linkvault-backup', version:1, exportedAt:nowIso(), categories:[...cats], links:normalizeLinks(links), preferences:{ theme:currentTheme, viewMode } }; }
 function backupFilename(){ return `LinkVault-backup-${new Date().toISOString().slice(0,10)}.json`; }
 async function exportBackup(){
-  try{
-    const content = JSON.stringify(backupPayload(), null, 2);
-    const file = new File([content], backupFilename(), { type:'application/json' });
-    if(navigator.share && (!navigator.canShare || navigator.canShare({ files:[file] }))){
-      try{ await navigator.share({ title:'نسخة LinkVault الاحتياطية', files:[file] }); toast('✅ تم تجهيز النسخة الاحتياطية'); return; }catch(e){ if(String(e?.name || '') === 'AbortError') return; }
-    }
-    const blobUrl = URL.createObjectURL(file); const a = document.createElement('a'); a.href = blobUrl; a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(blobUrl), 1500); toast('✅ تم حفظ النسخة الاحتياطية');
-  }catch(e){ console.warn(e); toast('⚠️ تعذر إنشاء النسخة الاحتياطية'); }
+try{
+const content = JSON.stringify(backupPayload(), null, 2);
+const file = new File([content], backupFilename(), { type:'application/json' });
+if(navigator.share && (!navigator.canShare || navigator.canShare({ files:[file] }))){
+try{ await navigator.share({ title:'نسخة LinkVault الاحتياطية', files:[file] }); toast('✅ تم تجهيز النسخة الاحتياطية'); return; }catch(e){ if(String(e?.name || '') === 'AbortError') return; }
+}
+const blobUrl = URL.createObjectURL(file); const a = document.createElement('a'); a.href = blobUrl; a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(blobUrl), 1500); toast('✅ تم حفظ النسخة الاحتياطية');
+}catch(e){ console.warn(e); toast('⚠️ تعذر إنشاء النسخة الاحتياطية'); }
 }
 function beginRestore(){ $('restoreFileInput').value=''; $('restoreFileInput').click(); }
 function validateBackup(data){ if(!data || typeof data !== 'object' || !Array.isArray(data.links)) throw new Error('ملف غير صالح'); const restoredLinks = normalizeLinks(data.links); const restoredCats = Array.isArray(data.categories) ? data.categories.map(x=>String(x||'').trim()).filter(Boolean) : []; return { links:restoredLinks, categories:[...new Set(restoredCats.length ? restoredCats : restoredLinks.map(l=>l.cat).filter(Boolean))], preferences:data.preferences || {} }; }
 function showRestoreChoice(data){ pendingRestoreData = data; $('restoreSummary').textContent = `الملف يحتوي على ${data.links.length} رابط و${data.categories.length} تصنيف. سيتم دمج النسخة مع روابط الحساب الحالية وحفظ الجميع دون حذف أو استبدال.`; $('restoreOverlay').classList.add('open'); }
 function closeRestoreChoice(){ pendingRestoreData = null; $('restoreOverlay').classList.remove('open'); }
-
 async function applyRestore(mode){
-  if(!pendingRestoreData) return;
-  const data=pendingRestoreData; closeRestoreChoice();
-  const byUrl=new Map(links.map(l=>[canonicalUrl(l.url),l]));
-  for(const source of normalizeLinks(data.links)){
-    const key=canonicalUrl(source.url), existing=byUrl.get(key);
-    if(existing){ existing.title=existing.title||source.title; existing.note=existing.note||source.note; existing.thumbnail=existing.thumbnail||source.thumbnail; existing.trailer=existing.trailer||source.trailer; existing.cat=existing.cat||source.cat; existing.updatedAt=nowIso(); }
-    else { const incoming={...source,id:uid(),updatedAt:nowIso()}; links.push(incoming); byUrl.set(key,incoming); }
-  }
-  cats=normalizeCategories([...cats,...data.categories,...links.map(l=>l.cat).filter(Boolean)]); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList();
-  try{ if(cloudUser){ updateSettingsStatus('جاري رفع النسخة الاحتياطية إلى الحساب...', 'warning-text'); await upsertCategoriesCloudBatch(cats); await upsertLinksCloudBatch(links); await loadCloudData(); updateSettingsStatus('✅ تم دمج النسخة وحفظها على الحساب', 'success-text'); } toast('✅ تم دمج النسخة الاحتياطية وحفظها'); }
-  catch(e){ showCloudError(e); toast('⚠️ تم الدمج محليًا وتعذر رفعه الآن؛ اضغط مزامنة لاحقًا'); }
+if(!pendingRestoreData) return;
+const data=pendingRestoreData; closeRestoreChoice();
+const byUrl=new Map(links.map(l=>[canonicalUrl(l.url),l]));
+for(const source of normalizeLinks(data.links)){
+const key=canonicalUrl(source.url), existing=byUrl.get(key);
+if(existing){ existing.title=existing.title||source.title; existing.note=existing.note||source.note; existing.thumbnail=existing.thumbnail||source.thumbnail; existing.trailer=existing.trailer||source.trailer; existing.cat=existing.cat||source.cat; existing.updatedAt=nowIso(); }
+else { const incoming={...source,id:uid(),updatedAt:nowIso()}; links.push(incoming); byUrl.set(key,incoming); }
+}
+cats=normalizeCategories([...cats,...data.categories,...links.map(l=>l.cat).filter(Boolean)]); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList();
+try{ if(cloudUser){ updateSettingsStatus('جاري رفع النسخة الاحتياطية إلى الحساب...', 'warning-text'); await upsertCategoriesCloudBatch(cats); await upsertLinksCloudBatch(links); await loadCloudData(); updateSettingsStatus('✅ تم دمج النسخة وحفظها على الحساب', 'success-text'); } toast('✅ تم دمج النسخة الاحتياطية وحفظها'); }
+catch(e){ showCloudError(e); toast('⚠️ تم الدمج محليًا وتعذر رفعه الآن؛ اضغط مزامنة لاحقًا'); }
 }
 async function shareLink(link){
-  try{
-    if(navigator.share){
-      await navigator.share({ title: link.title || 'LinkVault', text: link.note || link.title || link.url, url: link.url });
-      toast('✅ تمت مشاركة الرابط');
-      return;
-    }
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      await navigator.clipboard.writeText(link.url);
-      toast('📋 تم نسخ الرابط. الصقه في التطبيق الذي تريد مشاركته.');
-      return;
-    }
-  }catch(e){ if(String(e && e.name || '') === 'AbortError') return; }
-  prompt('انسخ هذا الرابط للمشاركة', link.url);
+try{
+if(navigator.share){
+await navigator.share({ title: link.title || 'LinkVault', text: link.note || link.title || link.url, url: link.url });
+toast('✅ تمت مشاركة الرابط');
+return;
 }
-
+if(navigator.clipboard && navigator.clipboard.writeText){
+await navigator.clipboard.writeText(link.url);
+toast('📋 تم نسخ الرابط. الصقه في التطبيق الذي تريد مشاركته.');
+return;
+}
+}catch(e){ if(String(e && e.name || '') === 'AbortError') return; }
+prompt('انسخ هذا الرابط للمشاركة', link.url);
+}
 function openCatModal(){
-  $('inpNewCat').value = ''; renderCatList(); $('catOverlay').classList.add('open'); setTimeout(()=>$('inpNewCat').focus(), 100);
+$('inpNewCat').value = ''; renderCatList(); $('catOverlay').classList.add('open'); setTimeout(()=>$('inpNewCat').focus(), 100);
 }
 function isProtectedCategory(name){ return name === OTHER_CAT; }
 function canRenameCategory(oldName, newName){
-  if(!isCommercialFree()) return true;
-  const base = new Set(defaultCustomCategories());
-  const oldWasCustom = oldName !== OTHER_CAT && !base.has(oldName);
-  const newIsCustom = newName !== OTHER_CAT && !base.has(newName);
-  const projected = customCategoriesCount() - (oldWasCustom ? 1 : 0) + (newIsCustom ? 1 : 0);
-  if(projected <= PLAN_LIMITS.freeCustomCategories) return true;
-  toast(`🔒 النسخة المجانية تسمح بـ ${PLAN_LIMITS.freeCustomCategories} أنواع إضافية فقط`);
-  return false;
+if(!isCommercialFree()) return true;
+const base = new Set(defaultCustomCategories());
+const oldWasCustom = oldName !== OTHER_CAT && !base.has(oldName);
+const newIsCustom = newName !== OTHER_CAT && !base.has(newName);
+const projected = customCategoriesCount() - (oldWasCustom ? 1 : 0) + (newIsCustom ? 1 : 0);
+if(projected <= PLAN_LIMITS.freeCustomCategories) return true;
+toast(`🔒 النسخة المجانية تسمح بـ ${PLAN_LIMITS.freeCustomCategories} أنواع إضافية فقط`);
+return false;
 }
 function renderCatList(){
-  const movable = cats.filter(c=>c!==OTHER_CAT);
-  $('catList').innerHTML = cats.map((c, idx) => {
-    const isOther = c === OTHER_CAT;
-    const moveIndex = movable.indexOf(c);
-    const upDisabled = isOther || moveIndex <= 0;
-    const downDisabled = isOther || moveIndex < 0 || moveIndex >= movable.length - 1;
-    const suffix = isOther ? ' <small style="color:var(--muted)">(آخر القائمة)</small>' : '';
-    return `<div class="cat-item"><span class="cat-item-name">${idx + 1}. ${escapeHtml(c)}${suffix}</span><div class="cat-item-actions"><button class="edit-btn" data-index="${idx}" data-action="rename" title="تعديل الاسم" ${isOther?'disabled':''}>تعديل</button><button class="move-btn" data-index="${idx}" data-action="move" data-dir="up" title="تحريك للأعلى" ${upDisabled?'disabled':''}>↑</button><button class="move-btn" data-index="${idx}" data-action="move" data-dir="down" title="تحريك للأسفل" ${downDisabled?'disabled':''}>↓</button><button class="del-btn" data-index="${idx}" data-action="delete" title="حذف النوع" ${isOther?'disabled':''}>حذف</button></div></div>`;
-  }).join('');
-  $('catList').querySelectorAll('button').forEach(btn => btn.addEventListener('click', async () => {
-    const idx = Number(btn.dataset.index);
-    const c = cats[idx];
-    if(!c) return;
-    if(btn.dataset.action === 'rename'){ await renameCategory(c); return; }
-    if(btn.dataset.action === 'delete'){ await removeCategory(c); return; }
-    if(btn.dataset.action === 'move') moveCategory(c, btn.dataset.dir);
-  }));
+const movable = cats.filter(c=>c!==OTHER_CAT);
+$('catList').innerHTML = cats.map((c, idx) => {
+const isOther = c === OTHER_CAT;
+const moveIndex = movable.indexOf(c);
+const upDisabled = isOther || moveIndex <= 0;
+const downDisabled = isOther || moveIndex < 0 || moveIndex >= movable.length - 1;
+const suffix = isOther ? ' <small style="color:var(--muted)">(آخر القائمة)</small>' : '';
+return `<div class="cat-item"><span class="cat-item-name">${idx + 1}. ${escapeHtml(c)}${suffix}</span><div class="cat-item-actions"><button class="edit-btn" data-index="${idx}" data-action="rename" title="تعديل الاسم" ${isOther?'disabled':''}>تعديل</button><button class="move-btn" data-index="${idx}" data-action="move" data-dir="up" title="تحريك للأعلى" ${upDisabled?'disabled':''}>↑</button><button class="move-btn" data-index="${idx}" data-action="move" data-dir="down" title="تحريك للأسفل" ${downDisabled?'disabled':''}>↓</button><button class="del-btn" data-index="${idx}" data-action="delete" title="حذف النوع" ${isOther?'disabled':''}>حذف</button></div></div>`;
+}).join('');
+$('catList').querySelectorAll('button').forEach(btn => btn.addEventListener('click', async () => {
+const idx = Number(btn.dataset.index);
+const c = cats[idx];
+if(!c) return;
+if(btn.dataset.action === 'rename'){ await renameCategory(c); return; }
+if(btn.dataset.action === 'delete'){ await removeCategory(c); return; }
+if(btn.dataset.action === 'move') moveCategory(c, btn.dataset.dir);
+}));
 }
 async function addCategory(){
-  const v = $('inpNewCat').value.trim();
-  if(!v){ toast('⚠️ أدخل اسم النوع'); return; }
-  if(v === OTHER_CAT){ toast('⚠️ هذا الخيار موجود مسبقًا'); return; }
-  if(!cats.includes(v)){
-    if(!canAddCustomCategory(v)) return;
-    cats = normalizeCategories([...cats, v]);
-    saveLocal();
-    await upsertCategoryCloud(v);
-  }
-  $('inpNewCat').value='';
-  $('catOverlay').classList.remove('open');
-  renderTabs(); renderCatList(); toast(`✅ تمت إضافة ${v}`);
+const v = $('inpNewCat').value.trim();
+if(!v){ toast('⚠️ أدخل اسم النوع'); return; }
+if(v === OTHER_CAT){ toast('⚠️ هذا الخيار موجود مسبقًا'); return; }
+if(!cats.includes(v)){
+if(!canAddCustomCategory(v)) return;
+cats = normalizeCategories([...cats, v]);
+saveLocal();
+await upsertCategoryCloud(v);
+}
+$('inpNewCat').value='';
+$('catOverlay').classList.remove('open');
+renderTabs(); renderCatList(); toast(`✅ تمت إضافة ${v}`);
 }
 async function renameCategory(oldName){
-  if(oldName === OTHER_CAT){ toast('⚠️ لا يمكن تعديل خيار أخرى'); return; }
-  const nextName = String(prompt(`اكتب الاسم الجديد للنوع ${oldName}`, oldName) || '').trim();
-  if(!nextName || nextName === oldName) return;
-  if(nextName === OTHER_CAT){ toast('⚠️ اسم أخرى محجوز'); return; }
-  if(cats.includes(nextName)){ toast('⚠️ هذا النوع موجود مسبقًا'); return; }
-  if(!canRenameCategory(oldName, nextName)) return;
-  const affected = links.filter(l=>l.cat === oldName);
-  const wasProtected = protectedCats.has(oldName);
-  cats = normalizeCategories(cats.map(c=>c===oldName ? nextName : c));
-  affected.forEach(l=>{ l.cat = nextName; l.updatedAt = nowIso(); });
-  if(currentCat === oldName) currentCat = nextName;
-  if(wasProtected){ protectedCats.delete(oldName); protectedCats.add(nextName); }
-  saveLocal();
-  try{
-    await deleteCategoryCloud(oldName);
-    await upsertCategoryCloud(nextName);
-    for(const link of affected) await upsertLinkCloud(link);
-  }catch(e){ console.warn('Category rename cloud sync failed', e); }
-  renderTabs(); renderCatList(); renderList(); toast(`✅ تم تعديل النوع إلى ${nextName}`);
+if(oldName === OTHER_CAT){ toast('⚠️ لا يمكن تعديل خيار أخرى'); return; }
+const nextName = String(prompt(`اكتب الاسم الجديد للنوع ${oldName}`, oldName) || '').trim();
+if(!nextName || nextName === oldName) return;
+if(nextName === OTHER_CAT){ toast('⚠️ اسم أخرى محجوز'); return; }
+if(cats.includes(nextName)){ toast('⚠️ هذا النوع موجود مسبقًا'); return; }
+if(!canRenameCategory(oldName, nextName)) return;
+const affected = links.filter(l=>l.cat === oldName);
+const wasProtected = protectedCats.has(oldName);
+cats = normalizeCategories(cats.map(c=>c===oldName ? nextName : c));
+affected.forEach(l=>{ l.cat = nextName; l.updatedAt = nowIso(); });
+if(currentCat === oldName) currentCat = nextName;
+if(wasProtected){ protectedCats.delete(oldName); protectedCats.add(nextName); }
+saveLocal();
+try{
+await deleteCategoryCloud(oldName);
+await upsertCategoryCloud(nextName);
+for(const link of affected) await upsertLinkCloud(link);
+}catch(e){ console.warn('Category rename cloud sync failed', e); }
+renderTabs(); renderCatList(); renderList(); toast(`✅ تم تعديل النوع إلى ${nextName}`);
 }
 async function removeCategory(name){
-  if(name === OTHER_CAT){ toast('⚠️ لا يمكن حذف خيار أخرى لأنه يستقبل روابط الأنواع المحذوفة'); return; }
-  const affected = links.filter(l=>l.cat === name);
-  const msg = affected.length ? `النوع ${name} يحتوي على ${affected.length} رابط. سيتم نقلها إلى أخرى ثم حذف النوع. متابعة؟` : `حذف النوع ${name}؟`;
-  if(!confirm(msg)) return;
-  affected.forEach(l=>{ l.cat = OTHER_CAT; l.updatedAt = nowIso(); });
-  cats = normalizeCategories(cats.filter(c=>c!==name));
-  protectedCats.delete(name);
-  if(currentCat === name) currentCat = 'all';
-  saveLocal();
-  try{
-    await deleteCategoryCloud(name);
-    for(const link of affected) await upsertLinkCloud(link);
-  }catch(e){ console.warn('Category delete cloud sync failed', e); }
-  renderTabs(); renderCatList(); renderList(); toast(affected.length ? '✅ تم حذف النوع ونقل روابطه إلى أخرى' : '✅ تم حذف النوع');
+if(name === OTHER_CAT){ toast('⚠️ لا يمكن حذف خيار أخرى لأنه يستقبل روابط الأنواع المحذوفة'); return; }
+const affected = links.filter(l=>l.cat === name);
+const msg = affected.length ? `النوع ${name} يحتوي على ${affected.length} رابط. سيتم نقلها إلى أخرى ثم حذف النوع. متابعة؟` : `حذف النوع ${name}؟`;
+if(!confirm(msg)) return;
+affected.forEach(l=>{ l.cat = OTHER_CAT; l.updatedAt = nowIso(); });
+cats = normalizeCategories(cats.filter(c=>c!==name));
+protectedCats.delete(name);
+if(currentCat === name) currentCat = 'all';
+saveLocal();
+try{
+await deleteCategoryCloud(name);
+for(const link of affected) await upsertLinkCloud(link);
+}catch(e){ console.warn('Category delete cloud sync failed', e); }
+renderTabs(); renderCatList(); renderList(); toast(affected.length ? '✅ تم حذف النوع ونقل روابطه إلى أخرى' : '✅ تم حذف النوع');
 }
 function moveCategory(cat, dir){
-  if(cat === OTHER_CAT) return;
-  const copy = cats.filter(c=>c!==OTHER_CAT);
-  const currentIndex = copy.indexOf(cat);
-  if(currentIndex < 0) return;
-  const target = dir === 'up' ? currentIndex - 1 : currentIndex + 1;
-  if(target < 0 || target >= copy.length) return;
-  const [item] = copy.splice(currentIndex, 1);
-  copy.splice(target, 0, item);
-  cats = normalizeCategories(copy);
-  saveLocal(); renderTabs(); renderCatList(); renderList(); toast('✅ تم تحديث ترتيب الأنواع');
+if(cat === OTHER_CAT) return;
+const copy = cats.filter(c=>c!==OTHER_CAT);
+const currentIndex = copy.indexOf(cat);
+if(currentIndex < 0) return;
+const target = dir === 'up' ? currentIndex - 1 : currentIndex + 1;
+if(target < 0 || target >= copy.length) return;
+const [item] = copy.splice(currentIndex, 1);
+copy.splice(target, 0, item);
+cats = normalizeCategories(copy);
+saveLocal(); renderTabs(); renderCatList(); renderList(); toast('✅ تم تحديث ترتيب الأنواع');
 }
-
-
 async function fetchMetadata(){
-  const url = normalizeUrl($('inpUrl').value); if(!url){ toast('⚠️ أدخل الرابط أولاً'); return; }
-  $('inpUrl').value = url; updatePlatformField();
-  const btn = $('btnFetch'); const status = $('aiStatus'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري الجلب...'; status.textContent = '';
-  try{
-    const data = await getMetadata(url);
-    if(data.title && !$('inpTitle').value.trim()) $('inpTitle').value = data.title;
-    if(data.image && !$('inpThumb').value.trim()) $('inpThumb').value = data.image;
-    status.textContent = data.title ? '✅ تم جلب العنوان والصورة' : 'ℹ️ لم أجد عنوان واضح، اكتب العنوان يدويًا';
-  }catch(e){ status.textContent = '⚠️ تعذر الجلب. لو الرابط من إنستغرام/تيك توك/فيسبوك اكتب العنوان يدويًا.'; }
-  btn.disabled = false; btn.innerHTML = '✨ جلب العنوان والصورة';
+const url = normalizeUrl($('inpUrl').value); if(!url){ toast('⚠️ أدخل الرابط أولاً'); return; }
+$('inpUrl').value = url; updatePlatformField();
+const btn = $('btnFetch'); const status = $('aiStatus'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري الجلب...'; status.textContent = '';
+try{
+const data = await getMetadata(url);
+if(data.title && !$('inpTitle').value.trim()) $('inpTitle').value = data.title;
+if(data.image && !$('inpThumb').value.trim()) $('inpThumb').value = data.image;
+status.textContent = data.title ? '✅ تم جلب العنوان والصورة' : 'ℹ️ لم أجد عنوان واضح، اكتب العنوان يدويًا';
+}catch(e){ status.textContent = '⚠️ تعذر الجلب. لو الرابط من إنستغرام/تيك توك/فيسبوك اكتب العنوان يدويًا.'; }
+btn.disabled = false; btn.innerHTML = '✨ جلب العنوان والصورة';
 }
 async function getMetadata(url){
-  const cfg = getSettings();
-  if(cfg.BACKEND_URL){
-    const res = await fetch(`${cfg.BACKEND_URL.replace(/\/$/,'')}/api/metadata?url=${encodeURIComponent(url)}`);
-    if(res.ok) return await res.json();
-  }
-  const p = detectPlatform(url);
-  if(p.id === 'youtube'){
-    const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`);
-    if(res.ok){ const d = await res.json(); return { title:d.title || '', image:d.thumbnail_url || '', author:d.author_name || '', platform:'YouTube' }; }
-  }
-  return { title:'', image:'', platform:p.label };
+const cfg = getSettings();
+if(cfg.BACKEND_URL){
+const res = await fetch(`${cfg.BACKEND_URL.replace(/\/$/,'')}/api/metadata?url=${encodeURIComponent(url)}`);
+if(res.ok) return await res.json();
+}
+const p = detectPlatform(url);
+if(p.id === 'youtube'){
+const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`);
+if(res.ok){ const d = await res.json(); return { title:d.title || '', image:d.thumbnail_url || '', author:d.author_name || '', platform:'YouTube' }; }
+}
+return { title:'', image:'', platform:p.label };
 }
 async function fetchTrailer(){
-  const title = $('inpTitle').value.trim(); if(!title){ toast('⚠️ أدخل العنوان أولاً'); return; }
-  const btn = $('btnTrailer'); const old = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري البحث...';
-  try{
-    const cfg = getSettings();
-    if(cfg.BACKEND_URL){
-      const res = await fetch(`${cfg.BACKEND_URL.replace(/\/$/,'')}/api/trailer?title=${encodeURIComponent(title)}`);
-      if(res.ok){ const d = await res.json(); if(d.trailerUrl){ $('inpTrailer').value = d.trailerUrl; toast('✅ تم جلب التريلر'); } else if(d.searchUrl){ window.open(d.searchUrl, '_blank'); toast('🎬 افتح النتيجة المناسبة وانسخ الرابط'); } }
-    } else {
-      window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' trailer official الإعلان الرسمي')}`, '_blank'); toast('🎬 افتح الفيديو المناسب وانسخ رابطه هنا');
-    }
-  }catch(e){ window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' trailer official')}`, '_blank'); }
-  btn.disabled = false; btn.innerHTML = old;
+const title = $('inpTitle').value.trim(); if(!title){ toast('⚠️ أدخل العنوان أولاً'); return; }
+const btn = $('btnTrailer'); const old = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري البحث...';
+try{
+const cfg = getSettings();
+if(cfg.BACKEND_URL){
+const res = await fetch(`${cfg.BACKEND_URL.replace(/\/$/,'')}/api/trailer?title=${encodeURIComponent(title)}`);
+if(res.ok){ const d = await res.json(); if(d.trailerUrl){ $('inpTrailer').value = d.trailerUrl; toast('✅ تم جلب التريلر'); } else if(d.searchUrl){ window.open(d.searchUrl, '_blank'); toast('🎬 افتح النتيجة المناسبة وانسخ الرابط'); } }
+} else {
+window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' trailer official الإعلان الرسمي')}`, '_blank'); toast('🎬 افتح الفيديو المناسب وانسخ رابطه هنا');
 }
-
+}catch(e){ window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' trailer official')}`, '_blank'); }
+btn.disabled = false; btn.innerHTML = old;
+}
 function authProviderName(user){
-  const provider = String(user?.app_metadata?.provider || user?.app_metadata?.providers?.[0] || user?.identities?.[0]?.provider || 'email').toLowerCase();
-  if(provider === 'apple') return 'Apple ID';
-  if(provider === 'google') return 'Google';
-  return currentLanguage === 'en' ? 'Email' : 'البريد الإلكتروني';
+const provider = String(user?.app_metadata?.provider || user?.app_metadata?.providers?.[0] || user?.identities?.[0]?.provider || 'email').toLowerCase();
+if(provider === 'apple') return 'Apple ID';
+if(provider === 'google') return 'Google';
+return currentLanguage === 'en' ? 'Email' : 'البريد الإلكتروني';
 }
 function resetOtpControls(){
-  clearInterval(otpCooldownTimer); otpCooldownTimer = null;
-  const send = $('btnSendOtp');
-  const resend = $('btnResendOtp');
-  if(send){ send.disabled = false; send.textContent = currentLanguage === 'en' ? 'Send verification code' : 'إرسال رمز التحقق'; }
-  if(resend){ resend.disabled = false; resend.textContent = currentLanguage === 'en' ? 'Resend code' : 'إعادة إرسال الرمز'; }
+clearInterval(otpCooldownTimer); otpCooldownTimer = null;
+const send = $('btnSendOtp');
+const resend = $('btnResendOtp');
+if(send){ send.disabled = false; send.textContent = currentLanguage === 'en' ? 'Send verification code' : 'إرسال رمز التحقق'; }
+if(resend){ resend.disabled = false; resend.textContent = currentLanguage === 'en' ? 'Resend code' : 'إعادة إرسال الرمز'; }
 }
 function renderAuthUI(){
-  const loggedIn = !!cloudUser;
-  const signedOutPanel = $('authSignedOutPanel');
-  const signedInPanel = $('authSignedInPanel');
-  const actions = $('accountActions');
-  if(signedOutPanel) signedOutPanel.hidden = loggedIn;
-  if(signedInPanel) signedInPanel.hidden = !loggedIn;
-  if(actions) actions.hidden = !loggedIn;
-  const box = $('authBox');
-  if(box) box.classList.toggle('signed-in', loggedIn);
-
-  if(loggedIn){
-    pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP);
-    if($('authOtp')) $('authOtp').value = '';
-    setOtpPanelVisible(false);
-    resetOtpControls();
-    const identity = cloudUser.email || cloudUser.user_metadata?.email || cloudUser.user_metadata?.full_name || cloudUser.id || '';
-    const provider = authProviderName(cloudUser);
-    if($('authSignedInTitle')) $('authSignedInTitle').textContent = currentLanguage === 'en' ? 'Signed in' : 'تم تسجيل الدخول';
-    if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = identity;
-    if($('authSignedInProvider')) $('authSignedInProvider').textContent = currentLanguage === 'en' ? `Signed in with ${provider}` : `تسجيل الدخول بواسطة ${provider}`;
-  }else{
-    if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = '';
-    if($('authSignedInProvider')) $('authSignedInProvider').textContent = '';
-  }
+const loggedIn = !!cloudUser;
+const signedOutPanel = $('authSignedOutPanel');
+const signedInPanel = $('authSignedInPanel');
+const actions = $('accountActions');
+if(signedOutPanel) signedOutPanel.hidden = loggedIn;
+if(signedInPanel) signedInPanel.hidden = !loggedIn;
+if(actions) actions.hidden = !loggedIn;
+const box = $('authBox');
+if(box) box.classList.toggle('signed-in', loggedIn);
+if(loggedIn){
+pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP);
+if($('authOtp')) $('authOtp').value = '';
+setOtpPanelVisible(false);
+resetOtpControls();
+const identity = cloudUser.email || cloudUser.user_metadata?.email || cloudUser.user_metadata?.full_name || cloudUser.id || '';
+const provider = authProviderName(cloudUser);
+if($('authSignedInTitle')) $('authSignedInTitle').textContent = currentLanguage === 'en' ? 'Signed in' : 'تم تسجيل الدخول';
+if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = identity;
+if($('authSignedInProvider')) $('authSignedInProvider').textContent = currentLanguage === 'en' ? `Signed in with ${provider}` : `تسجيل الدخول بواسطة ${provider}`;
+}else{
+if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = '';
+if($('authSignedInProvider')) $('authSignedInProvider').textContent = '';
 }
-
+}
 function updateCloudStatus(kind='local', text='محلي'){
-  const el = $('cloudStatus'); el.className = 'status-pill'; if(kind === 'online') el.classList.add('online'); if(kind === 'warn') el.classList.add('warn'); el.querySelector('span:last-child').textContent = text;
+const el = $('cloudStatus'); el.className = 'status-pill'; if(kind === 'online') el.classList.add('online'); if(kind === 'warn') el.classList.add('warn'); el.querySelector('span:last-child').textContent = text;
 }
 function updateSettingsStatus(msg, cls=''){
-  $('settingsStatus').className = 'settings-status' + (cls ? ' ' + cls : ''); $('settingsStatus').textContent = msg;
+$('settingsStatus').className = 'settings-status' + (cls ? ' ' + cls : ''); $('settingsStatus').textContent = msg;
 }
 async function initSupabase(){
-  const cfg = getSettings();
-  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ cloudUser = null; renderAuthUI(); updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
-  try{
-    sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
-    const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
-    if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
-    else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.', 'warning-text'); }
-    sbClient.auth.onAuthStateChange((event, session) => {
-      cloudUser = session?.user || null;
-      if(cloudUser) activateCloudAccount(cloudUser);
-      renderAuthUI();
-      if(cloudUser){
-        identifyRevenueCatUser(cloudUser.id).catch(()=>{});
-        updateCloudStatus('online','مزامن');
-        updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text');
-        setTimeout(() => { synchronizeSignedInAccount(event).catch(showCloudError); }, 0);
-      }else{
-        updateCloudStatus('warn','غير مسجل');
-        if(event === 'SIGNED_OUT') updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.');
-      }
-    });
-    if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
-  }catch(e){ cloudUser = null; renderAuthUI(); updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
+const cfg = getSettings();
+if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ cloudUser = null; renderAuthUI(); updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
+try{
+sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
+const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
+else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.', 'warning-text'); }
+sbClient.auth.onAuthStateChange((event, session) => {
+cloudUser = session?.user || null;
+if(cloudUser) activateCloudAccount(cloudUser);
+renderAuthUI();
+if(cloudUser){
+identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+updateCloudStatus('online','مزامن');
+updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text');
+setTimeout(() => { synchronizeSignedInAccount(event).catch(showCloudError); }, 0);
+}else{
+updateCloudStatus('warn','غير مسجل');
+if(event === 'SIGNED_OUT') updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.');
+}
+});
+if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
+}catch(e){ cloudUser = null; renderAuthUI(); updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر الاتصال بخدمة المزامنة.', 'danger-text'); }
 }
 function showCloudError(error){ console.warn('LinkVault cloud sync failed', error); updateCloudStatus('warn','خطأ مزامنة'); updateSettingsStatus('تعذر حفظ الروابط على الحساب: ' + (error?.message || error), 'danger-text'); }
 function linkToRow(l){ const title=String(l.title||'').trim()||(()=>{try{return new URL(l.url).hostname;}catch(e){return 'رابط محفوظ';}})(); return { id:l.id, user_id:cloudUser?.id, title, url:l.url, platform:l.platform || detectPlatform(l.url).label, category_name:l.cat, notes:l.note || '', trailer_url:l.trailer || '', thumbnail_url:l.thumbnail || '', is_favorite:!!l.favorite, created_at:new Date(l.ts || Date.now()).toISOString(), updated_at:l.updatedAt || nowIso() }; }
 function rowToLink(r){ return { id:r.id, title:r.title || '', url:r.url || '', cat:r.category_name || 'أخرى', note:r.notes || '', trailer:r.trailer_url || '', thumbnail:r.thumbnail_url || '', platform:r.platform || detectPlatform(r.url || '').label, favorite:!!r.is_favorite, ts:r.created_at ? new Date(r.created_at).getTime() : Date.now(), updatedAt:r.updated_at || nowIso() }; }
 async function loadCloudData(){
-  if(!sbClient || !cloudUser || syncing) return; syncing=true;
-  try{
-    const [cr,lr]=await Promise.all([sbClient.from('categories').select('name').eq('user_id',cloudUser.id).order('created_at',{ascending:true}),sbClient.from('links').select('*').eq('user_id',cloudUser.id).order('created_at',{ascending:false})]);
-    if(cr.error||lr.error) throw (cr.error||lr.error);
-    const cloudCats=(cr.data||[]).map(x=>x.name).filter(Boolean); cats=normalizeCategories([...cloudCats,...cats]);
-    if(!cloudCats.length) await upsertCategoriesCloudBatch(cats);
-    const cloudLinks=(lr.data||[]).map(rowToLink), cloudByUrl=new Map(cloudLinks.map(x=>[canonicalUrl(x.url),x]));
-    const missing=(links||[]).filter(local=>!cloudByUrl.has(canonicalUrl(local.url)));
-    if(missing.length){ await upsertLinksCloudBatch(missing); for(const local of missing){ const key=canonicalUrl(local.url); if(!cloudByUrl.has(key)){ cloudLinks.push(local); cloudByUrl.set(key,local); } } }
-    links=cloudLinks; const upgraded=upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); updateCloudStatus('online','مزامن');
-    if(upgraded) await upsertLinksCloudBatch(links);
-  }catch(e){ showCloudError(e); throw e; } finally { syncing=false; }
+if(!sbClient || !cloudUser || syncing) return; syncing=true;
+try{
+const [cr,lr]=await Promise.all([sbClient.from('categories').select('name').eq('user_id',cloudUser.id).order('created_at',{ascending:true}),sbClient.from('links').select('*').eq('user_id',cloudUser.id).order('created_at',{ascending:false})]);
+if(cr.error||lr.error) throw (cr.error||lr.error);
+const cloudCats=(cr.data||[]).map(x=>x.name).filter(Boolean); cats=normalizeCategories([...cloudCats,...cats]);
+if(!cloudCats.length) await upsertCategoriesCloudBatch(cats);
+const cloudLinks=(lr.data||[]).map(rowToLink), cloudByUrl=new Map(cloudLinks.map(x=>[canonicalUrl(x.url),x]));
+const missing=(links||[]).filter(local=>!cloudByUrl.has(canonicalUrl(local.url)));
+if(missing.length){ await upsertLinksCloudBatch(missing); for(const local of missing){ const key=canonicalUrl(local.url); if(!cloudByUrl.has(key)){ cloudLinks.push(local); cloudByUrl.set(key,local); } } }
+links=cloudLinks; const upgraded=upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); updateCloudStatus('online','مزامن');
+if(upgraded) await upsertLinksCloudBatch(links);
+}catch(e){ showCloudError(e); throw e; } finally { syncing=false; }
 }
 async function upsertCategoriesCloudBatch(items){ if(!sbClient||!cloudUser) return; const rows=normalizeCategories(items).map(name=>({user_id:cloudUser.id,name})); for(let i=0;i<rows.length;i+=200){ const {error}=await sbClient.from('categories').upsert(rows.slice(i,i+200),{onConflict:'user_id,name'}); if(error) throw error; } }
 async function upsertLinksCloudBatch(items){ if(!sbClient||!cloudUser) return; const list=items||[]; for(let i=0;i<list.length;i+=200){ const part=list.slice(i,i+200), rows=part.map(linkToRow); let {error}=await sbClient.from('links').upsert(rows,{onConflict:'id'}); if(error&&/is_favorite.*schema cache|column.*is_favorite/i.test(error.message||'')){ rows.forEach(row=>delete row.is_favorite); ({error}=await sbClient.from('links').upsert(rows,{onConflict:'id'})); } if(error&&/row-level security|violates.*policy|duplicate key/i.test(error.message||'')){ for(const link of part) await upsertLinkCloud(link); } else if(error) throw error; } }
@@ -1462,285 +1392,251 @@ async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; co
 async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').delete().eq('user_id',cloudUser.id).eq('name',name); if(error) throw error; }
 async function synchronizeSignedInAccount(event='SIGNED_IN'){ if(authSyncPromise) return authSyncPromise; authSyncPromise=event==='SIGNED_IN'?syncLocalToCloud():loadCloudData(); try{await authSyncPromise;}finally{authSyncPromise=null;} }
 async function syncLocalToCloud(){
-  if(!sbClient||!cloudUser){ toast('⚠️ سجل دخول أولاً'); return; }
-  try{ updateSettingsStatus('جاري رفع البيانات المحلية...', 'warning-text'); await upsertCategoriesCloudBatch(cats); await upsertLinksCloudBatch(links); await loadCloudData(); updateSettingsStatus('✅ تمت المزامنة بنجاح','success-text'); toast('✅ تمت المزامنة'); }
-  catch(e){ showCloudError(e); }
+if(!sbClient||!cloudUser){ toast('⚠️ سجل دخول أولاً'); return; }
+try{ updateSettingsStatus('جاري رفع البيانات المحلية...', 'warning-text'); await upsertCategoriesCloudBatch(cats); await upsertLinksCloudBatch(links); await loadCloudData(); updateSettingsStatus('✅ تمت المزامنة بنجاح','success-text'); toast('✅ تمت المزامنة'); }
+catch(e){ showCloudError(e); }
 }
 function isNativeApp(){ try{return !!(window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform());}catch(e){return false;} }
 function getAuthRedirectUrl(){ return isNativeApp() ? AUTH_REDIRECT_URL : ((window.location.origin || '') + (window.location.pathname || '/')); }
 function normalizeOtp(value){
-  const arabic = '٠١٢٣٤٥٦٧٨٩';
-  const persian = '۰۱۲۳۴۵۶۷۸۹';
-  return String(value || '').replace(/[٠-٩]/g, d => arabic.indexOf(d)).replace(/[۰-۹]/g, d => persian.indexOf(d)).replace(/\D/g,'').slice(0,6);
+const arabic = '٠١٢٣٤٥٦٧٨٩';
+const persian = '۰۱۲۳۴۵۶۷۸۹';
+return String(value || '').replace(/[٠-٩]/g, d => arabic.indexOf(d)).replace(/[۰-۹]/g, d => persian.indexOf(d)).replace(/\D/g,'').slice(0,6);
 }
 function setOtpPanelVisible(show){
-  const panel = $('otpPanel');
-  if(panel) panel.hidden = !show;
-  if(show && $('authOtp')) setTimeout(() => $('authOtp').focus(), 120);
+const panel = $('otpPanel');
+if(panel) panel.hidden = !show;
+if(show && $('authOtp')) setTimeout(() => $('authOtp').focus(), 120);
 }
-function startOtpCooldown(seconds=60){
-  clearInterval(otpCooldownTimer);
-  let left = seconds;
-  const send = $('btnSendOtp');
-  const resend = $('btnResendOtp');
-  const refresh = () => {
-    const disabled = left > 0;
-    if(send){ send.disabled = disabled; send.textContent = disabled ? `إعادة الإرسال بعد ${left}ث` : 'إرسال رمز التحقق'; }
-    if(resend){ resend.disabled = disabled; resend.textContent = disabled ? `إعادة الإرسال بعد ${left}ث` : 'إعادة إرسال الرمز'; }
-    if(left <= 0){ clearInterval(otpCooldownTimer); otpCooldownTimer = null; }
-    left -= 1;
-  };
-  refresh();
-  otpCooldownTimer = setInterval(refresh, 1000);
+function otpCooldownRemaining(){ return Math.max(0,Math.ceil(((Number(STORE.get(LS_OTP_COOLDOWN_UNTIL,0))||0)-Date.now())/1000)); }
+function startOtpCooldown(seconds=90){
+clearInterval(otpCooldownTimer); const until=Date.now()+Math.max(1,seconds)*1000; STORE.set(LS_OTP_COOLDOWN_UNTIL,until);
+const refresh=()=>{ const left=Math.max(0,Math.ceil((until-Date.now())/1000)),disabled=left>0,send=$('btnSendOtp'),resend=$('btnResendOtp'); if(send){send.disabled=disabled;send.textContent=disabled?'إعادة الإرسال بعد '+left+'ث':'إرسال رمز التحقق';} if(resend){resend.disabled=disabled;resend.textContent=disabled?'إعادة الإرسال بعد '+left+'ث':'إعادة إرسال الرمز';} if(!disabled){clearInterval(otpCooldownTimer);otpCooldownTimer=null;STORE.remove(LS_OTP_COOLDOWN_UNTIL);} };
+refresh(); otpCooldownTimer=setInterval(refresh,1000);
 }
 async function ensureAuthClient(){
-  if(!sbClient) await initSupabase();
-  if(!sbClient){ toast('⚠️ خدمة الحساب غير متاحة حاليًا'); return false; }
-  return true;
+if(!sbClient) await initSupabase();
+if(!sbClient){ toast('⚠️ خدمة الحساب غير متاحة حاليًا'); return false; }
+return true;
 }
 async function sendEmailOtp(){
-  const button = $('btnSendOtp');
-  try{
-    if(!await ensureAuthClient()) return;
-    const email = $('authEmail').value.trim().toLowerCase();
-    if(!/^\S+@\S+\.\S+$/.test(email)){ toast('⚠️ أدخل بريدًا إلكترونيًا صحيحًا'); return; }
-    button.disabled = true; button.textContent = 'جاري إرسال الرمز...';
-    const { error } = await sbClient.auth.signInWithOtp({ email, options:{ shouldCreateUser:true, emailRedirectTo:getAuthRedirectUrl() } });
-    if(error) throw error;
-    pendingOtpEmail = email; STORE.set(LS_PENDING_OTP, email); setOtpPanelVisible(true); startOtpCooldown(60);
-    updateSettingsStatus(`📧 أرسلنا رمز تحقق إلى ${email}`, 'success-text'); toast('📧 تم إرسال رمز التحقق');
-  }catch(e){
-    const msg = e?.message || 'تعذر إرسال رمز التحقق';
-    updateSettingsStatus(msg, 'danger-text'); toast(msg);
-    button.disabled = false; button.textContent = 'إرسال رمز التحقق';
-  }
+const button=$('btnSendOtp');
+try{
+if(!await ensureAuthClient()) return; const wait=otpCooldownRemaining(); if(wait){startOtpCooldown(wait);toast('انتظر '+wait+' ثانية قبل إعادة الإرسال');return;}
+const email=$('authEmail').value.trim().toLowerCase(); if(!/^\S+@\S+\.\S+$/.test(email)){toast('⚠️ أدخل بريدًا إلكترونيًا صحيحًا');return;}
+button.disabled=true;button.textContent='جاري إرسال الرمز...'; const {error}=await sbClient.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:getAuthRedirectUrl()}}); if(error) throw error;
+pendingOtpEmail=email;STORE.set(LS_PENDING_OTP,email);setOtpPanelVisible(true);startOtpCooldown(90);updateSettingsStatus('📧 أرسلنا رمز تحقق إلى '+email+'. أدخل الرمز ولا تستخدم رابطًا قديمًا.','success-text');toast('📧 تم إرسال رمز التحقق');
+}catch(e){ const limited=e?.status===429||/rate limit|too many|over_email_send_rate_limit/i.test((e?.code||'')+' '+(e?.message||'')); if(limited){startOtpCooldown(600);updateSettingsStatus('تم الوصول لحد إرسال البريد مؤقتًا. انتظر 10 دقائق ثم حاول مرة واحدة.','warning-text');toast('⚠️ انتظر 10 دقائق قبل إعادة الإرسال');} else {const msg=e?.message||'تعذر إرسال رمز التحقق';updateSettingsStatus(msg,'danger-text');toast(msg);button.disabled=false;button.textContent='إرسال رمز التحقق';} }
 }
 async function verifyEmailOtp(){
-  const button = $('btnVerifyOtp');
-  try{
-    if(!await ensureAuthClient()) return;
-    const email = (pendingOtpEmail || $('authEmail').value).trim().toLowerCase();
-    const token = normalizeOtp($('authOtp').value);
-    $('authOtp').value = token;
-    if(!email || token.length !== 6){ toast('⚠️ أدخل رمز التحقق المكوّن من 6 أرقام'); return; }
-    button.disabled = true; button.textContent = 'جاري التحقق...';
-    const { data, error } = await sbClient.auth.verifyOtp({ email, token, type:'email' });
-    if(error) throw error;
-    cloudUser = data.user || data.session?.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
-    pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); $('authOtp').value = ''; setOtpPanelVisible(false);
-    updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل');
-    updateSettingsStatus('✅ تم التحقق وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(cloudUser) await synchronizeSignedInAccount('SIGNED_IN');
-  }catch(e){
-    const msg = e?.message || 'رمز التحقق غير صحيح أو انتهت صلاحيته';
-    updateSettingsStatus(msg, 'danger-text'); toast('⚠️ ' + msg);
-  }finally{
-    button.disabled = false; button.textContent = 'تأكيد';
-  }
+const button = $('btnVerifyOtp');
+try{
+if(!await ensureAuthClient()) return;
+const email = (pendingOtpEmail || $('authEmail').value).trim().toLowerCase();
+const token = normalizeOtp($('authOtp').value);
+$('authOtp').value = token;
+if(!email || token.length !== 6){ toast('⚠️ أدخل رمز التحقق المكوّن من 6 أرقام'); return; }
+button.disabled = true; button.textContent = 'جاري التحقق...';
+const { data, error } = await sbClient.auth.verifyOtp({ email, token, type:'email' });
+if(error) throw error;
+cloudUser = data.user || data.session?.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); $('authOtp').value = ''; setOtpPanelVisible(false);
+updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل');
+updateSettingsStatus('✅ تم التحقق وتسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(cloudUser) await synchronizeSignedInAccount('SIGNED_IN');
+}catch(e){
+const msg = e?.message || 'رمز التحقق غير صحيح أو انتهت صلاحيته';
+updateSettingsStatus(msg, 'danger-text'); toast('⚠️ ' + msg);
+}finally{
+button.disabled = false; button.textContent = 'تأكيد';
+}
 }
 async function openAuthBrowser(url){
-  if(!url) throw new Error('لم يتم إنشاء رابط تسجيل الدخول');
-  if(isNativeApp()){
-    const Browser = getNativePlugin('Browser');
-    if(Browser?.open){ await Browser.open({ url, presentationStyle:'fullscreen', toolbarColor:'#0d0d14' }); return; }
-  }
-  window.location.assign(url);
+if(!url) throw new Error('لم يتم إنشاء رابط تسجيل الدخول');
+if(isNativeApp()){
+const Browser = getNativePlugin('Browser');
+if(Browser?.open){ await Browser.open({ url, presentationStyle:'fullscreen', toolbarColor:'#0d0d14' }); return; }
+}
+window.location.assign(url);
 }
 async function closeAuthBrowser(){
-  if(!isNativeApp()) return;
-  try{ const Browser = getNativePlugin('Browser'); if(Browser?.close) await Browser.close(); }catch(e){}
+if(!isNativeApp()) return;
+try{ const Browser = getNativePlugin('Browser'); if(Browser?.close) await Browser.close(); }catch(e){}
 }
 async function signInWithOAuthProvider(provider){
-  const label = provider === 'apple' ? 'Apple' : 'Google';
-  try{
-    if(!await ensureAuthClient()) return;
-    updateSettingsStatus(`جاري فتح تسجيل الدخول بواسطة ${label}...`, 'warning-text');
-    const queryParams = provider === 'google' ? { prompt:'select_account' } : undefined;
-    const { data, error } = await sbClient.auth.signInWithOAuth({ provider, options:{ redirectTo:getAuthRedirectUrl(), skipBrowserRedirect:isNativeApp(), queryParams } });
-    if(error) throw error;
-    if(data?.url) await openAuthBrowser(data.url);
-  }catch(e){
-    const msg = e?.message || `تعذر تسجيل الدخول بواسطة ${label}`;
-    updateSettingsStatus(msg, 'danger-text'); toast(msg);
-  }
+const label = provider === 'apple' ? 'Apple' : 'Google';
+try{
+if(!await ensureAuthClient()) return;
+updateSettingsStatus(`جاري فتح تسجيل الدخول بواسطة ${label}...`, 'warning-text');
+const queryParams = provider === 'google' ? { prompt:'select_account' } : undefined;
+const { data, error } = await sbClient.auth.signInWithOAuth({ provider, options:{ redirectTo:getAuthRedirectUrl(), skipBrowserRedirect:isNativeApp(), queryParams } });
+if(error) throw error;
+if(data?.url) await openAuthBrowser(data.url);
+}catch(e){
+const msg = e?.message || `تعذر تسجيل الدخول بواسطة ${label}`;
+updateSettingsStatus(msg, 'danger-text'); toast(msg);
+}
 }
 async function logout(){
-  if(cloudUser?.id) persistAccountData(cloudUser.id);
-  if(sbClient) await sbClient.auth.signOut();
-  await logoutRevenueCatUser();
-  await closeAuthBrowser();
-  cloudUser = null; activateGuestAccount(); pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false); resetOtpControls(); if($('authEmail')) $('authEmail').value = ''; if($('authOtp')) $('authOtp').value = ''; renderAuthUI();
-  updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج');
+if(cloudUser?.id) persistAccountData(cloudUser.id);
+if(sbClient) await sbClient.auth.signOut();
+await logoutRevenueCatUser();
+await closeAuthBrowser();
+cloudUser = null; activateGuestAccount(); pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false); resetOtpControls(); if($('authEmail')) $('authEmail').value = ''; if($('authOtp')) $('authOtp').value = ''; renderAuthUI();
+updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج');
 }
-
 function openSettings(){ applyTheme(currentTheme, false); updateProUi(); renderAuthUI(); $('settingsOverlay').classList.add('open'); if(APP_EDITION === 'commercial' && rcReady) refreshRevenueCatStatus(); }
 function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
-
 let lastIncomingShareSignature = '';
 let lastIncomingShareAt = 0;
 function handleIncomingShareFromParams(params){
-  const rawUrl = params.get('url') || extractFirstUrl(params.get('text')) || '';
-  const title = params.get('title') || '';
-  const text = params.get('text') || '';
-  const source = params.get('source') || '';
-  const sharedUrl = normalizeUrl(rawUrl || extractFirstUrl(text));
-  if(sharedUrl){
-    const signature = `${sharedUrl}|${title}|${text.slice(0, 120)}|${source}`;
-    const now = Date.now();
-    if(signature === lastIncomingShareSignature && now - lastIncomingShareAt < 8000) return true;
-    lastIncomingShareSignature = signature;
-    lastIncomingShareAt = now;
-
-    if(source === 'share_extension' || params.get('autosave') === '1'){
-      const pendingTs = Number(params.get('ts') || 0);
-      saveSharedLinkDirectly({ url: sharedUrl, title, text, note: params.get('note') || '', cat: params.get('cat') || '' }).then(saved => {
-        if(saved && pendingTs > 0) clearPendingNativeShare(pendingTs);
-      });
-    }else{
-      setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '', note: params.get('note') || '', cat: params.get('cat') || '' }), 280);
-    }
-    return true;
-  }
-  return false;
+const rawUrl = params.get('url') || extractFirstUrl(params.get('text')) || '';
+const title = params.get('title') || '';
+const text = params.get('text') || '';
+const source = params.get('source') || '';
+const sharedUrl = normalizeUrl(rawUrl || extractFirstUrl(text));
+if(sharedUrl){
+const signature = `${sharedUrl}|${title}|${text.slice(0, 120)}|${source}`;
+const now = Date.now();
+if(signature === lastIncomingShareSignature && now - lastIncomingShareAt < 8000) return true;
+lastIncomingShareSignature = signature;
+lastIncomingShareAt = now;
+if(source === 'share_extension' || params.get('autosave') === '1'){
+const pendingTs = Number(params.get('ts') || 0);
+saveSharedLinkDirectly({ url: sharedUrl, title, text, note: params.get('note') || '', cat: params.get('cat') || '' }).then(saved => {
+if(saved && pendingTs > 0) clearPendingNativeShare(pendingTs);
+});
+}else{
+setTimeout(() => openAddModal({ url:sharedUrl, title: title && title !== sharedUrl ? title : '', note: params.get('note') || '', cat: params.get('cat') || '' }), 280);
+}
+return true;
+}
+return false;
 }
 function checkShareTarget(){
-  const params = new URLSearchParams(window.location.search);
-  if(params.get('action') === 'add') setTimeout(() => openAddModal(), 150);
-  const handled = handleIncomingShareFromParams(params);
-  if(handled || params.get('action')) window.history.replaceState({}, '', window.location.pathname || './');
+const params = new URLSearchParams(window.location.search);
+if(params.get('action') === 'add') setTimeout(() => openAddModal(), 150);
+const handled = handleIncomingShareFromParams(params);
+if(handled || params.get('action')) window.history.replaceState({}, '', window.location.pathname || './');
 }
 function isLinkVaultDeepLink(u){ return u && (u.protocol === 'linkvaultq8:' || u.protocol === 'linkvault:'); }
 function isAuthCallbackUrl(u){ return isLinkVaultDeepLink(u) && (u.hostname === 'auth-callback' || u.pathname.replace(/^\//,'') === 'auth-callback'); }
 function authParamsFromUrl(raw){ const u = new URL(raw); const params = new URLSearchParams(u.search); const hash = new URLSearchParams((u.hash || '').replace(/^#/,'?')); for(const [k,v] of hash.entries()) if(!params.has(k)) params.set(k,v); return params; }
 async function handleAuthCallbackUrl(raw){
-  if(!sbClient){ pendingAuthCallbackUrl = raw; return false; }
-  try{
-    await closeAuthBrowser();
-    const params = authParamsFromUrl(raw); const errorText = params.get('error_description') || params.get('error'); if(errorText) throw new Error(decodeURIComponent(errorText.replace(/\+/g,' ')));
-    const code = params.get('code'); const access_token = params.get('access_token'); const refresh_token = params.get('refresh_token'); let result;
-    if(code) result = await sbClient.auth.exchangeCodeForSession(code);
-    else if(access_token && refresh_token) result = await sbClient.auth.setSession({ access_token, refresh_token });
-    else { const current = await sbClient.auth.getSession(); if(current.data?.session) result = current; else throw new Error('رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة'); }
-    if(result?.error) throw result.error; cloudUser = result?.data?.session?.user || (await sbClient.auth.getUser()).data?.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
-    updateCloudStatus(cloudUser ? 'online' : 'warn', cloudUser ? 'مزامن' : 'غير مسجل'); updateSettingsStatus('✅ تم تسجيل الدخول بنجاح.', 'success-text'); toast('✅ تم تسجيل الدخول'); if(cloudUser) await synchronizeSignedInAccount('SIGNED_IN'); if(!isNativeApp() && (window.location.search || window.location.hash)) window.history.replaceState({}, '', window.location.pathname || '/'); return true;
-  }catch(e){ await closeAuthBrowser(); console.warn('Auth callback failed', e); updateSettingsStatus(`تعذر إكمال تسجيل الدخول: ${e?.message || e}`, 'danger-text'); toast('⚠️ تعذر إكمال تسجيل الدخول'); return false; }
+if(!sbClient){pendingAuthCallbackUrl=raw;return false;}
+try{
+await closeAuthBrowser(); const params=authParamsFromUrl(raw),errorText=params.get('error_description')||params.get('error'); if(errorText) throw new Error(decodeURIComponent(errorText.replace(/\+/g,' ')));
+const code=params.get('code'),access_token=params.get('access_token'),refresh_token=params.get('refresh_token'); let result;
+if(code) result=await sbClient.auth.exchangeCodeForSession(code); else if(access_token&&refresh_token) result=await sbClient.auth.setSession({access_token,refresh_token}); else {const current=await sbClient.auth.getSession();if(current.data?.session)result=current;else throw new Error('رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة');}
+if(result?.error)throw result.error; cloudUser=result?.data?.session?.user||(await sbClient.auth.getUser()).data?.user||null; if(cloudUser)activateCloudAccount(cloudUser);renderAuthUI();if(cloudUser)identifyRevenueCatUser(cloudUser.id).catch(()=>{});updateCloudStatus(cloudUser?'online':'warn',cloudUser?'مزامن':'غير مسجل');updateSettingsStatus('✅ تم تسجيل الدخول بنجاح.','success-text');toast('✅ تم تسجيل الدخول');if(cloudUser)await synchronizeSignedInAccount('SIGNED_IN');return true;
+}catch(e){await closeAuthBrowser();const expired=/invalid|expired|otp_expired|email link/i.test(e?.message||'');if(expired&&pendingOtpEmail){setOtpPanelVisible(true);updateSettingsStatus('رابط البريد قديم أو مستخدم. أدخل أحدث رمز تحقق من 6 أرقام بدل الضغط على الرابط.','warning-text');toast('⚠️ استخدم أحدث رمز تحقق');return false;}console.warn('Auth callback failed',e);updateSettingsStatus('تعذر إكمال تسجيل الدخول: '+(e?.message||e),'danger-text');toast('⚠️ تعذر إكمال تسجيل الدخول');return false;}
 }
-function routeDeepLink(raw){ try{ const u = new URL(raw); if(!isLinkVaultDeepLink(u)) return false; if(isAuthCallbackUrl(u)){ handleAuthCallbackUrl(raw); return true; } return handleIncomingShareFromParams(u.searchParams); }catch(e){ return false; } }
+function routeDeepLink(raw){ try{ const u=new URL(raw); if(!isLinkVaultDeepLink(u))return false; if(isAuthCallbackUrl(u)){const now=Date.now();if(raw===lastAuthCallbackUrl&&now-lastAuthCallbackAt<15000)return true;lastAuthCallbackUrl=raw;lastAuthCallbackAt=now;handleAuthCallbackUrl(raw);return true;} return handleIncomingShareFromParams(u.searchParams); }catch(e){return false;} }
 function captureBrowserAuthCallback(){ try{ const params = authParamsFromUrl(window.location.href); if(params.get('code') || params.get('access_token') || params.get('error') || params.get('error_code')) pendingAuthCallbackUrl = window.location.href; }catch(e){} }
 function initNativeDeepLinks(){
-  const App = window.Capacitor?.Plugins?.App;
-  if(!App) return;
-  App.addListener('appUrlOpen', data => { if(data?.url) routeDeepLink(data.url); });
-  if(App.getLaunchUrl){ App.getLaunchUrl().then(res => { if(res?.url) routeDeepLink(res.url); }).catch(()=>{}); }
+const App = window.Capacitor?.Plugins?.App;
+if(!App) return;
+App.addListener('appUrlOpen', data => { if(data?.url) routeDeepLink(data.url); });
+if(App.getLaunchUrl){ App.getLaunchUrl().then(res => { if(res?.url) routeDeepLink(res.url); }).catch(()=>{}); }
 }
-
 async function clearPendingNativeShare(upToTimestamp){
-  try{
-    const PendingShare = getNativePlugin('PendingShare');
-    if(!PendingShare || !PendingShare.clearPendingShare) return false;
-    const value = Number(upToTimestamp);
-    const options = Number.isFinite(value) && value > 0 ? { upToTimestamp:value } : {};
-    await PendingShare.clearPendingShare(options);
-    return true;
-  }catch(e){
-    console.warn('PendingShare clear failed', e);
-    return false;
-  }
+try{
+const PendingShare = getNativePlugin('PendingShare');
+if(!PendingShare || !PendingShare.clearPendingShare) return false;
+const value = Number(upToTimestamp);
+const options = Number.isFinite(value) && value > 0 ? { upToTimestamp:value } : {};
+await PendingShare.clearPendingShare(options);
+return true;
+}catch(e){
+console.warn('PendingShare clear failed', e);
+return false;
 }
-
+}
 function pendingShareBatch(res){
-  if(!res || !res.hasShare) return [];
-  if(Array.isArray(res.shares) && res.shares.length) return res.shares;
-  return [{
-    id:res.id || '',
-    url:res.url || '',
-    title:res.title || '',
-    text:res.text || '',
-    note:res.note || '',
-    cat:res.cat || '',
-    timestamp:Number(res.timestamp || 0)
-  }];
+if(!res || !res.hasShare) return [];
+if(Array.isArray(res.shares) && res.shares.length) return res.shares;
+return [{
+id:res.id || '',
+url:res.url || '',
+title:res.title || '',
+text:res.text || '',
+note:res.note || '',
+cat:res.cat || '',
+timestamp:Number(res.timestamp || 0)
+}];
 }
-
 let pendingShareConsumeInFlight = false;
 async function consumePendingNativeShare(){
-  if(pendingShareConsumeInFlight) return false;
-  pendingShareConsumeInFlight = true;
-  try{
-    const PendingShare = getNativePlugin('PendingShare');
-    if(!PendingShare || !PendingShare.getPendingShare) return false;
-    const res = await PendingShare.getPendingShare();
-    const shares = pendingShareBatch(res).sort((a,b) => Number(a.timestamp || 0) - Number(b.timestamp || 0));
-    if(!shares.length) return false;
-
-    let processed = 0;
-    let clearedThrough = 0;
-    for(const share of shares){
-      const saved = await saveSharedLinkDirectly({
-        url:share.url || '',
-        title:share.title || '',
-        text:share.text || '',
-        note:share.note || '',
-        cat:share.cat || share.category || ''
-      });
-      if(!saved) break;
-      processed += 1;
-      clearedThrough = Math.max(clearedThrough, Number(share.timestamp || 0));
-    }
-
-    if(processed > 0 && clearedThrough > 0){
-      await clearPendingNativeShare(clearedThrough);
-      if(processed > 1) toast(`✅ تم استيراد ${processed} روابط محفوظة`);
-    }
-    return processed > 0;
-  }catch(e){
-    console.warn('PendingShare consume failed', e);
-    return false;
-  }finally{
-    pendingShareConsumeInFlight = false;
-  }
+if(pendingShareConsumeInFlight) return false;
+pendingShareConsumeInFlight = true;
+try{
+const PendingShare = getNativePlugin('PendingShare');
+if(!PendingShare || !PendingShare.getPendingShare) return false;
+const res = await PendingShare.getPendingShare();
+const shares = pendingShareBatch(res).sort((a,b) => Number(a.timestamp || 0) - Number(b.timestamp || 0));
+if(!shares.length) return false;
+let processed = 0;
+let clearedThrough = 0;
+for(const share of shares){
+const saved = await saveSharedLinkDirectly({
+url:share.url || '',
+title:share.title || '',
+text:share.text || '',
+note:share.note || '',
+cat:share.cat || share.category || ''
+});
+if(!saved) break;
+processed += 1;
+clearedThrough = Math.max(clearedThrough, Number(share.timestamp || 0));
+}
+if(processed > 0 && clearedThrough > 0){
+await clearPendingNativeShare(clearedThrough);
+if(processed > 1) toast(`✅ تم استيراد ${processed} روابط محفوظة`);
+}
+return processed > 0;
+}catch(e){
+console.warn('PendingShare consume failed', e);
+return false;
+}finally{
+pendingShareConsumeInFlight = false;
+}
 }
 function initPendingNativeShare(){
-  const CapApp = window.Capacitor?.Plugins?.App;
-  setTimeout(consumePendingNativeShare, 450);
-  setTimeout(consumePendingNativeShare, 1400);
-  if(CapApp && CapApp.addListener){
-    CapApp.addListener('resume', () => { setTimeout(consumePendingNativeShare, 250); });
-  }
+const CapApp = window.Capacitor?.Plugins?.App;
+setTimeout(consumePendingNativeShare, 450);
+setTimeout(consumePendingNativeShare, 1400);
+if(CapApp && CapApp.addListener){
+CapApp.addListener('resume', () => { setTimeout(consumePendingNativeShare, 250); });
 }
-
+}
 async function runShareDiagnostics(){
-  const report = [];
-  try{
-    const cap = window.Capacitor;
-    const isNative = !!(cap && typeof cap.isNativePlatform === 'function' && cap.isNativePlatform());
-    report.push('تطبيق آيفون أصلي (native): ' + (isNative ? 'نعم ✅' : 'لا ❌ (يبدو إنك بمتصفح ويب عادي)'));
-
-    const plugin = getNativePlugin('PendingShare');
-    report.push('إضافة PendingShare مسجلة بالتطبيق: ' + (plugin && plugin.getPendingShare ? 'نعم ✅' : 'لا ❌'));
-
-    if(!plugin || !plugin.getPendingShare){
-      report.push('السبب: PendingSharePlugin غير مسجل داخل Capacitor bridge. تأكد أن البناء الجديد شغّل scripts/add-ios-share-extension.rb وأن Main.storyboard صار يستخدم LinkVaultBridgeViewController.');
-    } else {
-      const res = await plugin.getPendingShare();
-      const pending = pendingShareBatch(res);
-      report.push('عدد الروابط المنتظرة في App Group: ' + pending.length);
-      if(pending.length){
-        const saved = await consumePendingNativeShare();
-        report.push(saved ? `✅ تم استيراد الروابط المنتظرة داخل القائمة الآن.` : '⚠️ توجد بيانات مشاركة لكن تعذر استيرادها.');
-      } else {
-        report.push('يعني: الـ plugin شغال، لكن لا توجد روابط محفوظة في App Group حاليًا. جرّب مشاركة رابط جديد ثم افتح التطبيق.');
-      }
-    }
-  }catch(e){
-    report.push('⚠️ صار خطأ فعلي أثناء الفحص: ' + (e && e.message ? e.message : String(e)));
-  }
-  alert(report.join('\n\n'));
+const report = [];
+try{
+const cap = window.Capacitor;
+const isNative = !!(cap && typeof cap.isNativePlatform === 'function' && cap.isNativePlatform());
+report.push('تطبيق آيفون أصلي (native): ' + (isNative ? 'نعم ✅' : 'لا ❌ (يبدو إنك بمتصفح ويب عادي)'));
+const plugin = getNativePlugin('PendingShare');
+report.push('إضافة PendingShare مسجلة بالتطبيق: ' + (plugin && plugin.getPendingShare ? 'نعم ✅' : 'لا ❌'));
+if(!plugin || !plugin.getPendingShare){
+report.push('السبب: PendingSharePlugin غير مسجل داخل Capacitor bridge. تأكد أن البناء الجديد شغّل scripts/add-ios-share-extension.rb وأن Main.storyboard صار يستخدم LinkVaultBridgeViewController.');
+} else {
+const res = await plugin.getPendingShare();
+const pending = pendingShareBatch(res);
+report.push('عدد الروابط المنتظرة في App Group: ' + pending.length);
+if(pending.length){
+const saved = await consumePendingNativeShare();
+report.push(saved ? `✅ تم استيراد الروابط المنتظرة داخل القائمة الآن.` : '⚠️ توجد بيانات مشاركة لكن تعذر استيرادها.');
+} else {
+report.push('يعني: الـ plugin شغال، لكن لا توجد روابط محفوظة في App Group حاليًا. جرّب مشاركة رابط جديد ثم افتح التطبيق.');
 }
-
+}
+}catch(e){
+report.push('⚠️ صار خطأ فعلي أثناء الفحص: ' + (e && e.message ? e.message : String(e)));
+}
+alert(report.join('\n\n'));
+}
 function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2500); }
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; setTimeout(() => { if(document.querySelector('.install-bar')) return; const bar = document.createElement('div'); bar.className='install-bar'; bar.innerHTML = `<span>📲 ثبّت LinkVault كتطبيق</span><button id="doInstall">تثبيت</button><button class="close-install" id="closeInstall">✕</button>`; document.body.appendChild(bar); setTimeout(()=>bar.classList.add('show'),100); $('doInstall').addEventListener('click',()=>{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>bar.remove()); }); $('closeInstall').addEventListener('click',()=>bar.remove()); }, 3000); });
-
 $('btnAdd').addEventListener('click', () => openAddModal());
 $('btnQrScan').addEventListener('click', scanQrCode);
 $('btnQrScanInline').addEventListener('click', scanQrCode);
@@ -1790,8 +1686,7 @@ $('btnRestoreMerge').addEventListener('click', () => applyRestore('merge'));
 document.getElementById('btnRestoreReplace').hidden=true;
 $('btnRestoreCancel').addEventListener('click', closeRestoreChoice);
 $('restoreOverlay').addEventListener('click', e => { if(e.target === $('restoreOverlay')) closeRestoreChoice(); });
-
-applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); renderAuthUI(); if(pendingOtpEmail){ $('authEmail').value = pendingOtpEmail; setOtpPanelVisible(true); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
+applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); renderAuthUI(); if(pendingOtpEmail){ $('authEmail').value=pendingOtpEmail;setOtpPanelVisible(true);const wait=otpCooldownRemaining();if(wait)startOtpCooldown(wait); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
