@@ -807,27 +807,21 @@ async function exportBackup(){
 }
 function beginRestore(){ $('restoreFileInput').value=''; $('restoreFileInput').click(); }
 function validateBackup(data){ if(!data || typeof data !== 'object' || !Array.isArray(data.links)) throw new Error('ملف غير صالح'); const restoredLinks = normalizeLinks(data.links); const restoredCats = Array.isArray(data.categories) ? data.categories.map(x=>String(x||'').trim()).filter(Boolean) : []; return { links:restoredLinks, categories:[...new Set(restoredCats.length ? restoredCats : restoredLinks.map(l=>l.cat).filter(Boolean))], preferences:data.preferences || {} }; }
-function showRestoreChoice(data){ pendingRestoreData = data; $('restoreSummary').textContent = `الملف يحتوي على ${data.links.length} رابط و${data.categories.length} تصنيف. اختر الدمج للاحتفاظ بالبيانات الحالية، أو الاستبدال لمسحها ووضع النسخة مكانها.`; $('restoreOverlay').classList.add('open'); }
+function showRestoreChoice(data){ pendingRestoreData = data; $('restoreSummary').textContent = `الملف يحتوي على ${data.links.length} رابط و${data.categories.length} تصنيف. سيتم دمج النسخة مع روابط الحساب الحالية وحفظ الجميع دون حذف أو استبدال.`; $('restoreOverlay').classList.add('open'); }
 function closeRestoreChoice(){ pendingRestoreData = null; $('restoreOverlay').classList.remove('open'); }
 async function replaceCloudFromLocal(){ if(!sbClient || !cloudUser) return; await sbClient.from('links').delete().eq('user_id', cloudUser.id); await sbClient.from('categories').delete().eq('user_id', cloudUser.id); for(const c of cats) await upsertCategoryCloud(c); for(const l of links) await upsertLinkCloud(l); }
 async function applyRestore(mode){
   if(!pendingRestoreData) return;
-  const data = pendingRestoreData; closeRestoreChoice();
-  if(mode === 'replace'){
-    if(!confirm('سيتم استبدال جميع الروابط والتصنيفات الحالية. هل أنت متأكد؟')) return;
-    links = normalizeLinks(data.links); cats = [...new Set(data.categories.length ? data.categories : DEFAULT_CATS)];
-  }else{
-    const usedIds = new Set(links.map(l=>l.id)); const byUrl = new Map(links.map(l=>[canonicalUrl(l.url),l]));
-    for(const incoming0 of normalizeLinks(data.links)){
-      const incoming = {...incoming0}; const key = canonicalUrl(incoming.url); const existing = byUrl.get(key);
-      if(existing){ existing.title = existing.title || incoming.title; existing.note = existing.note || incoming.note; existing.thumbnail = existing.thumbnail || incoming.thumbnail; existing.trailer = existing.trailer || incoming.trailer; existing.cat = existing.cat || incoming.cat; existing.updatedAt = nowIso(); continue; }
-      if(usedIds.has(incoming.id)) incoming.id = uid(); usedIds.add(incoming.id); links.push(incoming); byUrl.set(key,incoming);
-    }
-    cats = [...new Set([...cats, ...data.categories, ...links.map(l=>l.cat).filter(Boolean)])];
+  const data=pendingRestoreData; closeRestoreChoice();
+  const byUrl=new Map(links.map(l=>[canonicalUrl(l.url),l]));
+  for(const source of normalizeLinks(data.links)){
+    const key=canonicalUrl(source.url), existing=byUrl.get(key);
+    if(existing){ existing.title=existing.title||source.title; existing.note=existing.note||source.note; existing.thumbnail=existing.thumbnail||source.thumbnail; existing.trailer=existing.trailer||source.trailer; existing.cat=existing.cat||source.cat; existing.updatedAt=nowIso(); }
+    else { const incoming={...source,id:uid(),updatedAt:nowIso()}; links.push(incoming); byUrl.set(key,incoming); }
   }
-  if(!cats.length) cats = [...DEFAULT_CATS]; currentCat = 'all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList();
-  try{ if(cloudUser){ if(mode === 'replace') await replaceCloudFromLocal(); else { for(const c of cats) await upsertCategoryCloud(c); for(const l of links) await upsertLinkCloud(l); } } }catch(e){ console.warn(e); }
-  toast(mode === 'replace' ? '✅ تمت استعادة النسخة واستبدال البيانات' : '✅ تم دمج النسخة الاحتياطية');
+  cats=normalizeCategories([...cats,...data.categories,...links.map(l=>l.cat).filter(Boolean)]); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList();
+  try{ if(cloudUser){ updateSettingsStatus('جاري رفع النسخة الاحتياطية إلى الحساب...', 'warning-text'); for(const c of cats) await upsertCategoryCloud(c); for(const l of links) await upsertLinkCloud(l); await loadCloudData(); updateSettingsStatus('✅ تم دمج النسخة وحفظها على الحساب', 'success-text'); } toast('✅ تم دمج النسخة الاحتياطية وحفظها'); }
+  catch(e){ showCloudError(e); toast('⚠️ تم الدمج محليًا وتعذر رفعه الآن؛ اضغط مزامنة لاحقًا'); }
 }
 async function shareLink(link){
   try{
@@ -1083,7 +1077,7 @@ async function loadCloudData(){
   }catch(e){ updateCloudStatus('warn','خطأ'); updateSettingsStatus('تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.', 'danger-text'); }
   syncing = false;
 }
-async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return false; const row=linkToRow(l); let {error}=await sbClient.from('links').upsert(row,{onConflict:'id'}); if(error && /is_favorite.*schema cache|column.*is_favorite/i.test(error.message||'')){ delete row.is_favorite; ({error}=await sbClient.from('links').upsert(row,{onConflict:'id'})); } if(error && /row-level security|violates.*policy/i.test(error.message||'')){ const oldId=l.id; l.id=uid(); row.id=l.id; ({error}=await sbClient.from('links').upsert(row,{onConflict:'id'})); if(!error) saveLocal(); } if(error) throw error; return true; }
+async function upsertLinkCloud(l){ if(!sbClient || !cloudUser) return false; const row=linkToRow(l); let {error}=await sbClient.from('links').upsert(row,{onConflict:'id'}); if(error && /is_favorite.*schema cache|column.*is_favorite/i.test(error.message||'')){ delete row.is_favorite; ({error}=await sbClient.from('links').upsert(row,{onConflict:'id'})); } if(error && /row-level security|violates.*policy/i.test(error.message||'')){ l.id=uid(); row.id=l.id; ({error}=await sbClient.from('links').upsert(row,{onConflict:'id'})); if(!error) saveLocal(); } if(error) throw error; return true; }
 async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('links').delete().eq('user_id',cloudUser.id).eq('id',id); if(error) throw error; }
 async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').upsert({user_id:cloudUser.id,name},{onConflict:'user_id,name'}); if(error) throw error; }
 async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').delete().eq('user_id',cloudUser.id).eq('name',name); if(error) throw error; }
