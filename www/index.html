@@ -15,22 +15,60 @@
 <script src="app-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>:root{--bg:#0d0d14;--surface:#13131f;--card:#1a1a2e;--card2:#1f1f35;--border:#2a2a45;--border2:#3b3b68;--accent:#7c6aff;--accent2:#a855f7;--gold:#f5c842;--red:#ef476f;--green:#22d3a5;--blue:#38bdf8;--text:#eeeeff;--muted:#74749c;--muted2:#a1a1c7;--safe-bottom:env(safe-area-inset-bottom,0px);--radius:16px;--radius-sm:10px;}*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text)}body{font-family:'Tajawal',sans-serif;display:flex;flex-direction:column}button,input,textarea,select{font-family:'Tajawal',sans-serif}button{cursor:pointer}.header{background:rgba(19,19,31,.96);border-bottom:1px solid var(--border);padding:calc(12px + env(safe-area-inset-top,0px)) 16px 11px;display:flex;align-items:center;gap:10px;flex-shrink:0;backdrop-filter:blur(12px)}.header-logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 8px 28px rgba(124,106,255,.3);flex-shrink:0}.header-title{font-size:1.18rem;font-weight:900;line-height:1}.header-title span{color:var(--accent)}.header-sub{font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:700}.header-spacer{flex:1}.icon-btn{background:var(--card);border:1px solid var(--border);color:var(--muted2);width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:.18s}.icon-btn:hover{border-color:var(--border2);color:var(--text);transform:translateY(-1px)}.btn-add{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:white;box-shadow:0 8px 28px rgba(124,106,255,.35);font-size:24px}.btn-add:hover{box-shadow:0 10px 32px rgba(124,106,255,.5)}.status-pill{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:7px 10px;font-size:.72rem;color:var(--muted2);font-weight:700;max-width:135px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.status-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);box-shadow:0 0 0 3px rgba(116,116,156,.08);flex-shrink:0}.status-pill.online .status-dot{background:var(--green);box-shadow:0 0 0 3px rgba(34,211,165,.12)}.status-pill.warn .status-dot{background:var(--gold)}.tabs-bar{background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0;padding:8px 12px;overflow:visible}.type-filter-wrap{position:relative;flex:1;min-width:70px}.type-filter-wrap::after{content:'⌄';position:absolute;left:13px;top:50%;transform:translateY(-55%);color:var(--muted2);font-size:17px;font-weight:900;pointer-events:none}.type-filter-select{width:100%;height:40px;appearance:none;-webkit-appearance:none;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:.86rem;font-weight:900;padding:0 14px 0 36px;outline:none;cursor:pointer;direction:rtl}.type-filter-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,106,255,.12)}.favorite-filter-btn{height:40px;flex-shrink:0;padding:0 10px;border:1px solid var(--border);background:var(--card);color:var(--muted2);border-radius:12px;font-size:.78rem;font-weight:900;white-space:nowrap;transition:.18s}.favorite-filter-btn.active{color:#fff;border-color:rgba(124,106,255,.75);background:linear-gradient(135deg,rgba(124,106,255,.28),rgba(168,85,247,.2))}.manage-cats-btn{height:40px;flex-shrink:0;padding:0 10px;border:1px dashed var(--border2);background:transparent;color:var(--muted2);border-radius:12px;font-size:.76rem;font-weight:900;white-space:nowrap}.manage-cats-btn:hover{color:var(--text);border-color:var(--accent)}.search-bar{padding:10px 14px;flex-shrink:0}.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:13px;padding:0 12px}.search-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,106,255,.10)}.search-wrap input{flex:1;border:none;background:none;color:var(--text);font-size:.92rem;padding:11px 0;outline:none}.search-wrap input::placeholder{color:var(--muted)}.search-icon{font-size:16px;color:var(--muted)}.search-clear{background:none;border:none;color:var(--muted2);font-size:16px}.main{flex:1;overflow-y:auto;padding:8px 14px calc(92px + var(--safe-bottom));scrollbar-width:thin;scrollbar-color:var(--border2) transparent}.main::-webkit-scrollbar{width:4px}.main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}.summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.stat-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:10px 11px}.stat-num{font-size:1rem;font-weight:900;color:var(--text)}.stat-label{font-size:.68rem;color:var(--muted);font-weight:800;margin-top:3px}.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:66px 22px;gap:13px;text-align:center;color:var(--muted)}.empty-icon{font-size:54px;opacity:.55}.empty-state h3{font-size:1.1rem;color:var(--muted2)}.empty-state p{font-size:.86rem;line-height:1.65;white-space:pre-line}.link-card{background:linear-gradient(180deg,var(--card),rgba(26,26,46,.96));border:1px solid var(--border);border-radius:var(--radius);margin-bottom:11px;overflow:hidden;transition:.18s;position:relative;cursor:pointer}.link-card:hover{border-color:var(--border2);transform:translateY(-1px)}.link-card.card-open-hint::after{content:'اضغط لفتح الرابط';position:absolute;left:12px;top:12px;font-size:.68rem;color:var(--muted);opacity:.8}.card-accent{height:3px;width:100%}.card-body{padding:13px 14px}.card-top{display:flex;gap:11px;align-items:flex-start}.platform-logo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}.platform-logo svg{width:42px;height:42px}.platform-logo img{width:42px;height:42px;object-fit:cover}.card-info{flex:1;min-width:0}.card-title{font-size:.98rem;font-weight:900;line-height:1.35;margin-bottom:4px;word-break:break-word}.card-url{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:right}.card-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}.card-btn{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:6px 8px;font-size:13px;color:var(--muted2);display:flex;align-items:center;gap:4px;transition:.15s}.card-btn:hover{color:var(--text);border-color:var(--border2)}.card-btn.fav{color:var(--gold)}.card-btn.share{color:var(--green)}.card-btn.trailer{color:var(--gold)}.card-btn.edit{color:var(--blue)}.card-btn.del{color:var(--red)}.card-meta{display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:9px;border-top:1px solid var(--border);flex-wrap:wrap}.cat-badge,.platform-badge{font-size:.7rem;font-weight:900;padding:4px 9px;border-radius:999px;background:rgba(124,106,255,.14);color:var(--accent)}.platform-badge{background:rgba(255,255,255,.04);color:var(--muted2)}.card-date{font-size:.7rem;color:var(--muted);margin-right:auto}.card-note{margin-top:9px;padding:11px 12px;background:rgba(255,255,255,.045);border-right:2px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:1rem;font-weight:500;color:#fff;line-height:1.7;white-space:pre-wrap}.thumb-row{display:flex;align-items:center;gap:10px;margin-top:10px}.thumb-row img{width:82px;height:46px;object-fit:cover;border-radius:9px;border:1px solid var(--border)}.trailer-row{display:flex;align-items:center;gap:9px;margin-top:9px;padding:9px 11px;background:rgba(245,200,66,.07);border-radius:var(--radius-sm);border:1px solid rgba(245,200,66,.2)}.trailer-row .t-icon{font-size:18px}.trailer-row .t-info{flex:1;min-width:0}.trailer-row .t-title{font-size:.78rem;color:var(--gold);font-weight:900}.trailer-row .t-url{font-size:.68rem;color:var(--muted);direction:ltr;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trailer-row a{color:var(--gold);font-size:11px;white-space:nowrap;text-decoration:none;border:1px solid rgba(245,200,66,.4);border-radius:7px;padding:4px 8px;font-weight:900}.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(5px)}.overlay.open{opacity:1;pointer-events:all}.sheet{background:var(--surface);border-radius:22px 22px 0 0;width:100%;padding:18px 20px calc(22px + var(--safe-bottom));border-top:1px solid var(--border);transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:92vh;overflow-y:auto}.overlay.open .sheet{transform:translateY(0)}.sheet-handle{width:44px;height:4px;background:var(--border2);border-radius:4px;margin:0 auto 16px}.sheet-title{font-size:1.12rem;font-weight:900;margin-bottom:16px}.field-label{font-size:.78rem;color:var(--muted2);font-weight:900;margin-bottom:6px;margin-top:14px;text-transform:uppercase;letter-spacing:.035em}.field-label:first-of-type{margin-top:0}.inp,.select-inp{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:.94rem;padding:12px 13px;outline:none;transition:.18s}.inp:focus,.select-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,106,255,.12)}.inp::placeholder{color:var(--muted)}textarea.inp{resize:vertical;min-height:86px;font-size:1rem;color:#fff;line-height:1.65}.select-inp{appearance:none;cursor:pointer}.row{display:flex;gap:8px}.row>*{flex:1}.ai-row{display:flex;gap:8px;margin-top:8px}.btn-ai{flex:1;background:linear-gradient(135deg,rgba(124,106,255,.20),rgba(168,85,247,.18));border:1px solid rgba(124,106,255,.4);border-radius:11px;color:var(--accent);font-size:.85rem;font-weight:900;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px}.btn-ai:disabled{opacity:.55;cursor:not-allowed}.btn-save{width:100%;margin-top:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:13px;color:#fff;font-size:1rem;font-weight:900;padding:14px;box-shadow:0 8px 28px rgba(124,106,255,.35)}.btn-cancel{width:100%;margin-top:8px;background:var(--card);border:1px solid var(--border);border-radius:13px;color:var(--muted2);font-size:.92rem;font-weight:900;padding:12px}.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(124,106,255,.3);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.ai-status{font-size:.78rem;color:var(--muted2);margin-top:7px;min-height:20px;text-align:center;line-height:1.45}.hint{font-size:.77rem;color:var(--muted);line-height:1.5;margin-top:7px}.divider{height:1px;background:var(--border);margin:16px 0}.settings-grid{display:grid;gap:10px}.settings-status{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:12px;padding:11px;font-size:.82rem;color:var(--muted2);line-height:1.55}.settings-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:12px;margin-top:8px}.contact-link{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;color:var(--text);text-decoration:none;font-weight:900;border:1px solid var(--border);border-radius:10px}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.contact-user{color:var(--muted);font-size:.78rem;direction:ltr;text-align:left}.danger-text{color:var(--red)}.success-text{color:var(--green)}.warning-text{color:var(--gold)}.cat-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;backdrop-filter:blur(5px)}.cat-modal-overlay.open{opacity:1;pointer-events:all}.cat-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px;width:min(390px,92vw)}.cat-modal h3{font-size:1.03rem;font-weight:900;margin-bottom:8px}.cat-order-hint{font-size:.76rem;color:var(--muted2);line-height:1.6;margin-bottom:12px}.cat-actions{display:flex;gap:8px;margin-top:12px}.cat-actions button{flex:1;padding:11px;border-radius:10px;border:none;font-weight:900;font-size:.9rem}.cat-actions .confirm{background:var(--accent);color:#fff}.cat-actions .cancel2{background:var(--card);color:var(--muted2);border:1px solid var(--border)}.cat-list{margin-top:14px;display:grid;gap:7px;max-height:280px;overflow:auto}.cat-item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 9px}.cat-item-name{flex:1;min-width:0;font-size:.83rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cat-item-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}.cat-item button{min-width:31px;height:30px;border:1px solid var(--border);background:var(--card2);color:var(--muted2);border-radius:8px;padding:0 7px;font-size:.72rem;font-weight:900}.cat-item .edit-btn{color:var(--blue);border-color:rgba(80,150,255,.28);background:rgba(80,150,255,.07)}.cat-item .move-btn{font-size:.88rem}.cat-item .del-btn{color:var(--red);border-color:rgba(239,71,111,.35);background:rgba(239,71,111,.08)}.cat-item button:disabled{opacity:.28;cursor:not-allowed;filter:grayscale(.4)}.toast{position:fixed;bottom:calc(22px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(90px);background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:11px 18px;font-size:.86rem;font-weight:900;color:var(--text);z-index:999;transition:transform .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}.toast.show{transform:translateX(-50%) translateY(0)}.install-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:12px 18px calc(12px + var(--safe-bottom));display:flex;align-items:center;gap:12px;z-index:50;transform:translateY(100%);transition:.35s}.install-bar.show{transform:translateY(0)}.install-bar span{flex:1;font-size:.85rem;font-weight:900}.install-bar button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:9px;color:#fff;font-size:.8rem;font-weight:900;padding:7px 13px}.install-bar .close-install{background:none;border:none;font-size:18px;padding:0}.hidden{display:none!important}@media(max-width:560px){.header{gap:8px;padding-right:12px;padding-left:12px}.status-pill{max-width:46px;padding:7px}.status-pill span:last-child{display:none}.summary-row{grid-template-columns:repeat(3,1fr)}.card-actions{width:100%;margin-top:8px}.card-top{flex-wrap:wrap}.card-info{min-width:calc(100% - 56px)}.row{flex-direction:column}.sheet{padding-left:16px;padding-right:16px}.card-btn{flex:1;justify-content:center}.thumb-row{display:block}.thumb-row img{width:100%;height:150px;margin-top:4px}.link-card.card-open-hint::after{display:none}}:root{--note-text:#fff;--toolbar-bg:rgba(19,19,31,.94);--danger-bg:rgba(239,71,111,.10)}html[data-theme="light"]{--bg:#f4f6fb;--surface:#ffffff;--card:#ffffff;--card2:#f1f3f9;--border:#dfe3ee;--border2:#c5cada;--accent:#6757e8;--accent2:#8b49d8;--gold:#b78400;--red:#d92d57;--green:#078f70;--blue:#087eae;--text:#171725;--muted:#76788b;--muted2:#4f5267;--note-text:#171725;--toolbar-bg:rgba(255,255,255,.95);--danger-bg:rgba(217,45,87,.08)}html[data-theme="beige"]{--bg:#eee7dc;--surface:#f8f2e9;--card:#fffaf2;--card2:#f0e7da;--border:#dfd1bf;--border2:#cbb99f;--accent:#8b6547;--accent2:#b07a52;--gold:#9b6c00;--red:#c84055;--green:#168268;--blue:#297796;--text:#2d251f;--muted:#8b7b6c;--muted2:#625548;--note-text:#2d251f;--toolbar-bg:rgba(248,242,233,.96);--danger-bg:rgba(200,64,85,.08)}html[data-theme="light"] .header{background:rgba(255,255,255,.96)}html[data-theme="beige"] .header{background:rgba(248,242,233,.96)}html[data-theme="light"] .link-card{background:linear-gradient(180deg,#fff,#fafbfe)}html[data-theme="beige"] .link-card{background:linear-gradient(180deg,#fffaf2,#f8f0e5)}html[data-theme="light"] .card-note,html[data-theme="beige"] .card-note{background:rgba(0,0,0,.035)}textarea.inp,.card-note{color:var(--note-text)}.library-toolbar{display:flex;align-items:center;gap:8px;padding:0 14px 9px;flex-shrink:0}.view-switch{display:flex;gap:5px;background:var(--card);border:1px solid var(--border);padding:4px;border-radius:12px;direction:rtl}.view-btn,.select-mode-btn{border:1px solid transparent;background:transparent;color:var(--muted2);border-radius:9px;min-height:34px;padding:7px 10px;font-size:.76rem;font-weight:900;white-space:nowrap}.view-btn.active{background:linear-gradient(135deg,rgba(124,106,255,.20),rgba(168,85,247,.14));border-color:rgba(124,106,255,.35);color:var(--accent)}.select-mode-btn{margin-right:auto;background:var(--card);border-color:var(--border)}.select-mode-btn.active{background:rgba(239,71,111,.11);border-color:rgba(239,71,111,.35);color:var(--red)}.selection-bar{display:none;align-items:center;gap:7px;overflow-x:auto;padding:8px 14px;background:var(--toolbar-bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-shrink:0;scrollbar-width:none}.selection-bar.show{display:flex}.selection-bar::-webkit-scrollbar{display:none}.selection-count{font-size:.78rem;font-weight:900;color:var(--text);white-space:nowrap;margin-left:auto}.selection-action{border:1px solid var(--border);background:var(--card);color:var(--muted2);border-radius:9px;padding:7px 9px;font-size:.73rem;font-weight:900;white-space:nowrap}.selection-action.danger{color:var(--red);border-color:rgba(239,71,111,.35);background:var(--danger-bg)}.links-container{display:block}.links-container.view-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:start}.links-container.view-grid .link-card{margin-bottom:0;height:100%}.links-container.view-grid .card-top{display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px}.links-container.view-grid .card-actions{grid-column:1/-1;width:100%;display:grid;grid-template-columns:repeat(5,1fr);margin-top:5px}.links-container.view-grid .card-btn{justify-content:center;padding:7px 4px;min-width:0}.links-container.view-grid .btn-label{display:none}.links-container.view-grid .thumb-row{display:block}.links-container.view-grid .thumb-row img{width:100%;height:105px}.links-container.view-grid .card-note{font-size:.86rem;line-height:1.45;max-height:76px;overflow:hidden}.links-container.view-grid .trailer-row{display:none}.links-container.view-grid .card-meta{gap:5px}.links-container.view-grid .card-date{width:100%;margin:0}.links-container.view-compact .link-card{border-radius:12px;margin-bottom:7px}.links-container.view-compact .card-accent{position:absolute;right:0;top:0;bottom:0;width:3px;height:auto}.links-container.view-compact .card-body{padding:10px 12px 9px}.links-container.view-compact .platform-logo,.links-container.view-compact .platform-logo svg,.links-container.view-compact .platform-logo img{width:34px;height:34px;border-radius:9px}.links-container.view-compact .card-title{font-size:.9rem;margin-bottom:2px}.links-container.view-compact .card-url{font-size:.67rem}.links-container.view-compact .card-actions{gap:4px}.links-container.view-compact .card-btn{padding:6px;min-width:31px;justify-content:center}.links-container.view-compact .btn-label{display:none}.links-container.view-compact .thumb-row,.links-container.view-compact .trailer-row{display:none}.links-container.view-compact .card-note{font-size:.82rem;line-height:1.4;padding:7px 9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.links-container.view-compact .card-meta{margin-top:7px;padding-top:7px}.select-check{display:none;position:absolute;left:10px;top:10px;z-index:3;width:31px;height:31px;border-radius:10px;border:2px solid var(--border2);background:var(--surface);color:transparent;font-size:17px;font-weight:900;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.14)}.selection-active .select-check{display:flex}.selection-active .link-card{padding-left:0}.selection-active .card-actions{display:none}.selection-active .link-card.card-open-hint::after{display:none}.link-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,106,255,.16)}.link-card.selected .select-check{background:var(--accent);border-color:var(--accent);color:#fff}.theme-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.theme-choice{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:12px;padding:10px 6px;font-size:.78rem;font-weight:900;display:flex;flex-direction:column;align-items:center;gap:7px}.theme-choice.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,106,255,.13)}.theme-swatch{width:38px;height:25px;border-radius:8px;border:1px solid rgba(127,127,127,.25)}.theme-swatch.dark{background:#13131f}.theme-swatch.light{background:#fff}.theme-swatch.beige{background:#f3eadf}.backup-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.backup-grid .btn-ai{width:100%}.auth-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-top:8px}.auth-primary{width:100%;margin-top:9px}.otp-panel{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}.otp-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.otp-input{direction:ltr;text-align:center;font-size:1.12rem!important;font-weight:900;letter-spacing:.32em;padding-right:calc(13px - .32em)!important}.auth-separator{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.76rem;font-weight:800;margin:14px 0 10px}.auth-separator::before,.auth-separator::after{content:'';height:1px;flex:1;background:var(--border)}.social-login{display:grid;grid-template-columns:1fr 1fr;gap:8px}.social-btn{border-radius:12px;padding:11px 10px;font-size:.86rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;min-height:45px}.social-btn.apple{background:#000;color:#fff;border:1px solid #000}.social-btn.google{background:#fff;color:#202124;border:1px solid #dadce0}.social-icon{font-size:1.05rem;line-height:1}.auth-hint{margin-top:8px;font-size:.73rem;line-height:1.6;color:var(--muted)}.auth-signed-out[hidden],.auth-signed-in[hidden],.account-actions[hidden]{display:none!important}.auth-signed-in{display:grid;gap:10px}.account-session-card{display:flex;align-items:center;gap:12px;padding:13px;background:linear-gradient(135deg,rgba(45,212,191,.10),rgba(124,106,255,.10));border:1px solid rgba(45,212,191,.26);border-radius:12px}.account-session-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(45,212,191,.16);border:1px solid rgba(45,212,191,.35);color:var(--green);font-size:1.25rem;font-weight:900}.account-session-copy{min-width:0;flex:1}.account-session-title{font-size:.92rem;font-weight:900;color:var(--green);margin-bottom:4px}.account-session-identity{font-size:.8rem;font-weight:800;color:var(--text);direction:ltr;text-align:left;overflow-wrap:anywhere}.account-session-provider{font-size:.72rem;color:var(--muted);margin-top:4px}.account-actions{margin-top:8px}.restore-summary{font-size:.84rem;line-height:1.7;color:var(--muted2);background:var(--card);border:1px solid var(--border);border-radius:11px;padding:10px;margin-top:8px}.restore-actions{display:grid;gap:8px;margin-top:13px}.restore-actions button{padding:11px;border-radius:10px;border:1px solid var(--border);font-weight:900;font-size:.87rem}.restore-actions .merge{background:var(--accent);color:#fff;border-color:var(--accent)}.restore-actions .replace{background:var(--danger-bg);color:var(--red);border-color:rgba(239,71,111,.35)}.restore-actions .cancel{background:var(--card);color:var(--muted2)}@media(max-width:430px){.favorite-filter-btn{padding:0 8px;font-size:.72rem}.manage-cats-btn{padding:0 8px;font-size:.7rem}.library-toolbar{gap:6px}.view-btn,.select-mode-btn{padding:7px 8px}.links-container.view-grid{gap:7px}.links-container.view-grid .card-body{padding:10px}.links-container.view-grid .platform-logo,.links-container.view-grid .platform-logo svg,.links-container.view-grid .platform-logo img{width:36px;height:36px}.links-container.view-grid .card-title{font-size:.84rem}.links-container.view-grid .card-url{font-size:.62rem}.links-container.view-grid .card-btn{font-size:.7rem}.links-container.view-grid .cat-badge,.links-container.view-grid .platform-badge{font-size:.6rem;padding:3px 6px}}.language-picker{display:grid;grid-template-columns:1fr;gap:8px}.language-picker .select-inp{font-weight:900}.language-current{font-size:.76rem;color:var(--muted);line-height:1.55;margin-top:7px}html[dir="ltr"] body{text-align:left}html[dir="ltr"] .inp,html[dir="ltr"] .select-inp,html[dir="ltr"] textarea.inp{text-align:left}html[dir="ltr"] .contact-user{direction:ltr;text-align:right}html[dir="ltr"] .search-wrap input{padding-left:42px;padding-right:42px}html[dir="ltr"] .cat-item-name,html[dir="ltr"] .card-info,html[dir="ltr"] .settings-status{text-align:left}html[dir="ltr"] .link-card.card-open-hint::after{content:'Tap to open link';left:auto;right:12px}html[dir="ltr"] .card-note{border-right:0;border-left:2px solid var(--accent);border-radius:var(--radius-sm) 0 0 var(--radius-sm)}html[dir="ltr"] .card-date{margin-right:0;margin-left:auto}html[dir="ltr"] .card-url,html[dir="ltr"] .trailer-row .t-url{text-align:left}.url-scan-row{display:flex;gap:8px;align-items:stretch}.url-scan-row .inp{flex:1;min-width:0}.qr-scan-btn{flex:0 0 auto;min-width:78px;border:1px solid rgba(56,189,248,.45);background:rgba(56,189,248,.12);color:var(--blue);border-radius:12px;font-size:.82rem;font-weight:900;padding:0 12px}.qr-scan-btn:hover{border-color:var(--blue);color:var(--text)}.pro-settings-section[hidden]{display:none!important}.pro-status{font-size:.83rem;color:var(--muted2);line-height:1.55;margin-bottom:10px}.pro-status.active{color:var(--green);font-weight:900}.pro-status.warning{color:var(--gold)}.pro-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pro-actions button{margin:0}.paywall-sheet{max-height:94vh}.paywall-hero{text-align:center;padding:4px 8px 16px}.paywall-icon{font-size:44px}.paywall-hero h2{font-size:1.35rem;font-weight:900;margin-top:4px}.paywall-hero p{font-size:.84rem;color:var(--muted2);line-height:1.6;margin-top:7px}.paywall-plans{display:grid;gap:10px}.paywall-plan{width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;text-align:start;background:var(--card);border:1px solid var(--border);border-radius:15px;color:var(--text);padding:14px}.paywall-plan:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px)}.paywall-plan:disabled{opacity:.5;cursor:not-allowed}.paywall-plan.best{border-color:rgba(124,106,255,.68);box-shadow:0 0 0 2px rgba(124,106,255,.08)}.paywall-plan-name{font-size:1rem;font-weight:900}.paywall-plan-sub{font-size:.72rem;color:var(--muted);margin-top:3px}.paywall-price{font-size:1.05rem;font-weight:900;color:var(--accent);direction:ltr;white-space:nowrap}.paywall-badge{display:inline-block;font-size:.65rem;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:3px 7px;border-radius:999px;margin-inline-start:6px}.paywall-message{font-size:.75rem;color:var(--muted);line-height:1.55;margin:12px 2px}.paywall-footer{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.paywall-footer button{margin:0}html[dir="ltr"] .paywall-plan{text-align:left}@media(max-width:390px){.qr-scan-btn{min-width:64px;padding:0 8px}.pro-actions,.paywall-footer{grid-template-columns:1fr}}</style>
-<style id="settings-redesign">
+<style id="settings-redesign-v2">
 #settingsOverlay.settings-overlay{align-items:stretch;background:var(--bg);backdrop-filter:none}
-#settingsOverlay .settings-sheet{height:100%;max-height:none;border-radius:0;border:0;padding:calc(12px + env(safe-area-inset-top,0px)) 14px calc(10px + var(--safe-bottom));transform:translateY(18px);overflow:hidden;display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:10px;background:linear-gradient(180deg,var(--surface),var(--bg))}
+#settingsOverlay .settings-sheet{height:100%;max-height:none;border-radius:0;border:0;padding:calc(12px + env(safe-area-inset-top,0px)) 14px calc(12px + var(--safe-bottom));transform:translateY(16px);overflow:hidden;display:grid;grid-template-rows:52px minmax(0,1fr);gap:10px;background:radial-gradient(circle at 50% -15%,rgba(56,189,248,.15),transparent 38%),linear-gradient(180deg,var(--surface),var(--bg))}
 #settingsOverlay.open .settings-sheet{transform:translateY(0)}
-.settings-header{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
-.settings-heading{display:flex;align-items:center;gap:10px;min-width:0}.settings-heading-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(124,106,255,.2),rgba(168,85,247,.16));border:1px solid rgba(124,106,255,.28);font-size:20px}.settings-heading h2{font-size:1.1rem;font-weight:900;line-height:1.2}.settings-heading p{font-size:.7rem;color:var(--muted);font-weight:700;margin-top:3px}.settings-close{width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--muted2);font-size:16px;font-weight:900;flex:none}
-.settings-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--card);border:1px solid var(--border);padding:5px;border-radius:15px}.settings-tab{min-width:0;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:11px;padding:7px 3px;display:flex;align-items:center;justify-content:center;gap:5px;font-size:.72rem}.settings-tab span{font-size:.9rem}.settings-tab b{font-weight:900;white-space:nowrap}.settings-tab.active{background:linear-gradient(135deg,rgba(124,106,255,.2),rgba(168,85,247,.14));border-color:rgba(124,106,255,.3);color:var(--accent)}
-.settings-pages{min-height:0;overflow:hidden}.settings-pane{display:none;height:100%;overflow:hidden;animation:settingsFade .18s ease}.settings-pane.active{display:block}@keyframes settingsFade{from{opacity:.45;transform:translateY(4px)}to{opacity:1;transform:none}}
+.settings-header{position:relative;display:flex;align-items:center;justify-content:center;min-height:52px}
+.settings-heading{text-align:center;min-width:0}.settings-heading h2{font-size:1.22rem;font-weight:900;line-height:1.2}.settings-heading p{font-size:.7rem;color:var(--muted);font-weight:700;margin-top:3px}
+.settings-menu,.settings-back{position:absolute;top:5px;width:42px;height:42px;border-radius:13px;border:1px solid var(--border);background:var(--card);color:var(--text);display:grid;place-items:center;font-size:20px;font-weight:900;box-shadow:0 7px 20px rgba(0,0,0,.08)}
+.settings-menu{left:0}.settings-back{right:0}.settings-back[hidden]{display:none}
+.settings-pages{min-height:0;overflow:hidden}.settings-pane{display:none;height:100%;overflow-y:auto;scrollbar-width:none;animation:settingsFade .18s ease}.settings-pane::-webkit-scrollbar{display:none}.settings-pane.active{display:block}@keyframes settingsFade{from{opacity:.45;transform:translateY(4px)}to{opacity:1;transform:none}}
+.settings-home-pane.active{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:11px;overflow:hidden}
+.settings-account-hero{width:100%;min-height:96px;border:1px solid rgba(255,255,255,.25);border-radius:22px;padding:15px 18px;background:linear-gradient(135deg,#1765d8,#354fc4 72%,#5d48dd);color:#fff;display:flex;align-items:center;gap:14px;text-align:start;box-shadow:0 12px 28px rgba(45,80,190,.28)}
+.settings-account-icon{width:58px;height:58px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.94);color:#2658c7;font-size:29px;box-shadow:0 5px 15px rgba(0,0,0,.12)}
+.settings-account-copy{flex:1;min-width:0}.settings-account-copy h3{font-size:1.12rem;font-weight:900}.settings-account-copy p{font-size:.74rem;opacity:.86;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.settings-account-arrow{font-size:29px;font-weight:300}
+.settings-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:10px;min-height:0}
+.settings-home-card{border:1px solid var(--border);border-radius:19px;background:var(--card);color:var(--text);padding:10px 9px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:0;box-shadow:0 9px 24px rgba(0,0,0,.055);transition:.17s}
+.settings-home-card:active{transform:scale(.98)}.settings-home-icon{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;font-size:21px;margin-bottom:7px;background:rgba(124,106,255,.11)}
+.settings-home-card:nth-child(1) .settings-home-icon{color:#2864d8;background:rgba(40,100,216,.12)}.settings-home-card:nth-child(2) .settings-home-icon{color:#1679b3;background:rgba(22,121,179,.11)}.settings-home-card:nth-child(3) .settings-home-icon{color:#078f70;background:rgba(7,143,112,.11)}.settings-home-card:nth-child(4) .settings-home-icon{color:#ef9f16;background:rgba(239,159,22,.12)}.settings-home-card:nth-child(5) .settings-home-icon{color:#7058e8;background:rgba(112,88,232,.12)}.settings-home-card:nth-child(6) .settings-home-icon{color:#7767e9;background:rgba(119,103,233,.12)}
+.settings-home-card h4{font-size:.88rem;font-weight:900;line-height:1.2}.settings-home-card p{font-size:.64rem;color:var(--muted);line-height:1.35;margin-top:4px;max-width:150px}
+.settings-home-logout{width:100%;min-height:50px;border:0;border-radius:17px;background:linear-gradient(135deg,#f06461,#e94c55);color:#fff;font-size:.98rem;font-weight:900;box-shadow:0 9px 22px rgba(233,76,85,.2)}.settings-home-logout[hidden]{display:none}
 .settings-pane-title{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:5px 3px 10px}.settings-pane-title h3{font-size:1rem;font-weight:900}.settings-pane-title p{font-size:.72rem;line-height:1.45;color:var(--muted);margin-top:3px}.settings-pane-title>span{font-size:24px}
 #settingsOverlay .settings-status{padding:8px 10px;font-size:.74rem;border-radius:11px;margin-bottom:8px;white-space:normal}
 #settingsOverlay .auth-box{padding:10px;margin:0;border-radius:15px;box-shadow:0 10px 28px rgba(0,0,0,.06)}.compact-label{display:block;font-size:.73rem;font-weight:900;color:var(--muted2);margin:0 2px 5px}.settings-email-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}.settings-email-row .inp{min-width:0}.settings-email-row .auth-primary{margin:0;min-width:105px}.compact-link-btn{width:100%;margin-top:6px;padding:8px;border:1px solid var(--border);border-radius:10px;background:var(--card2);color:var(--muted2);font-weight:900;font-size:.75rem}.settings-overlay .otp-panel{margin-top:8px;padding-top:8px}.settings-overlay .auth-separator{margin:10px 0 8px}.settings-overlay .social-btn{min-height:41px;padding:8px}.settings-overlay .auth-hint{text-align:center;font-size:.69rem;margin-top:6px}.settings-overlay .account-session-card{padding:10px}.settings-overlay .account-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.settings-overlay .pro-settings-section{margin-top:8px}.settings-mini-card{padding:9px;border-radius:12px;background:var(--card);border:1px solid var(--border)}
 .settings-action{border-radius:11px;padding:10px;border:1px solid var(--border);font-size:.8rem;font-weight:900;color:var(--text);background:var(--card)}.settings-action.primary{color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 7px 18px rgba(124,106,255,.22)}.settings-action.secondary{color:var(--accent);border-color:rgba(124,106,255,.32);background:rgba(124,106,255,.08)}.settings-action.danger{color:var(--red);border-color:rgba(239,71,111,.28);background:var(--danger-bg)}.settings-action.full{width:100%;margin-top:10px}
 .settings-section-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:13px;margin-bottom:10px}.settings-card-head{display:flex;align-items:center;gap:9px;margin-bottom:11px}.settings-card-head>span{width:35px;height:35px;border-radius:11px;display:grid;place-items:center;background:var(--card2);font-size:17px}.settings-card-head h4{font-size:.87rem;font-weight:900}.settings-card-head p{font-size:.69rem;color:var(--muted);margin-top:2px;line-height:1.35}.settings-overlay .select-inp{padding:10px 12px}.settings-overlay .language-current{font-size:.69rem;margin-top:6px}.settings-overlay .theme-picker{margin-top:0}.settings-overlay .theme-choice{padding:9px 5px}.settings-overlay .backup-grid{margin:0}.settings-data-card{padding:14px}.settings-about-card{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,rgba(124,106,255,.12),rgba(56,189,248,.08));border:1px solid rgba(124,106,255,.25);border-radius:16px;padding:14px;margin-bottom:10px}.settings-app-mark{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:var(--card);font-size:24px}.settings-about-card h4{font-size:1rem;font-weight:900}.settings-about-card p{font-size:.76rem;color:var(--muted2);margin-top:2px}.settings-about-card small{display:block;font-size:.67rem;color:var(--muted);margin-top:4px}.settings-overlay .contact-grid{grid-template-columns:repeat(2,1fr);gap:7px}.settings-overlay .contact-link{padding:9px;font-size:.76rem;background:var(--card2)}.settings-overlay .contact-link.wide{grid-column:1/-1}.settings-overlay .contact-user{font-size:.65rem}
-@media(max-width:380px){#settingsOverlay .settings-sheet{padding-left:10px;padding-right:10px}.settings-heading p{display:none}.settings-tab{gap:3px;font-size:.67rem}.settings-email-row{grid-template-columns:1fr}.settings-email-row .auth-primary{width:100%}.settings-overlay .contact-user{display:none}}
-@media(max-height:690px){#settingsOverlay .settings-sheet{gap:7px;padding-top:calc(8px + env(safe-area-inset-top,0px))}.settings-header{min-height:42px}.settings-heading-icon{width:36px;height:36px}.settings-pane-title{padding-bottom:7px}.settings-section-card{padding:10px;margin-bottom:7px}.settings-card-head{margin-bottom:8px}.settings-pane{overflow-y:auto;scrollbar-width:none}.settings-pane::-webkit-scrollbar{display:none}}
-</style></head>
+.privacy-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px}.privacy-toggle-copy{min-width:0}.privacy-toggle-copy h4{font-size:.88rem;font-weight:900}.privacy-toggle-copy p{font-size:.69rem;color:var(--muted);line-height:1.5;margin-top:4px}.switch-control{position:relative;width:50px;height:29px;flex:none}.switch-control input{position:absolute;opacity:0}.switch-track{position:absolute;inset:0;border-radius:999px;background:var(--border2);transition:.2s}.switch-track::after{content:'';position:absolute;top:4px;left:4px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 2px 7px rgba(0,0,0,.25);transition:.2s}.switch-control input:checked+.switch-track{background:var(--green)}.switch-control input:checked+.switch-track::after{transform:translateX(21px)}html[dir="rtl"] .switch-control input:checked+.switch-track::after{transform:translateX(21px)}
+.privacy-points{display:grid;gap:7px;margin-top:10px}.privacy-point{display:flex;align-items:flex-start;gap:8px;font-size:.72rem;color:var(--muted2);line-height:1.45}.privacy-point span{color:var(--green);font-weight:900}
+html.barcode-scanner-active,html.barcode-scanner-active body{background:transparent!important}html.barcode-scanner-active body>*{visibility:hidden!important}
+#qrScannerOverlay[hidden]{display:none!important}html.barcode-scanner-active #qrScannerOverlay{visibility:visible!important;display:flex!important}
+#qrScannerOverlay{position:fixed;inset:0;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,.08);color:#fff}
+.qr-live-close,.qr-live-torch{position:absolute;border:0;color:#fff;background:rgba(20,20,27,.72);backdrop-filter:blur(8px);display:grid;place-items:center;box-shadow:0 7px 20px rgba(0,0,0,.25)}.qr-live-close{top:calc(16px + env(safe-area-inset-top,0px));left:16px;width:48px;height:48px;border-radius:15px;font-size:26px}.qr-live-torch{bottom:calc(28px + var(--safe-bottom));left:50%;transform:translateX(-50%);width:58px;height:58px;border-radius:50%;font-size:24px}.qr-live-frame{width:min(66vw,310px);aspect-ratio:1;border:4px solid rgba(255,255,255,.92);border-radius:26px;box-shadow:0 0 0 999px rgba(0,0,0,.24);position:relative}.qr-live-frame::before,.qr-live-frame::after{content:'';position:absolute;inset:24%;border:1px solid rgba(255,255,255,.18);border-radius:12px}.qr-live-frame::after{inset:48% 8%;border-width:1px 0 0}
+@media(max-width:380px){#settingsOverlay .settings-sheet{padding-left:10px;padding-right:10px}.settings-email-row{grid-template-columns:1fr}.settings-email-row .auth-primary{width:100%}.settings-overlay .contact-user{display:none}.settings-home-card p{display:none}.settings-home-icon{margin-bottom:5px}}
+@media(max-height:690px){#settingsOverlay .settings-sheet{grid-template-rows:46px minmax(0,1fr);gap:7px;padding-top:calc(7px + env(safe-area-inset-top,0px))}.settings-header{min-height:46px}.settings-menu,.settings-back{width:38px;height:38px;top:3px}.settings-heading p{display:none}.settings-home-pane.active{gap:8px}.settings-account-hero{min-height:76px;padding:10px 15px}.settings-account-icon{width:48px;height:48px;font-size:24px}.settings-home-grid{gap:7px}.settings-home-card{border-radius:15px;padding:6px}.settings-home-icon{width:36px;height:36px;font-size:18px;margin-bottom:4px}.settings-home-card p{display:none}.settings-home-logout{min-height:43px}.settings-pane-title{padding-bottom:7px}.settings-section-card{padding:10px;margin-bottom:7px}.settings-card-head{margin-bottom:8px}}
+</style><style id="settings-direction-fixes">
+.settings-account-hero,.settings-home-grid{direction:ltr}
+.settings-account-copy,.settings-home-card{direction:rtl}
+.settings-account-copy{text-align:right}
+html[dir="ltr"] .settings-account-copy,html[dir="ltr"] .settings-home-card{direction:ltr}
+html[dir="ltr"] .settings-account-copy{text-align:left}
+</style>
+<style id="main-sync-button-style">
+.main-sync-btn{position:relative;flex:none}
+.main-sync-btn .sync-glyph{font-size:22px;font-weight:900;line-height:1;transition:.18s}
+.main-sync-btn .sync-mini-dot{position:absolute;right:6px;bottom:6px;width:7px;height:7px;border-radius:50%;background:var(--muted);border:1.5px solid var(--card)}
+.main-sync-btn.online .sync-mini-dot{background:var(--green)}
+.main-sync-btn.warn .sync-mini-dot{background:var(--gold)}
+.main-sync-btn.syncing .sync-glyph{animation:spin .7s linear infinite}
+.main-sync-btn:disabled{opacity:.72;cursor:wait}
+</style>
+<style id="signup-analytics-consent-style">
+.signup-analytics-consent{display:flex;align-items:flex-start;gap:8px;margin-top:8px;padding:8px 9px;border-radius:10px;background:rgba(124,106,255,.07);border:1px solid rgba(124,106,255,.16);color:var(--muted2);font-size:.66rem;line-height:1.45;cursor:pointer;text-align:start}
+.signup-analytics-consent input{width:17px;height:17px;flex:none;margin-top:1px;accent-color:var(--accent)}
+html[dir="ltr"] .signup-analytics-consent{text-align:left}
+</style>
+</head>
 <body>
 <div class="header">
 <div class="header-logo">🔗</div>
@@ -40,7 +78,7 @@
 </div>
 <div class="header-spacer"></div>
 <button class="icon-btn" id="btnSettings" title="الإعدادات">⚙️</button>
-<div class="status-pill" id="cloudStatus" title="حالة المزامنة"><span class="status-dot"></span><span>محلي</span></div>
+<button class="icon-btn main-sync-btn" id="cloudStatus" type="button" title="مزامنة الآن" aria-label="مزامنة الآن"><span class="sync-glyph">↻</span><span class="sync-mini-dot" aria-hidden="true"></span></button>
 <button class="icon-btn" id="btnQrScan" title="قراءة رابط من QR" aria-label="قراءة QR">▣</button>
 <button class="icon-btn btn-add" id="btnAdd" title="إضافة رابط">＋</button>
 </div>
@@ -102,17 +140,28 @@
 <div class="overlay settings-overlay" id="settingsOverlay">
 <div class="sheet settings-sheet">
 <header class="settings-header">
-<div class="settings-heading"><span class="settings-heading-icon">⚙️</span><div><h2>إعدادات LinkVault</h2><p>الحساب، المظهر والنسخ الاحتياطي</p></div></div>
-<button class="settings-close" id="btnCloseSettings" type="button" aria-label="إغلاق">✕</button>
+<button class="settings-menu" id="btnCloseSettings" type="button" aria-label="إغلاق">☰</button>
+<div class="settings-heading"><h2 id="settingsScreenTitle">إعدادات LinkVault</h2><p id="settingsScreenSubtitle">كل أدواتك في مكان واحد</p></div>
+<button class="settings-back" id="btnSettingsBack" type="button" aria-label="رجوع" hidden>‹</button>
 </header>
-<nav class="settings-tabs" aria-label="أقسام الإعدادات">
-<button class="settings-tab active" type="button" data-settings-tab="account"><span>👤</span><b>الحساب</b></button>
-<button class="settings-tab" type="button" data-settings-tab="appearance"><span>🎨</span><b>المظهر</b></button>
-<button class="settings-tab" type="button" data-settings-tab="data"><span>🗄️</span><b>البيانات</b></button>
-<button class="settings-tab" type="button" data-settings-tab="more"><span>•••</span><b>المزيد</b></button>
-</nav>
 <div class="settings-pages">
-<section class="settings-pane active" data-settings-pane="account">
+<section class="settings-pane settings-home-pane active" data-settings-pane="home">
+<button class="settings-account-hero" type="button" data-settings-open="account">
+<span class="settings-account-icon">👤</span>
+<span class="settings-account-copy"><h3>الحساب</h3><p id="settingsHomeAccountText">إدارة حسابك والمزامنة</p></span>
+<span class="settings-account-arrow">›</span>
+</button>
+<div class="settings-home-grid">
+<button class="settings-home-card" type="button" data-settings-open="appearance"><span class="settings-home-icon">🖌️</span><h4>المظهر</h4><p>اختر اللون ولغة التطبيق</p></button>
+<button class="settings-home-card" type="button" data-settings-open="data"><span class="settings-home-icon">🗄️</span><h4>البيانات</h4><p>النسخ الاحتياطي والاستعادة</p></button>
+<button class="settings-home-card" type="button" data-settings-open="privacy"><span class="settings-home-icon">🛡️</span><h4>الأمان والخصوصية</h4><p>تحكم في بيانات الاستخدام</p></button>
+<button class="settings-home-card" type="button" data-settings-open="diagnostics"><span class="settings-home-icon">🔔</span><h4>أدوات التطبيق</h4><p>فحص المشاركة والمشكلات</p></button>
+<button class="settings-home-card" type="button" data-settings-open="support"><span class="settings-home-icon">🎧</span><h4>الدعم والمساعدة</h4><p>تواصل معنا واطلب المساعدة</p></button>
+<button class="settings-home-card" type="button" data-settings-open="about"><span class="settings-home-icon">ⓘ</span><h4>عن التطبيق</h4><p>الإصدار ومعلومات التطبيق</p></button>
+</div>
+<button class="settings-home-logout" id="btnHomeLogout" type="button" hidden><span>تسجيل الخروج</span><span aria-hidden="true">↪</span></button>
+</section>
+<section class="settings-pane" data-settings-pane="account">
 <div class="settings-pane-title"><div><h3>الحساب والمزامنة</h3><p>سجّل الدخول لحفظ روابطك بأمان على حسابك.</p></div><span>🔐</span></div>
 <div class="settings-status" id="settingsStatus">الوضع الحالي: حفظ محلي على الجهاز.</div>
 <div class="auth-box" id="authBox">
@@ -126,7 +175,7 @@
 </div>
 <div class="auth-separator">أو تابع باستخدام</div>
 <div class="social-login"><button class="social-btn apple" id="btnAppleLogin"><span class="social-icon"></span><span>Apple ID</span></button><button class="social-btn google" id="btnGoogleLogin"><span class="social-icon">G</span><span>Google</span></button></div>
-<div class="auth-hint" id="authHint">رمز واحد يصلك بالبريد، بدون كلمة مرور.</div>
+<div class="auth-hint" id="authHint">رمز واحد يصلك بالبريد، بدون كلمة مرور.</div><label class="signup-analytics-consent" for="signupAnalyticsConsent"><input id="signupAnalyticsConsent" type="checkbox" checked><span>أوافق على مشاركة إحصائيات استخدام عامة لتحسين LinkVault. لا تشمل الرابط الكامل أو العنوان أو الملاحظات.</span></label>
 </div>
 <div class="auth-signed-in" id="authSignedInPanel" hidden><div class="account-session-card"><div class="account-session-icon">✓</div><div class="account-session-copy"><div class="account-session-title" id="authSignedInTitle">تم تسجيل الدخول</div><div class="account-session-identity" id="authSignedInIdentity"></div><div class="account-session-provider" id="authSignedInProvider"></div></div></div></div>
 </div>
@@ -139,18 +188,35 @@
 <div class="settings-section-card"><div class="settings-card-head"><span>🎨</span><div><h4>ألوان التطبيق</h4><p>اختر المظهر المريح لك.</p></div></div><div class="theme-picker" id="themePicker"><button class="theme-choice" data-theme="dark"><span class="theme-swatch dark"></span>داكن</button><button class="theme-choice" data-theme="light"><span class="theme-swatch light"></span>أبيض</button><button class="theme-choice" data-theme="beige"><span class="theme-swatch beige"></span>بيج</button></div></div>
 </section>
 <section class="settings-pane" data-settings-pane="data">
-<div class="settings-pane-title"><div><h3>البيانات والحماية</h3><p>احتفظ بنسخة من روابطك أو استعدها بأمان.</p></div><span>🛡️</span></div>
-<div class="settings-section-card settings-data-card"><div class="settings-card-head"><span>🗄️</span><div><h4>النسخ الاحتياطي</h4><p>يشمل الروابط والتصنيفات والملاحظات والصور.</p></div></div><div class="backup-grid"><button class="settings-action primary" id="btnBackup">⬆️ إنشاء باك أب</button><button class="settings-action secondary" id="btnRestore">⬇️ استعادة ودمج</button></div></div>
-<div class="settings-section-card settings-data-card"><div class="settings-card-head"><span>🔧</span><div><h4>تشخيص المشاركة</h4><p>استخدمه فقط إذا لم يصل رابط شاركته من تطبيق آخر.</p></div></div><button class="settings-action secondary full" id="btnShareDiag">فحص الروابط المشتركة</button></div>
+<div class="settings-pane-title"><div><h3>البيانات والنسخ الاحتياطي</h3><p>احتفظ بنسخة من روابطك أو استعدها وادمجها بأمان.</p></div><span>🗄️</span></div>
+<div class="settings-section-card settings-data-card"><div class="settings-card-head"><span>💾</span><div><h4>النسخ الاحتياطي</h4><p>يشمل الروابط والتصنيفات والملاحظات والصور.</p></div></div><div class="backup-grid"><button class="settings-action primary" id="btnBackup">حفظ نسخة احتياطية</button><button class="settings-action secondary" id="btnRestore">استعادة نسخة احتياطية</button></div></div>
+<div class="settings-section-card"><div class="settings-card-head"><span>☁️</span><div><h4>المزامنة الآمنة</h4><p>كل حساب مستقل بروابطه، والاستعادة تدمج الروابط ولا تحذف الموجود.</p></div></div></div>
 </section>
-<section class="settings-pane" data-settings-pane="more">
-<div class="settings-pane-title"><div><h3>عن LinkVault</h3><p>روابط مهمة ومعلومات التطبيق في مكان واحد.</p></div><span>ℹ️</span></div>
+<section class="settings-pane" data-settings-pane="privacy">
+<div class="settings-pane-title"><div><h3>الأمان والخصوصية</h3><p>تحكم في الإحصائيات التي تساعدنا على تحسين التطبيق.</p></div><span>🛡️</span></div>
+<div class="settings-section-card">
+<div class="privacy-toggle"><div class="privacy-toggle-copy"><h4>مشاركة إحصائيات الاستخدام</h4><p>حفظ أعداد الروابط وأنواعها والمنصات والنطاقات الأكثر استخدامًا، دون محتوى روابطك.</p></div><label class="switch-control"><input id="analyticsConsent" type="checkbox" checked><span class="switch-track"></span></label></div>
+<div class="privacy-points"><div class="privacy-point"><span>✓</span><div>لا نحفظ الرابط الكامل أو العنوان أو الملاحظات؛ نحفظ اسم النطاق فقط مثل youtube.com.</div></div><div class="privacy-point"><span>✓</span><div>يُحفظ معرّف داخلي للرابط وعدد مرات فتحه لمعرفة الروابط الأكثر زيارة.</div></div><div class="privacy-point"><span>✓</span><div>يمكنك إيقاف الإحصائيات في أي وقت من هذا الخيار.</div></div><div class="privacy-point"><span>✓</span><div>بيانات كل مستخدم محمية بحسابه ولا يستطيع مستخدم آخر قراءتها.</div></div></div>
+</div>
+</section>
+<section class="settings-pane" data-settings-pane="diagnostics">
+<div class="settings-pane-title"><div><h3>أدوات التطبيق</h3><p>أدوات مفيدة لفحص المشاركة عند الحاجة.</p></div><span>🔧</span></div>
+<div class="settings-section-card settings-data-card"><div class="settings-card-head"><span>🔗</span><div><h4>تشخيص المشاركة</h4><p>استخدمه فقط إذا لم يصل رابط شاركته من تطبيق آخر.</p></div></div><button class="settings-action secondary full" id="btnShareDiag">فحص الروابط المشتركة</button></div>
+</section>
+<section class="settings-pane" data-settings-pane="support">
+<div class="settings-pane-title"><div><h3>الدعم والمساعدة</h3><p>يسعدنا سماع ملاحظاتك ومساعدتك.</p></div><span>🎧</span></div>
+<div class="settings-section-card"><div class="settings-card-head"><span>📬</span><div><h4>تواصل معنا</h4><p>اختر وسيلة التواصل المناسبة.</p></div></div><div class="contact-grid" id="contactLinks"><a class="contact-link" href="https://www.instagram.com/QoooLxxx/" target="_blank" rel="noopener"><span>Instagram</span><span class="contact-user">@QoooLxxx</span></a><a class="contact-link" href="https://www.snapchat.com/add/QoooLxxxZ" target="_blank" rel="noopener"><span>Snapchat</span><span class="contact-user">@QoooLxxxZ</span></a><a class="contact-link" href="https://x.com/QoooLxxx" target="_blank" rel="noopener"><span>X</span><span class="contact-user">@QoooLxxx</span></a><a class="contact-link" href="https://www.facebook.com/share/193HAVPV7A/?mibextid=wwXIfr" target="_blank" rel="noopener"><span>Facebook</span><span class="contact-user">تابعنا</span></a><a class="contact-link wide" href="https://wa.me/96594942410" target="_blank" rel="noopener"><span>WhatsApp</span><span class="contact-user">+965 9494 2410</span></a></div></div>
+</section>
+<section class="settings-pane" data-settings-pane="about">
+<div class="settings-pane-title"><div><h3>عن LinkVault</h3><p>معلومات التطبيق والإصدار.</p></div><span>ℹ️</span></div>
 <div class="settings-about-card"><div class="settings-app-mark">🔗</div><div><h4>LinkVault</h4><p>مكتبة روابطك الذكية</p><small>من عمل M. ALQattan</small></div></div>
-<div class="settings-section-card"><div class="settings-card-head"><span>📬</span><div><h4>تواصل معنا</h4><p>يسعدنا سماع ملاحظاتك.</p></div></div><div class="contact-grid" id="contactLinks"><a class="contact-link" href="https://www.instagram.com/QoooLxxx/" target="_blank" rel="noopener"><span>Instagram</span><span class="contact-user">@QoooLxxx</span></a><a class="contact-link" href="https://www.snapchat.com/add/QoooLxxxZ" target="_blank" rel="noopener"><span>Snapchat</span><span class="contact-user">@QoooLxxxZ</span></a><a class="contact-link" href="https://x.com/QoooLxxx" target="_blank" rel="noopener"><span>X</span><span class="contact-user">@QoooLxxx</span></a><a class="contact-link" href="https://www.facebook.com/share/193HAVPV7A/?mibextid=wwXIfr" target="_blank" rel="noopener"><span>Facebook</span><span class="contact-user">تابعنا</span></a><a class="contact-link wide" href="https://wa.me/96594942410" target="_blank" rel="noopener"><span>WhatsApp</span><span class="contact-user">+965 9494 2410</span></a></div></div>
+<div class="settings-section-card"><div class="settings-card-head"><span>📱</span><div><h4>تطبيق مرتب وآمن</h4><p>روابطك تبقى مستقلة لكل حساب ويمكن دمج النسخ الاحتياطية بأمان.</p></div></div></div>
 </section>
 </div>
 </div>
-</div><div class="cat-modal-overlay" id="catOverlay">
+</div>
+<div id="qrScannerOverlay" hidden aria-hidden="true"><button class="qr-live-close" id="btnCloseQrScanner" type="button" aria-label="إغلاق">×</button><div class="qr-live-frame" aria-hidden="true"></div><button class="qr-live-torch" id="btnQrTorch" type="button" aria-label="تشغيل المصباح">🔦</button></div>
+<div class="cat-modal-overlay" id="catOverlay">
 <div class="cat-modal">
 <h3>🗂️ إدارة الأنواع</h3><div class="cat-order-hint">أضف نوعًا جديدًا أو عدّل الاسم أو غيّر الترتيب أو احذف أي نوع. خيار «أخرى» يبقى دائمًا في النهاية ويستقبل روابط النوع المحذوف.</div>
 <input class="inp" id="inpNewCat" placeholder="اسم التصنيف: أفلام، طبخ، تعليم...">
@@ -227,17 +293,28 @@ const LS_OTP_COOLDOWN_UNTIL = 'lv_otp_cooldown_until_v1';
 const LS_LANG = 'lv_language_v1';
 const LS_PROTECTED_CATS = 'lv_protected_cats_v1';
 const LS_ACTIVE_CLOUD_USER = 'lv_active_cloud_user_v1';
+const LS_ANALYTICS_CONSENT = 'lv_analytics_consent_v1';
+const LS_ANALYTICS_COUNTERS = 'lv_analytics_counters_v1';
 const OTHER_CAT = 'أخرى';
 const FAVORITES_FILTER = 'favorites';
 const AUTH_REDIRECT_URL = 'linkvaultq8://auth-callback';
 const PLAN_LIMITS = { freeLinks:10, freeCustomCategories:3 };
 const APP_EDITION = (window.LINKVAULT_CONFIG && window.LINKVAULT_CONFIG.APP_EDITION) || 'full';
+const APP_VERSION = (window.LINKVAULT_CONFIG && window.LINKVAULT_CONFIG.APP_VERSION) || '1.0';
 const REVENUECAT_DEFAULT_PRICES = { monthly:'$1.99', annual:'$14.99', lifetime:'$29.99' };
 let legacyLinks = STORE.get('lv_links', []);
 let legacyCats = STORE.get('lv_cats', null);
-let links = normalizeLinks(STORE.get(LS_LINKS, legacyLinks || []));
-let cats = normalizeCategories(STORE.get(LS_CATS, legacyCats || DEFAULT_CATS));
-let protectedCats = new Set((STORE.get(LS_PROTECTED_CATS, DEFAULT_CATS.filter(c=>c!==OTHER_CAT)) || []).map(x=>String(x||'').trim()).filter(Boolean));
+let activeLocalUserId = STORE.get(LS_ACTIVE_CLOUD_USER,'') || '';
+let analyticsConsent = STORE.get(LS_ANALYTICS_CONSENT,true) !== false;
+let analyticsCounters = { app_open:0, link_added:0, link_opened:0, backup_saved:0, backup_restored:0, sync_success:0, qr_scanned:0, link_opens:{}, category_opens:{}, platform_opens:{}, domain_opens:{} };
+let analyticsFlushTimer = null;
+let analyticsBackendUnavailable = false;
+const bootLinks = activeLocalUserId ? STORE.get(accountStoreKey(LS_LINKS,activeLocalUserId),null) : null;
+const bootCats = activeLocalUserId ? STORE.get(accountStoreKey(LS_CATS,activeLocalUserId),null) : null;
+const bootProtectedCats = activeLocalUserId ? STORE.get(accountStoreKey(LS_PROTECTED_CATS,activeLocalUserId),null) : null;
+let links = normalizeLinks(bootLinks!==null ? bootLinks : STORE.get(LS_LINKS,legacyLinks||[]));
+let cats = normalizeCategories(bootCats!==null ? bootCats : STORE.get(LS_CATS,legacyCats||DEFAULT_CATS));
+let protectedCats = new Set(((bootProtectedCats!==null ? bootProtectedCats : STORE.get(LS_PROTECTED_CATS,DEFAULT_CATS.filter(c=>c!==OTHER_CAT)))||[]).map(x=>String(x||'').trim()).filter(Boolean));
 let editId = null;
 let currentCat = 'all';
 let sbClient = null;
@@ -319,6 +396,78 @@ Object.assign(I18N_EN, {
 '⚠️ تعذر استرجاع المشتريات':'⚠️ Purchases could not be restored',
 '⚠️ تعذر إكمال عملية الشراء':'⚠️ The purchase could not be completed',
 '⚠️ هذه الخطة غير مجهزة في RevenueCat':'⚠️ This plan is not configured in RevenueCat'
+});
+Object.assign(I18N_EN, {
+'كل أدواتك في مكان واحد':'All your tools in one place',
+'إدارة حسابك والمزامنة':'Manage your account and sync',
+'اختر اللون ولغة التطبيق':'Choose the app color and language',
+'النسخ الاحتياطي والاستعادة':'Backup and restore',
+'الأمان والخصوصية':'Security and privacy',
+'تحكم في بيانات الاستخدام':'Control usage data',
+'أدوات التطبيق':'App tools',
+'فحص المشاركة والمشكلات':'Check sharing and problems',
+'الدعم والمساعدة':'Support and help',
+'تواصل معنا واطلب المساعدة':'Contact us for help',
+'عن التطبيق':'About the app',
+'الإصدار ومعلومات التطبيق':'Version and app information',
+'الحساب والمزامنة':'Account and sync',
+'سجّل الدخول لحفظ روابطك بأمان على حسابك.':'Sign in to save your links securely to your account.',
+'البريد الإلكتروني':'Email address',
+'إرسال الرمز':'Send code',
+'رمز التحقق':'Verification code',
+'أو تابع باستخدام':'Or continue with',
+'رمز واحد يصلك بالبريد، بدون كلمة مرور.':'One code sent by email, with no password.',
+'تم تسجيل الدخول':'Signed in',
+'↻ مزامنة الآن':'↻ Sync now',
+'الخطة المجانية: حتى 10 روابط و3 أنواع إضافية':'Free plan: up to 10 links and 3 additional types',
+'المظهر واللغة':'Appearance and language',
+'خصص تجربة LinkVault بالطريقة التي تناسبك.':'Customize LinkVault the way that suits you.',
+'اختر لغة الواجهة.':'Choose the interface language.',
+'يتبع التطبيق لغة الجهاز تلقائيًا، ويمكنك تغييرها هنا.':'The app follows your device language automatically, and you can change it here.',
+'ألوان التطبيق':'App colors',
+'اختر المظهر المريح لك.':'Choose the appearance that is comfortable for you.',
+'البيانات والنسخ الاحتياطي':'Data and backup',
+'احتفظ بنسخة من روابطك أو استعدها وادمجها بأمان.':'Save a copy of your links or restore and merge it safely.',
+'النسخ الاحتياطي':'Backup',
+'يشمل الروابط والتصنيفات والملاحظات والصور.':'Includes links, types, notes, and images.',
+'حفظ نسخة احتياطية':'Save backup',
+'استعادة نسخة احتياطية':'Restore backup',
+'المزامنة الآمنة':'Secure sync',
+'كل حساب مستقل بروابطه، والاستعادة تدمج الروابط ولا تحذف الموجود.':'Each account keeps its own links, and restore merges links without deleting existing ones.',
+'تحكم في الإحصائيات التي تساعدنا على تحسين التطبيق.':'Control the statistics that help us improve the app.',
+'مشاركة إحصائيات الاستخدام':'Share usage statistics',
+'حفظ أعداد الروابط وأنواعها والمنصات والنطاقات الأكثر استخدامًا، دون محتوى روابطك.':'Save general counts such as link totals and sync success, without your link content.',
+'لا نحفظ الرابط الكامل أو العنوان أو الملاحظات؛ نحفظ اسم النطاق فقط مثل youtube.com.':'We do not save link URLs, titles, notes, or images.',
+'يمكنك إيقاف الإحصائيات في أي وقت من هذا الخيار.':'You can turn off statistics at any time.',
+'بيانات كل مستخدم محمية بحسابه ولا يستطيع مستخدم آخر قراءتها.':'Each user’s data is protected by their account and cannot be read by another user.',
+'أدوات مفيدة لفحص المشاركة عند الحاجة.':'Useful tools for checking sharing when needed.',
+'تشخيص المشاركة':'Share diagnostics',
+'استخدمه فقط إذا لم يصل رابط شاركته من تطبيق آخر.':'Use this only if a link shared from another app did not arrive.',
+'فحص الروابط المشتركة':'Check shared links',
+'يسعدنا سماع ملاحظاتك ومساعدتك.':'We are happy to hear your feedback and help.',
+'تواصل معنا':'Contact us',
+'اختر وسيلة التواصل المناسبة.':'Choose your preferred contact method.',
+'تابعنا':'Follow us',
+'عن LinkVault':'About LinkVault',
+'معلومات التطبيق والإصدار.':'App and version information.',
+'مكتبة روابطك الذكية':'Your smart link library',
+'من عمل M. ALQattan':'Created by M. ALQattan',
+'تطبيق مرتب وآمن':'An organized and secure app',
+'روابطك تبقى مستقلة لكل حساب ويمكن دمج النسخ الاحتياطية بأمان.':'Your links remain separate for each account and backups can be merged safely.',
+'إغلاق':'Close',
+'رجوع':'Back',
+'تشغيل المصباح':'Turn on flashlight',
+'تم حفظ تفضيل الإحصائيات':'Statistics preference saved',
+'يجب تسجيل الدخول لحفظ الإحصائيات على الحساب':'Sign in to save statistics to your account'
+});
+Object.assign(I18N_EN, {'تسجيل الخروج':'Sign out'});
+Object.assign(I18N_EN, {
+'حفظ أعداد الروابط وأنواعها والمنصات والنطاقات الأكثر استخدامًا، دون محتوى روابطك.':'Save link counts, types, platforms, and most-used domains without your link content.',
+'لا نحفظ الرابط الكامل أو العنوان أو الملاحظات؛ نحفظ اسم النطاق فقط مثل youtube.com.':'We do not save the full URL, title, or notes; only the domain name, such as youtube.com.',
+'يُحفظ معرّف داخلي للرابط وعدد مرات فتحه لمعرفة الروابط الأكثر زيارة.':'An internal link ID and its open count are saved to identify the most-visited links.'
+});
+Object.assign(I18N_EN, {
+'أوافق على مشاركة إحصائيات استخدام عامة لتحسين LinkVault. لا تشمل الرابط الكامل أو العنوان أو الملاحظات.':'I agree to share general usage statistics to improve LinkVault. This does not include the full URL, title, or notes.'
 });
 let languageChoice = STORE.get(LS_LANG, 'device') || 'device';
 if(!['device','ar','en'].includes(languageChoice)) languageChoice = 'device';
@@ -410,7 +559,7 @@ document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
 document.title = currentLanguage === 'ar' ? 'LinkVault — مكتبة روابطك الذكية' : 'LinkVault — Your smart link library';
 const selector = $('languageSelect'); if(selector) selector.value = languageChoice;
 translateTree(document.body, true);
-syncLanguageToNative();
+syncLanguageToNative(); if(persist) scheduleAnalyticsSnapshot('language_changed');
 }
 function initLanguage(){
 applyLanguageChoice(languageChoice, false);
@@ -437,14 +586,67 @@ function normalizeLinks(items){ return (items || []).map(x => ({ id:x.id || uid(
 function normalizeCategories(list){ const seen=[]; (list||[]).map(x=>String(x||'').trim()).filter(Boolean).forEach(c=>{ if(c!==OTHER_CAT && !seen.includes(c)) seen.push(c); }); seen.push(OTHER_CAT); return seen; }
 function accountStoreKey(base,userId){ return base + '_user_' + userId; }
 function persistAccountData(userId){ if(!userId) return; cats=normalizeCategories(cats); STORE.set(accountStoreKey(LS_LINKS,userId),links); STORE.set(accountStoreKey(LS_CATS,userId),cats); STORE.set(accountStoreKey(LS_PROTECTED_CATS,userId),[...protectedCats]); }
-function activateCloudAccount(user){ if(!user?.id) return; const userId=user.id; const saved=STORE.get(accountStoreKey(LS_LINKS,userId),null); if(saved===null){ links=[]; cats=normalizeCategories(DEFAULT_CATS); protectedCats=new Set(DEFAULT_CATS.filter(c=>c!==OTHER_CAT)); } else { links=normalizeLinks(saved); cats=normalizeCategories(STORE.get(accountStoreKey(LS_CATS,userId),DEFAULT_CATS)); protectedCats=new Set(STORE.get(accountStoreKey(LS_PROTECTED_CATS,userId),DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); } persistAccountData(userId); STORE.set(LS_ACTIVE_CLOUD_USER,userId); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList(); }
-function activateGuestAccount(){ links=normalizeLinks(STORE.get(LS_LINKS,[])); cats=normalizeCategories(STORE.get(LS_CATS,DEFAULT_CATS)); protectedCats=new Set(STORE.get(LS_PROTECTED_CATS,DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); currentCat='all'; selectedIds.clear(); renderTabs(); renderList(); }
-function saveLocal(){ cats=normalizeCategories(cats); if(cloudUser?.id) persistAccountData(cloudUser.id); else { STORE.set(LS_LINKS,links); STORE.set(LS_CATS,cats); STORE.set(LS_PROTECTED_CATS,[...protectedCats]); } syncCategoriesToNative().catch(()=>{}); }
+function activateCloudAccount(user){ if(!user?.id) return; const userId=user.id; activeLocalUserId=userId; loadAnalyticsCounters(userId); const saved=STORE.get(accountStoreKey(LS_LINKS,userId),null); if(saved===null){ links=[]; cats=normalizeCategories(DEFAULT_CATS); protectedCats=new Set(DEFAULT_CATS.filter(c=>c!==OTHER_CAT)); } else { links=normalizeLinks(saved); cats=normalizeCategories(STORE.get(accountStoreKey(LS_CATS,userId),DEFAULT_CATS)); protectedCats=new Set(STORE.get(accountStoreKey(LS_PROTECTED_CATS,userId),DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); } persistAccountData(userId); STORE.set(LS_ACTIVE_CLOUD_USER,userId); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList(); }
+function activateGuestAccount(){ activeLocalUserId=''; loadAnalyticsCounters(''); STORE.remove(LS_ACTIVE_CLOUD_USER); links=normalizeLinks(STORE.get(LS_LINKS,[])); cats=normalizeCategories(STORE.get(LS_CATS,DEFAULT_CATS)); protectedCats=new Set(STORE.get(LS_PROTECTED_CATS,DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); currentCat='all'; selectedIds.clear(); renderTabs(); renderList(); }
+function saveLocal(){ cats=normalizeCategories(cats); const localUserId=cloudUser?.id||activeLocalUserId; if(localUserId) persistAccountData(localUserId); else { STORE.set(LS_LINKS,links); STORE.set(LS_CATS,cats); STORE.set(LS_PROTECTED_CATS,[...protectedCats]); } syncCategoriesToNative().catch(()=>{}); scheduleAnalyticsSnapshot('library_changed'); }
+
+function emptyAnalyticsCounters(){ return { app_open:0, link_added:0, link_opened:0, backup_saved:0, backup_restored:0, sync_success:0, qr_scanned:0, link_opens:{}, category_opens:{}, platform_opens:{}, domain_opens:{} }; }
+function analyticsCounterStorageKey(userId=activeLocalUserId){ return userId ? accountStoreKey(LS_ANALYTICS_COUNTERS,userId) : LS_ANALYTICS_COUNTERS; }
+function loadAnalyticsCounters(userId=activeLocalUserId){
+const saved=STORE.get(analyticsCounterStorageKey(userId),{})||{};
+analyticsCounters={...emptyAnalyticsCounters(),...saved};
+for(const key of ['link_opens','category_opens','platform_opens','domain_opens']) if(!analyticsCounters[key]||typeof analyticsCounters[key]!=='object'||Array.isArray(analyticsCounters[key])) analyticsCounters[key]={};
+}
+function persistAnalyticsCounters(){ STORE.set(analyticsCounterStorageKey(),analyticsCounters); }
+function safeAnalyticsKey(value,fallback='غير معروف'){ const key=String(value||fallback).trim().slice(0,100); return key||fallback; }
+function analyticsDomain(url){ try{return new URL(normalizeUrl(url)).hostname.toLowerCase().replace(/^www\./,'').slice(0,100)||'unknown';}catch(e){return 'unknown';} }
+function addAnalyticsMapCount(mapName,key,amount=1){ const map=analyticsCounters[mapName]||(analyticsCounters[mapName]={}); const safe=safeAnalyticsKey(key,'unknown'); map[safe]=Math.max(0,Number(map[safe]||0)+Number(amount||0)); }
+function sortedAnalyticsCounts(map,limit=25,allowKey=null){ const entries=Object.entries(map||{}).filter(([key,value])=>(!allowKey||allowKey(key))&&Number(value)>0).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,limit).map(([key,value])=>[safeAnalyticsKey(key),Number(value)]); return Object.fromEntries(entries); }
+function savedLinkCounts(getKey,limit=25){ const counts={}; for(const link of links){ const key=safeAnalyticsKey(getKey(link)); counts[key]=Number(counts[key]||0)+1; } return sortedAnalyticsCounts(counts,limit); }
+function incrementAnalytics(name,amount=1){ if(!analyticsConsent || !Object.prototype.hasOwnProperty.call(analyticsCounters,name)||typeof analyticsCounters[name]==='object') return; analyticsCounters[name]=Math.max(0,Number(analyticsCounters[name]||0)+Number(amount||0)); persistAnalyticsCounters(); scheduleAnalyticsSnapshot(name); }
+function trackLinkOpen(link){
+if(!analyticsConsent||!link) return;
+analyticsCounters.link_opened=Math.max(0,Number(analyticsCounters.link_opened||0)+1);
+addAnalyticsMapCount('link_opens',link.id);
+addAnalyticsMapCount('category_opens',link.cat||OTHER_CAT);
+addAnalyticsMapCount('platform_opens',link.platform||detectPlatform(link.url||'').label||'Other');
+addAnalyticsMapCount('domain_opens',analyticsDomain(link.url));
+persistAnalyticsCounters();
+scheduleAnalyticsSnapshot('link_opened',350);
+}
+function analyticsPlatform(){ return window.Capacitor?.getPlatform?.() || (/iPhone|iPad|iPod/i.test(navigator.userAgent)?'ios':'web'); }
+function setAnalyticsConsent(enabled,persist=true){
+analyticsConsent=!!enabled;
+if(persist) STORE.set(LS_ANALYTICS_CONSENT,analyticsConsent);
+const toggle=$('analyticsConsent'); if(toggle) toggle.checked=analyticsConsent;
+const signupToggle=$('signupAnalyticsConsent'); if(signupToggle) signupToggle.checked=analyticsConsent;
+if(analyticsConsent){ analyticsBackendUnavailable=false; scheduleAnalyticsSnapshot('consent_enabled',250); }
+}
+function scheduleAnalyticsSnapshot(eventName='activity',delay=1200){ if(!analyticsConsent || !sbClient || !cloudUser || analyticsBackendUnavailable) return; clearTimeout(analyticsFlushTimer); analyticsFlushTimer=setTimeout(()=>saveAnalyticsSnapshot(eventName).catch(()=>{}),delay); }
+async function saveAnalyticsSnapshot(eventName='activity'){
+if(!analyticsConsent || !sbClient || !cloudUser || analyticsBackendUnavailable) return false;
+const savedTypeCounts=savedLinkCounts(link=>link.cat||OTHER_CAT);
+const savedPlatformCounts=savedLinkCounts(link=>link.platform||detectPlatform(link.url||'').label||'Other');
+const savedDomainCounts=savedLinkCounts(link=>analyticsDomain(link.url));
+const currentLinkIds=new Set(links.map(link=>String(link.id)));
+const visitedLinkCounts=sortedAnalyticsCounts(analyticsCounters.link_opens,50,key=>currentLinkIds.has(String(key)));
+const visitedTypeCounts=sortedAnalyticsCounts(analyticsCounters.category_opens,25);
+const visitedPlatformCounts=sortedAnalyticsCounts(analyticsCounters.platform_opens,25);
+const visitedDomainCounts=sortedAnalyticsCounts(analyticsCounters.domain_opens,25);
+const topLink=Object.entries(visitedLinkCounts)[0]||['',0];
+const topDomain=Object.entries(visitedDomainCounts)[0]||['',0];
+const topType=Object.entries(visitedTypeCounts)[0]||['',0];
+const row={user_id:cloudUser.id,app_version:APP_VERSION,platform:analyticsPlatform(),language:currentLanguage,theme:currentTheme,links_count:links.length,categories_count:cats.filter(c=>c!==OTHER_CAT).length,favorites_count:links.filter(l=>l.favorite).length,opens_count:Number(analyticsCounters.app_open||0),links_added_count:Number(analyticsCounters.link_added||0),links_opened_count:Number(analyticsCounters.link_opened||0),backup_count:Number(analyticsCounters.backup_saved||0),restore_count:Number(analyticsCounters.backup_restored||0),sync_success_count:Number(analyticsCounters.sync_success||0),qr_scanned_count:Number(analyticsCounters.qr_scanned||0),saved_type_counts:savedTypeCounts,saved_platform_counts:savedPlatformCounts,saved_domain_counts:savedDomainCounts,visited_link_counts:visitedLinkCounts,visited_type_counts:visitedTypeCounts,visited_platform_counts:visitedPlatformCounts,visited_domain_counts:visitedDomainCounts,top_visited_link_id:topLink[0]||null,top_visited_link_count:Number(topLink[1]||0),top_visited_domain:topDomain[0]||null,top_visited_domain_count:Number(topDomain[1]||0),top_visited_type:topType[0]||null,top_visited_type_count:Number(topType[1]||0),last_event:String(eventName||'activity').slice(0,50),last_active_at:nowIso(),updated_at:nowIso()};
+const {error}=await sbClient.from('user_stats').upsert(row,{onConflict:'user_id'});
+if(error){ if(/relation.*user_stats|could not find.*user_stats|schema cache|PGRST205/i.test(error.message||'')) analyticsBackendUnavailable=true; console.warn('Analytics snapshot skipped',error.message||error); return false; }
+if(eventName){ const safeEvent=String(eventName).replace(/[^a-z0-9_]/gi,'_').slice(0,50); const result=await sbClient.from('analytics_events').insert({user_id:cloudUser.id,event_name:safeEvent,app_version:APP_VERSION,platform:analyticsPlatform(),language:currentLanguage,created_at:nowIso()}); if(result.error) console.warn('Analytics event skipped',result.error.message||result.error); }
+return true;
+}
 function getSettings(){ const fileCfg = window.LINKVAULT_CONFIG || {}; const local = STORE.get(LS_SETTINGS, {}); return { SUPABASE_URL: local.SUPABASE_URL || fileCfg.SUPABASE_URL || '', SUPABASE_ANON_KEY: local.SUPABASE_ANON_KEY || fileCfg.SUPABASE_ANON_KEY || '', BACKEND_URL: local.BACKEND_URL || fileCfg.BACKEND_URL || '' }; }
 function setSettings(v){ STORE.set(LS_SETTINGS, v); }
 function saveUiPrefs(){ uiPrefs = { theme:currentTheme, viewMode }; STORE.set(LS_UI, uiPrefs); }
 function updateThemeMeta(){ const colors = { dark:'#0d0d14', light:'#f4f6fb', beige:'#eee7dc' }; const meta = document.querySelector('meta[name="theme-color"]'); if(meta) meta.setAttribute('content', colors[currentTheme] || colors.dark); }
-function applyTheme(theme, persist=true){ currentTheme = ['dark','light','beige'].includes(theme) ? theme : 'dark'; document.documentElement.dataset.theme = currentTheme; updateThemeMeta(); document.querySelectorAll('[data-theme]').forEach(btn => btn.classList.toggle('active', btn.dataset.theme === currentTheme)); if(persist) saveUiPrefs(); }
+function applyTheme(theme, persist=true){ currentTheme = ['dark','light','beige'].includes(theme) ? theme : 'dark'; document.documentElement.dataset.theme = currentTheme; updateThemeMeta(); document.querySelectorAll('[data-theme]').forEach(btn => btn.classList.toggle('active', btn.dataset.theme === currentTheme)); if(persist){ saveUiPrefs(); scheduleAnalyticsSnapshot('theme_changed'); } }
 function setViewMode(mode){ viewMode = ['cards','compact','grid'].includes(mode) ? mode : 'cards'; saveUiPrefs(); document.querySelectorAll('[data-view]').forEach(btn => btn.classList.toggle('active', btn.dataset.view === viewMode)); renderList(); }
 function isCommercialFree(){ return APP_EDITION === 'commercial' && !isPro; }
 function defaultCustomCategories(){ return DEFAULT_CATS.filter(c=>c!==OTHER_CAT); }
@@ -477,54 +679,86 @@ const raw = String(rawValue || '').trim();
 const extracted = extractFirstUrl(raw);
 return normalizeUrl(extracted || raw);
 }
+let qrScannerInstance=null;
+let qrScanListeners=[];
+let qrScanning=false;
+let qrTorchOn=false;
+function setQrScannerVisible(visible){
+const overlay=$('qrScannerOverlay');
+if(overlay){ overlay.hidden=!visible; overlay.setAttribute('aria-hidden',visible?'false':'true'); }
+document.documentElement.classList.toggle('barcode-scanner-active',visible);
+document.body.classList.toggle('barcode-scanner-active',visible);
+}
+async function stopQrScanner(){
+const scanner=qrScannerInstance;
+qrScanning=false; qrTorchOn=false; setQrScannerVisible(false);
+const listeners=qrScanListeners.splice(0);
+qrScannerInstance=null;
+await Promise.all(listeners.map(handle=>Promise.resolve(handle?.remove?.()).catch(()=>{})));
+if(scanner?.disableTorch) await scanner.disableTorch().catch(()=>{});
+if(scanner?.stopScan) await scanner.stopScan().catch(()=>{});
+}
+async function finishQrScan(rawValue){
+if(!qrScanning) return;
+await stopQrScanner();
+const url=qrCandidateToUrl(rawValue);
+if(!/^https?:\/\//i.test(url)){ toast('⚠️ رمز QR لا يحتوي على رابط صالح'); return; }
+incrementAnalytics('qr_scanned');
+closeSettings();
+openAddModal({url});
+setTimeout(()=>fetchMetadata().catch(()=>{}),180);
+}
+async function startLiveQrScanner(scanner){
+qrScannerInstance=scanner; qrScanning=true; qrTorchOn=false; setQrScannerVisible(true);
+const onScan=event=>{
+const barcode=event?.barcode||event?.barcodes?.[0]||event;
+const raw=barcode?.rawValue||barcode?.displayValue||barcode?.value||'';
+if(raw) finishQrScan(raw).catch(()=>{});
+};
+for(const eventName of ['barcodesScanned','barcodeScanned']){
+try{ const handle=await scanner.addListener(eventName,onScan); if(handle) qrScanListeners.push(handle); }catch(e){}
+}
+try{ const errorHandle=await scanner.addListener('scanError',async event=>{ console.warn('QR scan error',event); await stopQrScanner(); toast('⚠️ تعذرت قراءة رمز QR'); }); if(errorHandle) qrScanListeners.push(errorHandle); }catch(e){}
+try{ await scanner.startScan({formats:['QR_CODE']}); }catch(e){ await stopQrScanner(); throw e; }
+}
+async function toggleQrTorch(){
+if(!qrScanning||!qrScannerInstance) return;
+try{
+if(qrScannerInstance.toggleTorch){ await qrScannerInstance.toggleTorch(); qrTorchOn=!qrTorchOn; }
+else if(qrTorchOn&&qrScannerInstance.disableTorch){ await qrScannerInstance.disableTorch(); qrTorchOn=false; }
+else if(qrScannerInstance.enableTorch){ await qrScannerInstance.enableTorch(); qrTorchOn=true; }
+$('btnQrTorch').classList.toggle('active',qrTorchOn);
+}catch(e){}
+}
 async function scanQrCode(){
 try{
-if(!isNativeApp()){
-toast('⚠️ قراءة QR متاحة داخل تطبيق الآيفون');
-return;
-}
-const scanner = getNativePlugin('BarcodeScanner');
-if(!scanner || !scanner.scan){
-toast('⚠️ قارئ QR غير متاح في هذا الإصدار');
-return;
-}
-if(scanner.isSupported){
-const support = await scanner.isSupported();
-if(support && support.supported === false){
-toast('⚠️ هذا الجهاز لا يدعم قراءة QR');
-return;
-}
-}
-const platform = window.Capacitor?.getPlatform?.() || '';
-if(platform === 'ios' && scanner.requestPermissions){
-const permissions = await scanner.requestPermissions();
-const cameraState = permissions?.camera;
-if(cameraState !== 'granted' && cameraState !== 'limited'){
-if(cameraState === 'denied' && scanner.openSettings && confirm('صلاحية الكاميرا مطلوبة لقراءة QR. فتح الإعدادات؟')) await scanner.openSettings();
+if(!isNativeApp()){ toast('⚠️ قراءة QR متاحة داخل تطبيق الآيفون'); return; }
+const scanner=getNativePlugin('BarcodeScanner');
+if(!scanner){ toast('⚠️ قارئ QR غير متاح في هذا الإصدار'); return; }
+if(scanner.isSupported){ const support=await scanner.isSupported(); if(support&&support.supported===false){ toast('⚠️ هذا الجهاز لا يدعم قراءة QR'); return; } }
+const platform=window.Capacitor?.getPlatform?.()||'';
+if(platform==='ios'&&scanner.requestPermissions){
+const permissions=await scanner.requestPermissions(),cameraState=permissions?.camera;
+if(cameraState!=='granted'&&cameraState!=='limited'){
+if(cameraState==='denied'&&scanner.openSettings&&confirm('صلاحية الكاميرا مطلوبة لقراءة QR. فتح الإعدادات؟')) await scanner.openSettings();
 else toast('⚠️ اسمح باستخدام الكاميرا لقراءة QR');
 return;
 }
 }
-const result = await scanner.scan({ formats:['QR_CODE'] });
-const rawValue = result?.barcodes?.[0]?.rawValue || result?.barcodes?.[0]?.displayValue || '';
-if(!rawValue){ toast('ℹ️ لم يتم العثور على رمز QR'); return; }
-const url = qrCandidateToUrl(rawValue);
-if(!/^https?:\/\//i.test(url)){
-toast('⚠️ رمز QR لا يحتوي على رابط صالح');
-return;
-}
-closeSettings();
-openAddModal({ url });
-setTimeout(() => fetchMetadata().catch(()=>{}), 260);
+if(scanner.startScan&&scanner.stopScan&&scanner.addListener){ await startLiveQrScanner(scanner); return; }
+if(!scanner.scan){ toast('⚠️ قارئ QR غير متاح في هذا الإصدار'); return; }
+const result=await scanner.scan({formats:['QR_CODE']});
+const rawValue=result?.barcodes?.[0]?.rawValue||result?.barcodes?.[0]?.displayValue||'';
+if(!rawValue) return;
+const url=qrCandidateToUrl(rawValue);
+if(!/^https?:\/\//i.test(url)){ toast('⚠️ رمز QR لا يحتوي على رابط صالح'); return; }
+incrementAnalytics('qr_scanned'); closeSettings(); openAddModal({url}); setTimeout(()=>fetchMetadata().catch(()=>{}),180);
 }catch(e){
-const cancelled = String(e?.message || e || '').toLowerCase().includes('cancel');
-if(!cancelled){
-console.warn('QR scan failed', e);
-toast('⚠️ تعذرت قراءة رمز QR');
+await stopQrScanner().catch(()=>{});
+const cancelled=String(e?.message||e||'').toLowerCase().includes('cancel');
+if(!cancelled){ console.warn('QR scan failed',e); toast('⚠️ تعذرت قراءة رمز QR'); }
 }
-}
-}
-function getRevenueCatConfig(){
+}function getRevenueCatConfig(){
 const cfg = window.LINKVAULT_CONFIG || {};
 return {
 apiKey:String(cfg.REVENUECAT_IOS_API_KEY || '').trim(),
@@ -879,7 +1113,7 @@ if(e.target.closest('[data-action],a,button,input,textarea,select')) return;
 const id = card.dataset.id;
 if(selectionMode){ toggleSelected(id); return; }
 const l = links.find(x => x.id === id);
-if(l) window.open(l.url, '_blank');
+if(l){ trackLinkOpen(l); window.open(l.url, '_blank'); }
 }));
 el.querySelectorAll('[data-select-id]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleSelected(btn.dataset.selectId); }));
 el.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', async e => {
@@ -958,7 +1192,7 @@ toast('ℹ️ الرابط كان محفوظ، وتم تحديثه');
 }else{
 if(!canAddLink()) return;
 cloudItem = { id: uid(), url, title, cat, trailer, note, thumbnail, platform, favorite:false, ts: Date.now(), updatedAt: nowIso() };
-links.unshift(cloudItem);
+links.unshift(cloudItem); incrementAnalytics('link_added');
 toast('✅ تم الحفظ');
 }
 }
@@ -1004,7 +1238,7 @@ const key=canonicalUrl(source.url), existing=byUrl.get(key);
 if(existing){ existing.title=existing.title||source.title; existing.note=existing.note||source.note; existing.thumbnail=existing.thumbnail||source.thumbnail; existing.trailer=existing.trailer||source.trailer; existing.cat=existing.cat||source.cat; existing.updatedAt=nowIso(); }
 else { const incoming={...source,id:uid(),updatedAt:nowIso()}; links.push(incoming); byUrl.set(key,incoming); }
 }
-cats=normalizeCategories([...cats,...data.categories,...links.map(l=>l.cat).filter(Boolean)]); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList();
+cats=normalizeCategories([...cats,...data.categories,...links.map(l=>l.cat).filter(Boolean)]); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList(); incrementAnalytics('backup_restored');
 try{ if(cloudUser){ updateSettingsStatus('جاري رفع النسخة الاحتياطية إلى الحساب...', 'warning-text'); await upsertCategoriesCloudBatch(cats); await upsertLinksCloudBatch(links); await loadCloudData(); updateSettingsStatus('✅ تم دمج النسخة وحفظها على الحساب', 'success-text'); } toast('✅ تم دمج النسخة الاحتياطية وحفظها'); }
 catch(e){ showCloudError(e); toast('⚠️ تم الدمج محليًا وتعذر رفعه الآن؛ اضغط مزامنة لاحقًا'); }
 }
@@ -1172,34 +1406,41 @@ if(send){ send.disabled = false; send.textContent = currentLanguage === 'en' ? '
 if(resend){ resend.disabled = false; resend.textContent = currentLanguage === 'en' ? 'Resend code' : 'إعادة إرسال الرمز'; }
 }
 function renderAuthUI(){
-const loggedIn = !!cloudUser;
-const signedOutPanel = $('authSignedOutPanel');
-const signedInPanel = $('authSignedInPanel');
-const actions = $('accountActions');
-if(signedOutPanel) signedOutPanel.hidden = loggedIn;
-if(signedInPanel) signedInPanel.hidden = !loggedIn;
-if(actions) actions.hidden = !loggedIn;
-const box = $('authBox');
-if(box) box.classList.toggle('signed-in', loggedIn);
+const loggedIn=!!cloudUser;
+const signedOutPanel=$('authSignedOutPanel'),signedInPanel=$('authSignedInPanel'),actions=$('accountActions'),homeLogout=$('btnHomeLogout');
+if(signedOutPanel) signedOutPanel.hidden=loggedIn;
+if(signedInPanel) signedInPanel.hidden=!loggedIn;
+if(actions) actions.hidden=!loggedIn;
+if(homeLogout) homeLogout.hidden=!loggedIn;
+if($('analyticsConsent')) $('analyticsConsent').checked=analyticsConsent;
+if($('signupAnalyticsConsent')) $('signupAnalyticsConsent').checked=analyticsConsent;
+const box=$('authBox'); if(box) box.classList.toggle('signed-in',loggedIn);
+let identity='';
 if(loggedIn){
-pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP);
-if($('authOtp')) $('authOtp').value = '';
-setOtpPanelVisible(false);
-resetOtpControls();
-const identity = cloudUser.email || cloudUser.user_metadata?.email || cloudUser.user_metadata?.full_name || cloudUser.id || '';
-const provider = authProviderName(cloudUser);
-if($('authSignedInTitle')) $('authSignedInTitle').textContent = currentLanguage === 'en' ? 'Signed in' : 'تم تسجيل الدخول';
-if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = identity;
-if($('authSignedInProvider')) $('authSignedInProvider').textContent = currentLanguage === 'en' ? `Signed in with ${provider}` : `تسجيل الدخول بواسطة ${provider}`;
+pendingOtpEmail=''; STORE.remove(LS_PENDING_OTP);
+if($('authOtp')) $('authOtp').value='';
+setOtpPanelVisible(false); resetOtpControls();
+identity=cloudUser.email||cloudUser.user_metadata?.email||cloudUser.user_metadata?.full_name||cloudUser.id||'';
+const provider=authProviderName(cloudUser);
+if($('authSignedInTitle')) $('authSignedInTitle').textContent=currentLanguage==='en'?'Signed in':'تم تسجيل الدخول';
+if($('authSignedInIdentity')) $('authSignedInIdentity').textContent=identity;
+if($('authSignedInProvider')) $('authSignedInProvider').textContent=currentLanguage==='en'?('Signed in with '+provider):('تسجيل الدخول بواسطة '+provider);
 }else{
-if($('authSignedInIdentity')) $('authSignedInIdentity').textContent = '';
-if($('authSignedInProvider')) $('authSignedInProvider').textContent = '';
+if($('authSignedInIdentity')) $('authSignedInIdentity').textContent='';
+if($('authSignedInProvider')) $('authSignedInProvider').textContent='';
 }
-}
-function updateCloudStatus(kind='local', text='محلي'){
-const el = $('cloudStatus'); el.className = 'status-pill'; if(kind === 'online') el.classList.add('online'); if(kind === 'warn') el.classList.add('warn'); el.querySelector('span:last-child').textContent = text;
-}
-function updateSettingsStatus(msg, cls=''){
+if($('settingsHomeAccountText')) $('settingsHomeAccountText').textContent=loggedIn?identity:(currentLanguage==='en'?'Manage your account and sync':'إدارة حسابك والمزامنة');
+}function updateCloudStatus(kind='local', text='محلي'){
+const el=$('cloudStatus'); if(!el) return;
+const wasSyncing=el.classList.contains('syncing');
+el.className='icon-btn main-sync-btn';
+if(kind==='online') el.classList.add('online');
+if(kind==='warn') el.classList.add('warn');
+if(wasSyncing) el.classList.add('syncing');
+el.dataset.status=text;
+el.title=currentLanguage==='en'?'Sync now':'مزامنة الآن';
+el.setAttribute('aria-label',el.title);
+}function updateSettingsStatus(msg, cls=''){
 $('settingsStatus').className = 'settings-status' + (cls ? ' ' + cls : ''); $('settingsStatus').textContent = msg;
 }
 async function initSupabase(){
@@ -1207,8 +1448,8 @@ const cfg = getSettings();
 if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase){ cloudUser = null; renderAuthUI(); updateCloudStatus('local','محلي'); updateSettingsStatus('الوضع الحالي: حفظ محلي على الجهاز.'); return; }
 try{
 sbClient = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, flowType:'pkce' } });
-const { data } = await sbClient.auth.getUser(); cloudUser = data.user || null; if(cloudUser) activateCloudAccount(cloudUser); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
-if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); }
+const { data } = await sbClient.auth.getSession(); cloudUser = data.session?.user || null; if(cloudUser) activateCloudAccount(cloudUser); else if(activeLocalUserId) activateGuestAccount(); renderAuthUI(); if(cloudUser) identifyRevenueCatUser(cloudUser.id).catch(()=>{});
+if(cloudUser){ updateCloudStatus('online','مزامن'); updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text'); await loadCloudData(); scheduleAnalyticsSnapshot('session_restored',250); }
 else { updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.', 'warning-text'); }
 sbClient.auth.onAuthStateChange((event, session) => {
 cloudUser = session?.user || null;
@@ -1218,10 +1459,10 @@ if(cloudUser){
 identifyRevenueCatUser(cloudUser.id).catch(()=>{});
 updateCloudStatus('online','مزامن');
 updateSettingsStatus(`مسجل دخول: ${cloudUser.email || cloudUser.id}`, 'success-text');
-setTimeout(() => { synchronizeSignedInAccount(event).catch(showCloudError); }, 0);
+setTimeout(() => { synchronizeSignedInAccount(event).catch(showCloudError); scheduleAnalyticsSnapshot('signed_in',500); }, 0);
 }else{
 updateCloudStatus('warn','غير مسجل');
-if(event === 'SIGNED_OUT') updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.');
+if(event === 'SIGNED_OUT'){ activateGuestAccount(); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); }
 }
 });
 if(pendingAuthCallbackUrl){ const url = pendingAuthCallbackUrl; pendingAuthCallbackUrl = ''; await handleAuthCallbackUrl(url); }
@@ -1251,9 +1492,17 @@ async function deleteLinkCloud(id){ if(!sbClient || !cloudUser) return; const {e
 async function upsertCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').upsert({user_id:cloudUser.id,name},{onConflict:'user_id,name'}); if(error) throw error; }
 async function deleteCategoryCloud(name){ if(!sbClient || !cloudUser) return; const {error}=await sbClient.from('categories').delete().eq('user_id',cloudUser.id).eq('name',name); if(error) throw error; }
 async function synchronizeSignedInAccount(event='SIGNED_IN'){ if(authSyncPromise) return authSyncPromise; authSyncPromise=event==='SIGNED_IN'?syncLocalToCloud():loadCloudData(); try{await authSyncPromise;}finally{authSyncPromise=null;} }
+async function runMainSync(){
+if(!cloudUser){ toast('⚠️ سجل دخول أولاً'); openSettings(); setSettingsTab('account'); return; }
+const button=$('cloudStatus');
+if(!button||button.disabled) return;
+button.disabled=true; button.classList.add('syncing');
+try{ await syncLocalToCloud(); }
+finally{ button.disabled=false; button.classList.remove('syncing'); }
+}
 async function syncLocalToCloud(){
 if(!sbClient||!cloudUser){ toast('⚠️ سجل دخول أولاً'); return; }
-try{ updateSettingsStatus('جاري رفع البيانات المحلية...', 'warning-text'); await upsertCategoriesCloudBatch(cats); await upsertLinksCloudBatch(links); await loadCloudData(); updateSettingsStatus('✅ تمت المزامنة بنجاح','success-text'); toast('✅ تمت المزامنة'); }
+try{ updateSettingsStatus('جاري رفع البيانات المحلية...', 'warning-text'); await upsertCategoriesCloudBatch(cats); await upsertLinksCloudBatch(links); await loadCloudData(); incrementAnalytics('sync_success'); updateSettingsStatus('✅ تمت المزامنة بنجاح','success-text'); toast('✅ تمت المزامنة'); }
 catch(e){ showCloudError(e); }
 }
 function isNativeApp(){ try{return !!(window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform());}catch(e){return false;} }
@@ -1336,8 +1585,27 @@ await closeAuthBrowser();
 cloudUser = null; activateGuestAccount(); pendingOtpEmail = ''; STORE.remove(LS_PENDING_OTP); setOtpPanelVisible(false); resetOtpControls(); if($('authEmail')) $('authEmail').value = ''; if($('authOtp')) $('authOtp').value = ''; renderAuthUI();
 updateCloudStatus('warn','غير مسجل'); updateSettingsStatus('تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.'); toast('تم تسجيل الخروج');
 }
-function setSettingsTab(name='account'){ document.querySelectorAll('[data-settings-tab]').forEach(btn=>{const active=btn.dataset.settingsTab===name;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-settings-pane]').forEach(pane=>pane.classList.toggle('active',pane.dataset.settingsPane===name)); }
-function openSettings(){ setSettingsTab('account'); applyTheme(currentTheme, false); updateProUi(); renderAuthUI(); $('settingsOverlay').classList.add('open'); if(APP_EDITION === 'commercial' && rcReady) refreshRevenueCatStatus(); }
+let currentSettingsPage='home';
+const SETTINGS_PAGE_META={
+home:{ar:['إعدادات LinkVault','كل أدواتك في مكان واحد'],en:['LinkVault Settings','All your tools in one place']},
+account:{ar:['الحساب والمزامنة','إدارة الحساب وحفظ الروابط'],en:['Account and sync','Manage your account and saved links']},
+appearance:{ar:['المظهر واللغة','خصص شكل التطبيق'],en:['Appearance and language','Customize the app']},
+data:{ar:['البيانات','النسخ الاحتياطي والمزامنة'],en:['Data','Backup and sync']},
+privacy:{ar:['الأمان والخصوصية','تحكم في بيانات الاستخدام'],en:['Security and privacy','Control usage data']},
+diagnostics:{ar:['أدوات التطبيق','الفحص والتشخيص'],en:['App tools','Checks and diagnostics']},
+support:{ar:['الدعم والمساعدة','تواصل معنا'],en:['Support and help','Contact us']},
+about:{ar:['عن LinkVault','معلومات التطبيق'],en:['About LinkVault','App information']}
+};
+function setSettingsTab(name='home'){
+if(!SETTINGS_PAGE_META[name]) name='home';
+currentSettingsPage=name;
+document.querySelectorAll('[data-settings-pane]').forEach(pane=>pane.classList.toggle('active',pane.dataset.settingsPane===name));
+const back=$('btnSettingsBack'); if(back) back.hidden=name==='home';
+const meta=SETTINGS_PAGE_META[name][currentLanguage==='en'?'en':'ar'];
+if($('settingsScreenTitle')) $('settingsScreenTitle').textContent=meta[0];
+if($('settingsScreenSubtitle')) $('settingsScreenSubtitle').textContent=meta[1];
+}
+function openSettings(){ setSettingsTab('home'); applyTheme(currentTheme, false); updateProUi(); renderAuthUI(); setAnalyticsConsent(analyticsConsent,false); $('settingsOverlay').classList.add('open'); if(APP_EDITION === 'commercial' && rcReady) refreshRevenueCatStatus(); }
 function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
 let lastIncomingShareSignature = '';
 let lastIncomingShareAt = 0;
@@ -1493,7 +1761,9 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferr
 $('btnAdd').addEventListener('click', () => openAddModal());
 $('btnQrScan').addEventListener('click', scanQrCode);
 $('btnQrScanInline').addEventListener('click', scanQrCode);
-document.querySelectorAll('[data-settings-tab]').forEach(btn=>btn.addEventListener('click',()=>setSettingsTab(btn.dataset.settingsTab)));
+$('btnCloseQrScanner').addEventListener('click', () => stopQrScanner());
+$('btnQrTorch').addEventListener('click', toggleQrTorch);
+document.querySelectorAll('[data-settings-open]').forEach(btn=>btn.addEventListener('click',()=>setSettingsTab(btn.dataset.settingsOpen)));
 $('btnSettings').addEventListener('click', openSettings);
 $('btnCancel').addEventListener('click', closeModal);
 $('overlay').addEventListener('click', e => { if(e.target === $('overlay')) closeModal(); });
@@ -1507,6 +1777,7 @@ $('btnCancelCat').addEventListener('click', () => $('catOverlay').classList.remo
 $('btnConfirmCat').addEventListener('click', addCategory);
 $('inpNewCat').addEventListener('keydown', e => { if(e.key === 'Enter') addCategory(); });
 $('btnCloseSettings').addEventListener('click', closeSettings);
+$('btnSettingsBack').addEventListener('click', () => setSettingsTab('home'));
 $('btnOpenPaywall').addEventListener('click', openPaywall);
 $('btnRestorePurchases').addEventListener('click', restoreRevenueCatPurchases);
 $('btnClosePaywall').addEventListener('click', closePaywall);
@@ -1523,7 +1794,11 @@ $('authOtp').addEventListener('input', e => { e.target.value = normalizeOtp(e.ta
 $('authOtp').addEventListener('keydown', e => { if(e.key === 'Enter') verifyEmailOtp(); });
 $('authEmail').addEventListener('keydown', e => { if(e.key === 'Enter') sendEmailOtp(); });
 $('btnLogout').addEventListener('click', logout);
+$('btnHomeLogout').addEventListener('click', logout);
+$('analyticsConsent').addEventListener('change', e => { setAnalyticsConsent(e.target.checked,true); toast('تم حفظ تفضيل الإحصائيات'); });
+$('signupAnalyticsConsent').addEventListener('change', e => setAnalyticsConsent(e.target.checked,true));
 $('btnSyncNow').addEventListener('click', syncLocalToCloud);
+$('cloudStatus').addEventListener('click', runMainSync);
 $('btnShareDiag').addEventListener('click', runShareDiagnostics);
 $('btnSelectMode').addEventListener('click', () => setSelectionMode(!selectionMode));
 document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => setViewMode(btn.dataset.view)));
@@ -1533,14 +1808,14 @@ $('btnDeleteSelected').addEventListener('click', deleteSelectedLinks);
 $('btnDeleteAll').addEventListener('click', deleteAllLinks);
 document.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
 $('languageSelect').addEventListener('change', e => { applyLanguageChoice(e.target.value, true); renderTabs(); renderList(); if($('catOverlay').classList.contains('open')) renderCatList(); translateTree(document.body, true); renderAuthUI(); });
-$('btnBackup').addEventListener('click', exportBackup);
+$('btnBackup').addEventListener('click', () => { incrementAnalytics('backup_saved'); exportBackup(); });
 $('btnRestore').addEventListener('click', beginRestore);
 $('restoreFileInput').addEventListener('change', async e => { const file=e.target.files?.[0]; if(!file) return; try{ showRestoreChoice(validateBackup(JSON.parse(await file.text()))); }catch(err){ toast('⚠️ ملف النسخة الاحتياطية غير صالح'); } });
 $('btnRestoreMerge').addEventListener('click', () => applyRestore('merge'));
 document.getElementById('btnRestoreReplace').hidden=true;
 $('btnRestoreCancel').addEventListener('click', closeRestoreChoice);
 $('restoreOverlay').addEventListener('click', e => { if(e.target === $('restoreOverlay')) closeRestoreChoice(); });
-applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); renderAuthUI(); if(pendingOtpEmail){ $('authEmail').value=pendingOtpEmail;setOtpPanelVisible(true);const wait=otpCooldownRemaining();if(wait)startOtpCooldown(wait); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
+loadAnalyticsCounters(activeLocalUserId); incrementAnalytics('app_open'); applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); renderAuthUI(); if(pendingOtpEmail){ $('authEmail').value=pendingOtpEmail;setOtpPanelVisible(true);const wait=otpCooldownRemaining();if(wait)startOtpCooldown(wait); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
