@@ -1,4 +1,4 @@
-const CACHE_NAME = 'linkvault-v5-otp-social-auth';
+const CACHE_NAME = 'linkvault-v8-trailer-library-splash-fix';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,7 +6,10 @@ const APP_SHELL = [
   './app-config.js',
   './icon-192.png',
   './icon-512.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png',
+  './assets/LinkVault_splash_FHD_ultra_clear_preview.png',
+  './assets/LinkVault_splash_FHD_original_logo_ultra_clear.mp4',
+  './assets/LinkVault_splash_white_glow_fixed.gif'
 ];
 
 self.addEventListener('install', event => {

@@ -33,6 +33,8 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
         let text: String
         let note: String
         let category: String
+        let destination: String?
+        let mediaType: String?
         let timestamp: Double
 
         var dictionary: [String: Any] {
@@ -43,6 +45,8 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
                 "text": text,
                 "note": note,
                 "cat": category,
+                "destination": destination ?? "",
+                "mediaType": mediaType ?? "",
                 "timestamp": timestamp
             ]
         }
@@ -76,6 +80,8 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
             "text": first.text,
             "note": first.note,
             "cat": first.category,
+            "destination": first.destination ?? "",
+            "mediaType": first.mediaType ?? "",
             "timestamp": first.timestamp
         ])
     }
@@ -183,6 +189,8 @@ public class PendingSharePlugin: CAPPlugin, CAPBridgedPlugin {
             text: text,
             note: defaults.string(forKey: legacyNoteKey) ?? "",
             category: defaults.string(forKey: legacyCategoryKey) ?? "",
+            destination: nil,
+            mediaType: nil,
             timestamp: timestamp > 0 ? timestamp : Date().timeIntervalSince1970
         )
     }

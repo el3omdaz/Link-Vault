@@ -52,6 +52,8 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         var text: String?
         var note: String?
         var category: String?
+        var destination: String?
+        var mediaType: String?
     }
 
     private struct PendingShareRecord: Codable {
@@ -61,6 +63,8 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         let text: String
         let note: String
         let category: String
+        let destination: String?
+        let mediaType: String?
         let timestamp: Double
     }
 
@@ -75,6 +79,8 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
     private let previewTitleLabel = UILabel()
     private let previewURLLabel = UILabel()
     private let titleField = UITextField()
+    private let destinationSegment = UISegmentedControl(items: [])
+    private let mediaTypeSegment = UISegmentedControl(items: [])
     private let categoryStack = UIStackView()
     private let categoryButton = UIButton(type: .system)
     private let customCategoryField = UITextField()
@@ -195,6 +201,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         categoryStack.spacing = 8
         categoryStack.distribution = .fill
         categoryStack.alignment = .fill
+        configureDestinationPicker()
         configureCategoryPicker()
 
         let noteWrap = UIView()
@@ -224,7 +231,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         noteWrap.addSubview(noteTextView)
         noteWrap.addSubview(notePlaceholder)
 
-        [titleLabel, subtitleLabel, activityIndicator, previewBox, titleField, categoryStack, noteWrap].forEach {
+        [titleLabel, subtitleLabel, activityIndicator, previewBox, titleField, destinationSegment, mediaTypeSegment, categoryStack, noteWrap].forEach {
             formStack.addArrangedSubview($0)
         }
 
@@ -256,7 +263,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         cardView.addSubview(actionStack)
 
         keyboardBottomConstraint = cardView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -12)
-        let preferredHeight = cardView.heightAnchor.constraint(equalToConstant: 570)
+        let preferredHeight = cardView.heightAnchor.constraint(equalToConstant: 640)
         preferredHeight.priority = .defaultHigh
         let minimumHeight = cardView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300)
         minimumHeight.priority = UILayoutPriority(700)
@@ -354,6 +361,38 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         view.endEditing(true)
     }
 
+    private func configureDestinationPicker() {
+        destinationSegment.removeAllSegments()
+        destinationSegment.insertSegment(withTitle: tr("حفظ كرابط", "Save as link"), at: 0, animated: false)
+        destinationSegment.insertSegment(withTitle: tr("إضافة للتريلرز", "Add to trailers"), at: 1, animated: false)
+        destinationSegment.selectedSegmentIndex = 0
+        destinationSegment.selectedSegmentTintColor = appAccent
+        destinationSegment.backgroundColor = appCard
+        destinationSegment.setTitleTextAttributes([.foregroundColor: appMuted, .font: UIFont.systemFont(ofSize: 14, weight: .bold)], for: .normal)
+        destinationSegment.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 14, weight: .bold)], for: .selected)
+        destinationSegment.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        destinationSegment.addTarget(self, action: #selector(destinationChanged), for: .valueChanged)
+
+        mediaTypeSegment.removeAllSegments()
+        mediaTypeSegment.insertSegment(withTitle: tr("فيلم", "Movie"), at: 0, animated: false)
+        mediaTypeSegment.insertSegment(withTitle: tr("مسلسل", "Series"), at: 1, animated: false)
+        mediaTypeSegment.selectedSegmentIndex = 0
+        mediaTypeSegment.selectedSegmentTintColor = appAccent2
+        mediaTypeSegment.backgroundColor = appCard
+        mediaTypeSegment.setTitleTextAttributes([.foregroundColor: appMuted, .font: UIFont.systemFont(ofSize: 14, weight: .bold)], for: .normal)
+        mediaTypeSegment.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 14, weight: .bold)], for: .selected)
+        mediaTypeSegment.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        mediaTypeSegment.isHidden = true
+    }
+
+    @objc private func destinationChanged() {
+        let savingTrailer = destinationSegment.selectedSegmentIndex == 1
+        mediaTypeSegment.isHidden = !savingTrailer
+        categoryStack.isHidden = savingTrailer
+        titleLabel.text = savingTrailer ? tr("إضافة تريلر", "Add trailer") : tr("حفظ الرابط", "Save link")
+        saveButton.setTitle(savingTrailer ? tr("إضافة للتريلرز", "Add to trailers") : tr("حفظ الرابط", "Save link"), for: .normal)
+        subtitleLabel.text = savingTrailer ? tr("اختر فيلم أو مسلسل ثم احفظ", "Choose Movie or Series, then save") : tr("اختر تصنيفًا أو أضف ملاحظة ثم احفظ", "Choose a type or add a note, then save")
+    }
     private func configureCategoryPicker() {
         categoryOptions = loadCategoriesFromAppGroup()
 
@@ -587,14 +626,19 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         saveButton.isEnabled = false
         saveButton.alpha = 0.60
         cancelButton.isEnabled = false
-        subtitleLabel.text = tr("جاري حفظ الرابط...", "Saving link...")
+        subtitleLabel.text = destinationSegment.selectedSegmentIndex == 1 ? tr("جاري إضافة التريلر...", "Adding trailer...") : tr("جاري حفظ الرابط...", "Saving link...")
 
         var currentPayload = payload
+        let savingTrailer = destinationSegment.selectedSegmentIndex == 1
         let editedTitle = titleField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if !editedTitle.isEmpty { currentPayload.title = editedTitle }
         let note = noteTextView.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if !note.isEmpty { currentPayload.note = note }
-        if selectedCategory == "أخرى" {
+        currentPayload.destination = savingTrailer ? "trailer" : "link"
+        currentPayload.mediaType = savingTrailer ? (mediaTypeSegment.selectedSegmentIndex == 1 ? "series" : "movie") : nil
+        if savingTrailer {
+            currentPayload.category = nil
+        } else if selectedCategory == "أخرى" {
             let custom = customCategoryField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             currentPayload.category = custom.isEmpty ? "أخرى" : custom
         } else {
@@ -603,7 +647,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         payload = currentPayload
 
         if appendPayloadToAppGroup(currentPayload) {
-            subtitleLabel.text = tr("تم حفظ الرابط بنجاح ✓", "Link saved successfully ✓")
+            subtitleLabel.text = savingTrailer ? tr("تمت إضافة التريلر بنجاح ✓", "Trailer added successfully ✓") : tr("تم حفظ الرابط بنجاح ✓", "Link saved successfully ✓")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
                 self?.completeOnce()
             }
@@ -644,6 +688,8 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
             text: text,
             note: note,
             category: category,
+            destination: payload.destination,
+            mediaType: payload.mediaType,
             timestamp: Date().timeIntervalSince1970
         )
         records.append(newRecord)
@@ -675,6 +721,8 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
             text: legacyText,
             note: defaults.string(forKey: "linkvault.pendingShare.note") ?? "",
             category: defaults.string(forKey: "linkvault.pendingShare.category") ?? "",
+            destination: nil,
+            mediaType: nil,
             timestamp: legacyTimestamp > 0 ? legacyTimestamp : Date().timeIntervalSince1970
         ))
 
