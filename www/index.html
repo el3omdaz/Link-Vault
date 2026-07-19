@@ -67,14 +67,29 @@ html[dir="ltr"] .settings-account-copy{text-align:left}
 .signup-analytics-consent input{width:17px;height:17px;flex:none;margin-top:1px;accent-color:var(--accent)}
 html[dir="ltr"] .signup-analytics-consent{text-align:left}
 </style>
+<style id="link-editor-redesign-v1">
+#overlay.link-editor-overlay{align-items:stretch;background:var(--bg);backdrop-filter:none;z-index:500}
+#overlay .link-editor-sheet{height:100%;max-height:none;width:100%;border:0;border-radius:0;padding:calc(10px + env(safe-area-inset-top,0px)) 14px calc(10px + var(--safe-bottom));background:radial-gradient(circle at 50% -18%,rgba(124,106,255,.14),transparent 38%),var(--bg);transform:translateY(14px);display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;overflow:hidden}
+#overlay.open .link-editor-sheet{transform:none}.link-editor-header{min-height:56px;display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:8px}
+.link-editor-back,.link-editor-brand{width:42px;height:42px;border-radius:13px;border:1px solid var(--border);background:var(--card);color:var(--accent);display:grid;place-items:center;overflow:hidden}.link-editor-back{font-size:31px;line-height:1;font-weight:500}.link-editor-brand{padding:0}.link-editor-brand img{width:100%;height:100%;object-fit:cover}
+.link-editor-heading{text-align:center;min-width:0}.link-editor-heading h2{font-size:1.14rem;font-weight:900;line-height:1.15}.link-editor-heading p{font-size:.69rem;color:var(--muted);margin-top:4px}.link-editor-scroll{overflow-y:auto;scrollbar-width:none;padding:1px}.link-editor-scroll::-webkit-scrollbar{display:none}
+.editor-section,.editor-preview-card{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:13px;margin-bottom:10px;box-shadow:0 8px 24px rgba(0,0,0,.045)}.editor-label{display:block;font-size:.76rem;font-weight:900;color:var(--muted2);margin:0 2px 7px}
+.editor-url-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:7px}.editor-url-row .inp{min-width:0}.editor-fetch-btn,.editor-qr-btn,.editor-thumb-btn,.editor-thumb-remove,.editor-trailer-search{border:1px solid rgba(124,106,255,.32);background:rgba(124,106,255,.08);color:var(--accent);border-radius:11px;padding:9px 11px;font-size:.75rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}.editor-fetch-btn{border-color:var(--accent);background:linear-gradient(135deg,rgba(124,106,255,.14),rgba(168,85,247,.10))}
+.editor-preview-card{display:grid;grid-template-columns:minmax(112px,34%) minmax(0,1fr);gap:13px;align-items:stretch}.editor-preview-media{min-height:132px;border-radius:14px;background:var(--card2);border:1px dashed var(--border2);position:relative;overflow:hidden;display:grid;place-items:center}.editor-preview-media>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.editor-thumb-placeholder{font-size:32px;color:var(--muted);opacity:.7}.editor-thumb-actions{position:absolute;left:7px;right:7px;bottom:7px;display:flex;gap:6px;justify-content:center}.editor-thumb-actions button{background:rgba(15,15,25,.78);color:#fff;border-color:rgba(255,255,255,.22);backdrop-filter:blur(7px);padding:7px 9px}.editor-thumb-remove{color:#ffadb9!important}
+.editor-preview-copy{min-width:0;display:flex;flex-direction:column;gap:9px;justify-content:center}.editor-platform-row{display:flex;align-items:center;gap:8px}.editor-platform-logo{width:42px;height:42px;border-radius:11px;overflow:hidden;flex:none}.editor-platform-logo svg{width:42px;height:42px}.editor-platform-badge{font-size:.72rem;font-weight:900;color:var(--accent);background:rgba(124,106,255,.10);border-radius:999px;padding:5px 9px}.editor-title-label{font-size:.72rem;font-weight:900;color:var(--muted2)}.editor-title-input{font-size:.96rem!important;font-weight:900!important}
+.editor-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.editor-form-grid .field-label{margin-top:0}.editor-trailer-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}.editor-note{min-height:88px!important}.link-editor-footer{padding-top:1px}.link-editor-footer .btn-save{margin:0;min-height:49px;border-radius:15px}
+.trailer-search-overlay{z-index:850}.trailer-search-sheet{max-height:78vh}.trailer-search-hero{text-align:center;margin-bottom:14px}.trailer-search-hero .trailer-search-icon{font-size:34px}.trailer-search-hero h3{font-size:1.08rem;font-weight:900;margin-top:3px}.trailer-search-hero p{font-size:.75rem;color:var(--muted);line-height:1.55;margin-top:5px}.trailer-search-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.trailer-search-actions button{margin:0}.trailer-search-status{min-height:22px;margin-top:8px;font-size:.74rem;color:var(--muted2);line-height:1.5;text-align:center}
+@media(max-width:560px){.editor-url-row{grid-template-columns:1fr 1fr}.editor-url-row .inp{grid-column:1/-1}.editor-preview-card{grid-template-columns:118px minmax(0,1fr);padding:10px}.editor-preview-media{min-height:142px}.editor-fetch-btn,.editor-qr-btn{padding:9px 7px}}
+@media(max-width:380px){#overlay .link-editor-sheet{padding-left:10px;padding-right:10px}.editor-preview-card{grid-template-columns:1fr}.editor-preview-media{min-height:155px}.editor-form-grid,.editor-trailer-row,.trailer-search-actions{grid-template-columns:1fr}}
+</style>
 <style id="animated-app-splash-style">
-.app-splash{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#00010f;opacity:1;visibility:visible;pointer-events:auto;transition:opacity .26s ease,visibility .26s ease}
+.app-splash{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;opacity:1;visibility:visible;pointer-events:auto;transition:opacity .28s ease,visibility .28s ease}
 .app-splash.dismissed{opacity:0;visibility:hidden;pointer-events:none}
-.app-splash img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;user-select:none;-webkit-user-drag:none}
+.app-splash img,.app-splash video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;user-select:none;-webkit-user-drag:none}.app-splash img{z-index:0}.app-splash video{z-index:1;background:transparent}.app-splash.video-failed video{display:none}
 </style>
 </head>
 <body>
-<div class="app-splash" id="appSplash" aria-hidden="true"><img id="appSplashImage" src="assets/LinkVault_splash_white_glow_fixed.gif" alt=""></div>
+<div class="app-splash" id="appSplash" aria-hidden="true"><img id="appSplashPoster" src="assets/LinkVault_splash_FHD_ultra_clear_preview.png" alt=""><video id="appSplashVideo" autoplay muted playsinline preload="auto" poster="assets/LinkVault_splash_FHD_ultra_clear_preview.png"><source src="assets/LinkVault_splash_FHD_original_logo_ultra_clear.mp4" type="video/mp4"></video></div>
 
 <div class="header">
 <div class="header-logo"><img class="app-logo-img" src="icon-192.png" alt="LinkVault"></div>
@@ -112,35 +127,53 @@ html[dir="ltr"] .signup-analytics-consent{text-align:left}
 <button class="selection-action danger" id="btnDeleteAll">مسح الجميع</button>
 </div>
 <div class="main" id="mainList"></div>
-<div class="overlay" id="overlay">
-<div class="sheet">
-<div class="sheet-handle"></div>
-<div class="sheet-title" id="sheetTitle">إضافة رابط جديد</div>
-<div class="field-label">🔗 الرابط</div>
-<div class="url-scan-row"><input class="inp" id="inpUrl" type="url" placeholder="الصق الرابط هنا..."><button class="qr-scan-btn" id="btnQrScanInline" type="button"><svg class="qr-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm9-2h3v3h-3v-3zm4 0h3v3h-3v-3zm-4 4h3v3h-3v-3zm4 1h3v2h-3v-2zm1-1h2v1h-2v-1z"/></svg><span>قراءة QR</span></button></div>
-<div class="ai-row"><button class="btn-ai" id="btnFetch">✨ جلب العنوان والصورة</button></div>
+<div class="overlay link-editor-overlay" id="overlay">
+<div class="sheet link-editor-sheet">
+<header class="link-editor-header">
+<button class="link-editor-back" id="btnCancel" type="button" aria-label="رجوع">‹</button>
+<div class="link-editor-heading"><h2 id="sheetTitle">إضافة رابط جديد</h2><p id="sheetSubtitle">أضف رابطك ونظّمه بسهولة</p></div>
+<div class="link-editor-brand"><img src="icon-192.png" alt=""></div>
+</header>
+<div class="link-editor-scroll">
+<section class="editor-section">
+<label class="editor-label" for="inpUrl">🔗 الرابط</label>
+<div class="editor-url-row">
+<input class="inp" id="inpUrl" type="url" placeholder="الصق الرابط هنا...">
+<button class="editor-qr-btn" id="btnQrScanInline" type="button"><svg class="qr-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm9-2h3v3h-3v-3zm4 0h3v3h-3v-3zm-4 4h3v3h-3v-3zm4 1h3v2h-3v-2zm1-1h2v1h-2v-1z"/></svg><span>قراءة QR</span></button>
+<button class="editor-fetch-btn" id="btnFetch" type="button">✨ جلب البيانات</button>
+</div>
 <div class="ai-status" id="aiStatus"></div>
-<div class="field-label">📝 العنوان</div>
-<input class="inp" id="inpTitle" placeholder="اكتب عنواناً للرابط...">
-<div class="row">
-<div>
-<div class="field-label">🗂️ التصنيف</div>
-<select class="select-inp" id="inpCat"></select>
-</div>
-<div>
-<div class="field-label">🏷️ المنصة</div>
-<input class="inp" id="inpPlatform" placeholder="تلقائي" disabled>
+</section>
+<section class="editor-preview-card">
+<div class="editor-preview-media">
+<img id="editorThumbPreview" alt="صورة الرابط" hidden>
+<div class="editor-thumb-placeholder" id="editorThumbPlaceholder">🖼️</div>
+<div class="editor-thumb-actions">
+<button class="editor-thumb-btn" id="btnChooseThumb" type="button">＋ إضافة صورة</button>
+<button class="editor-thumb-remove" id="btnRemoveThumb" type="button" hidden>حذف</button>
 </div>
 </div>
-<div class="field-label">🖼️ صورة مصغرة (اختياري)</div>
-<input class="inp" id="inpThumb" type="url" placeholder="https://...">
-<div class="field-label">🎬 رابط التريلر (اختياري)</div><div class="hint">إذا ما عندك رابط التريلر، استخدم زر البحث وسيتم فتح نتائج يوتيوب تلقائيًا.</div>
-<input class="inp" id="inpTrailer" type="url" placeholder="https://youtube.com/watch?v=...">
-<div class="ai-row"><button class="btn-ai" id="btnTrailer">🎬 بحث عن تريلر رسمي في يوتيوب</button></div>
+<div class="editor-preview-copy">
+<div class="editor-platform-row"><div class="editor-platform-logo" id="editorPlatformLogo"></div><span class="editor-platform-badge" id="editorPlatformBadge">Web</span></div>
+<label class="editor-title-label" for="inpTitle">📝 العنوان</label>
+<input class="inp editor-title-input" id="inpTitle" placeholder="اكتب عنواناً للرابط...">
+</div>
+</section>
+<input id="inpThumb" type="hidden">
+<input id="inpThumbFile" type="file" accept="image/*" hidden>
+<section class="editor-section">
+<div class="editor-form-grid">
+<div><div class="field-label">🗂️ التصنيف</div><select class="select-inp" id="inpCat"></select></div>
+<div><div class="field-label">🏷️ المنصة</div><input class="inp" id="inpPlatform" placeholder="تلقائي" disabled></div>
+</div>
+<div class="field-label">🎬 رابط التريلر (اختياري)</div>
+<div class="editor-trailer-row"><input class="inp" id="inpTrailer" type="url" placeholder="https://youtube.com/watch?v=..."><button class="editor-trailer-search" id="btnOpenTrailerSearch" type="button">⌕ بحث</button></div>
+<div class="hint">يمكنك البحث باسم الفيلم في نافذة مستقلة ثم حفظ رابط التريلر.</div>
 <div class="field-label">📌 ملاحظات</div>
-<textarea class="inp" id="inpNote" placeholder="أي ملاحظات تريد إضافتها... مثل: شفته، مهم، للرجوع لاحقًا..."></textarea>
-<button class="btn-save" id="btnSave">💾 حفظ</button>
-<button class="btn-cancel" id="btnCancel">إلغاء</button>
+<textarea class="inp editor-note" id="inpNote" placeholder="أي ملاحظات تريد إضافتها... مثل: شفته، مهم، للرجوع لاحقًا..."></textarea>
+</section>
+</div>
+<footer class="link-editor-footer"><button class="btn-save" id="btnSave">💾 حفظ الرابط</button></footer>
 </div>
 </div>
 <div class="overlay settings-overlay" id="settingsOverlay">
@@ -207,6 +240,19 @@ html[dir="ltr"] .signup-analytics-consent{text-align:left}
 <div class="settings-section-card"><div class="settings-card-head"><span>✨</span><div><h4>كل رابط مهم… في مكانه الصحيح</h4><p>LinkVault يحوّل الروابط المتناثرة إلى مكتبة شخصية ذكية. احفظ من أي تطبيق، نظّم بطريقتك، وارجع لما يهمك خلال ثوانٍ—مع مزامنة مستقلة لكل حساب ونسخ احتياطية تندمج بدون فقدان.</p></div></div></div>
 </section>
 </div>
+</div>
+</div>
+<div class="overlay trailer-search-overlay" id="trailerSearchOverlay">
+<div class="sheet trailer-search-sheet">
+<div class="sheet-handle"></div>
+<div class="trailer-search-hero"><div class="trailer-search-icon">🎬</div><h3>البحث عن تريلر</h3><p>اكتب اسم الفيلم وسيبحث LinkVault في YouTube عن التريلر المناسب.</p></div>
+<label class="editor-label" for="trailerMovieName">اسم الفيلم</label>
+<input class="inp" id="trailerMovieName" placeholder="مثال: The Dark Knight">
+<button class="btn-ai" id="btnRunTrailerSearch" type="button">⌕ بحث في YouTube</button>
+<div class="trailer-search-status" id="trailerSearchStatus"></div>
+<label class="editor-label" for="trailerResultUrl">رابط التريلر المختار</label>
+<input class="inp" id="trailerResultUrl" type="url" placeholder="الصق رابط الفيديو من YouTube هنا...">
+<div class="trailer-search-actions"><button class="btn-save" id="btnSaveTrailerUrl" type="button">💾 حفظ التريلر</button><button class="btn-cancel" id="btnCloseTrailerSearch" type="button">إلغاء</button></div>
 </div>
 </div>
 <div id="qrScannerOverlay" hidden aria-hidden="true"><button class="qr-live-close" id="btnCloseQrScanner" type="button" aria-label="إغلاق">×</button><div class="qr-live-frame" aria-hidden="true"></div><button class="qr-live-torch" id="btnQrTorch" type="button" aria-label="تشغيل المصباح">🔦</button></div>
@@ -282,6 +328,7 @@ const LS_LINKS = 'lv_links_v2';
 const LS_CATS = 'lv_cats_v2';
 const LS_SETTINGS = 'lv_settings_v2';
 const LS_UI = 'lv_ui_v1';
+const LS_CURRENT_CAT = 'lv_current_cat_v1';
 const LS_PENDING_OTP = 'lv_pending_otp_email_v1';
 const LS_OTP_COOLDOWN_UNTIL = 'lv_otp_cooldown_until_v1';
 const LS_LANG = 'lv_language_v1';
@@ -335,6 +382,26 @@ let rcCustomerInfo = null;
 let rcOffering = null;
 let rcPackages = { monthly:null, annual:null, lifetime:null };
 const I18N_EN = {"إعدادات LinkVault":"LinkVault Settings","الحساب":"Account","المظهر":"Appearance","البيانات":"Data","المزيد":"More","الحساب، المظهر والنسخ الاحتياطي":"Account, appearance and backup","المظهر واللغة":"Appearance and language","البيانات والحماية":"Data and protection","عن LinkVault":"About LinkVault","مكتبة روابطك الذكية":"Your smart link library","الإعدادات":"Settings","حالة المزامنة":"Sync status","إضافة رابط":"Add link","محلي":"Local","ابحث في الروابط والعناوين والملاحظات...":"Search links, titles, and notes...","مسح البحث":"Clear search","طريقة العرض":"View style","بطاقات":"Cards","مختصر":"Compact","شبكة":"Grid","☑ تحديد":"☑ Select","✕ إنهاء":"✕ Done","تحديد":"Select","تحديد الظاهر":"Select visible","إلغاء التحديد":"Clear selection","حذف المحدد":"Delete selected","مسح الجميع":"Delete all","إضافة رابط جديد":"Add new link","➕ إضافة رابط جديد":"➕ Add new link","✏️ تعديل الرابط":"✏️ Edit link","الرابط":"Link","الصق الرابط هنا...":"Paste the link here...","✨ جلب العنوان والصورة":"✨ Fetch title and image","📝 العنوان":"📝 Title","العنوان":"Title","اكتب عنواناً للرابط...":"Enter a title for the link...","🗂️ التصنيف":"🗂️ Type","التصنيف":"Type","🏷️ المنصة":"🏷️ Platform","المنصة":"Platform","تلقائي":"Automatic","🖼️ صورة مصغرة (اختياري)":"🖼️ Thumbnail (optional)","🎬 رابط التريلر (اختياري)":"🎬 Trailer link (optional)","إذا ما عندك رابط التريلر، استخدم زر البحث وسيتم فتح نتائج يوتيوب تلقائيًا.":"If you do not have a trailer link, use search to open YouTube results automatically.","🎬 بحث عن تريلر رسمي في يوتيوب":"🎬 Search YouTube for an official trailer","📌 ملاحظات":"📌 Notes","ملاحظات":"Notes","أي ملاحظات تريد إضافتها... مثل: شفته، مهم، للرجوع لاحقًا...":"Add any notes, such as watched, important, or save for later...","💾 حفظ":"💾 Save","حفظ":"Save","إلغاء":"Cancel","إغلاق":"Close","⚙️ الإعدادات والمزامنة":"⚙️ Settings and sync","الوضع الحالي: حفظ محلي على الجهاز.":"Current mode: saved locally on this device.","🔐 الحساب والمزامنة":"🔐 Account and sync","📧 البريد الإلكتروني":"📧 Email address","إرسال رمز التحقق":"Send verification code","🔢 رمز التحقق":"🔢 Verification code","تأكيد":"Confirm","إعادة إرسال الرمز":"Resend code","أو":"or","رمز البريد ينشئ الحساب تلقائيًا للمستخدم الجديد. لا توجد كلمة مرور.":"The email code automatically creates an account for a new user. No password is required.","مزامنة الآن":"Sync now","تسجيل خروج":"Sign out","🎨 ثيم التطبيق":"🎨 App theme","داكن":"Dark","أبيض":"Light","بيج":"Beige","🌐 لغة التطبيق":"🌐 App language","لغة التطبيق":"App language","لغة الجهاز":"Device language","العربية":"Arabic","إذا كانت لغة الجهاز العربية سيعمل التطبيق بالعربية، وأي لغة أخرى تستخدم الإنجليزية تلقائيًا.":"Arabic is used only when the device language is Arabic; every other device language defaults to English.","🗄️ النسخ الاحتياطي والاستعادة":"🗄️ Backup and restore","النسخة تشمل الروابط والتصنيفات والملاحظات والصور والتريلرات، ولا تشمل كلمة المرور أو بيانات جلسة الدخول.":"The backup includes links, types, notes, images, and trailers. It does not include passwords or sign-in session data.","⬆️ باك أب":"⬆️ Back up","⬇️ ريستور":"⬇️ Restore","ℹ️ عن التطبيق":"ℹ️ About the app","التطبيق من عمل M. ALQattan":"Created by M. ALQattan","📬 تواصل معنا":"📬 Contact us","تابعنا":"Follow us","🔧 تشخيص المشاركة (Share Extension)":"🔧 Share Extension diagnostics","اضغط هذا الزر بعد ما تشارك رابط من تطبيق ثاني (وقبل لا تسكر LinkVault)، عشان تشوف بالضبط وين المشكلة لو الرابط ما يوصل.":"Use this after sharing a link from another app to diagnose why it did not reach LinkVault.","🔍 افحص الروابط المشتركة الآن":"🔍 Check shared links now","🗂️ إدارة الأنواع":"🗂️ Manage types","إدارة الأنواع":"Manage types","⚙️ إدارة":"⚙️ Manage","إدارة":"Manage","أضف نوعًا جديدًا أو عدّل الاسم أو غيّر الترتيب أو احذف أي نوع. خيار «أخرى» يبقى دائمًا في النهاية ويستقبل روابط النوع المحذوف.":"Add a new type, rename it, reorder it, or delete any type. “Other” always stays last and receives links from a deleted type.","اسم التصنيف: أفلام، طبخ، تعليم...":"Type name: Movies, Cooking, Education...","إضافة":"Add","🗄️ استعادة النسخة الاحتياطية":"🗄️ Restore backup","دمج مع البيانات الحالية":"Merge with current data","استبدال البيانات الحالية":"Replace current data","أفلام":"Movies","مسلسلات":"TV Shows","يوتيوب":"YouTube","تعليم":"Education","طبخ":"Cooking","مشتريات":"Shopping","أفكار":"Ideas","أخرى":"Other","كل الأنواع":"All types","⭐ المفضلة":"⭐ Favorites","المفضلة":"Favorites","مفضلة":"Favorite","رابط":"Link","تصنيف":"Type","تريلر":"Trailer","لا نتائج":"No results","لا يوجد روابط بعد":"No links yet","جرب كلمة بحث مختلفة":"Try a different search term","اضغط + لإضافة رابط جديد":"Tap + to add a new link","أو شاركه من أي تطبيق آخر":"or share it from any other app","تحديد الرابط":"Select link","مشاركة":"Share","تعديل":"Edit","حذف":"Delete","صورة الرابط":"Link image","شاهد":"Watch","تعديل الاسم":"Rename","تحريك للأعلى":"Move up","تحريك للأسفل":"Move down","حذف النوع":"Delete type","(آخر القائمة)":"(last in list)","(أساسي)":"(built-in)","⚠️ الرابط مطلوب":"⚠️ A link is required","⚠️ الرابط لازم يبدأ بـ http أو https":"⚠️ The link must start with http or https","✅ تم التعديل":"✅ Updated","ℹ️ الرابط كان محفوظ، وتم تحديثه":"ℹ️ This link was already saved and has been updated","✅ تم الحفظ":"✅ Saved","حذف هذا الرابط؟":"Delete this link?","تم الحذف":"Deleted","اختر رابطًا واحدًا على الأقل":"Select at least one link","لا توجد روابط للحذف":"There are no links to delete","تم مسح جميع الروابط":"All links were deleted","نسخة LinkVault الاحتياطية":"LinkVault backup","✅ تم تجهيز النسخة الاحتياطية":"✅ Backup is ready","✅ تم حفظ النسخة الاحتياطية":"✅ Backup saved","⚠️ تعذر إنشاء النسخة الاحتياطية":"⚠️ Could not create the backup","ملف غير صالح":"Invalid file","سيتم استبدال جميع الروابط والتصنيفات الحالية. هل أنت متأكد؟":"All current links and types will be replaced. Are you sure?","✅ تمت استعادة النسخة واستبدال البيانات":"✅ Backup restored and current data replaced","✅ تم دمج النسخة الاحتياطية":"✅ Backup merged","✅ تمت مشاركة الرابط":"✅ Link shared","📋 تم نسخ الرابط. الصقه في التطبيق الذي تريد مشاركته.":"📋 Link copied. Paste it into the app where you want to share it.","انسخ هذا الرابط للمشاركة":"Copy this link to share","⚠️ أدخل اسم النوع":"⚠️ Enter a type name","⚠️ هذا الخيار موجود مسبقًا":"⚠️ This option already exists","⚠️ لا يمكن تعديل خيار أخرى":"⚠️ The Other option cannot be renamed","⚠️ اسم أخرى محجوز":"⚠️ The name Other is reserved","⚠️ هذا النوع موجود مسبقًا":"⚠️ This type already exists","⚠️ لا يمكن حذف خيار أخرى لأنه يستقبل روابط الأنواع المحذوفة":"⚠️ The Other type cannot be deleted because it receives links from deleted types","✅ تم حذف النوع ونقل روابطه إلى أخرى":"✅ Type deleted and its links moved to Other","✅ تم حذف النوع":"✅ Type deleted","✅ تم تحديث ترتيب الأنواع":"✅ Type order updated","⚠️ أدخل الرابط أولاً":"⚠️ Enter the link first","جاري الجلب...":"Fetching...","✅ تم جلب العنوان والصورة":"✅ Title and image fetched","ℹ️ لم أجد عنوان واضح، اكتب العنوان يدويًا":"ℹ️ No clear title was found. Enter it manually.","⚠️ تعذر الجلب. لو الرابط من إنستغرام/تيك توك/فيسبوك اكتب العنوان يدويًا.":"⚠️ Could not fetch details. For Instagram, TikTok, or Facebook, enter the title manually.","⚠️ أدخل العنوان أولاً":"⚠️ Enter the title first","جاري البحث...":"Searching...","✅ تم جلب التريلر":"✅ Trailer fetched","🎬 افتح النتيجة المناسبة وانسخ الرابط":"🎬 Open the correct result and copy its link","🎬 افتح الفيديو المناسب وانسخ رابطه هنا":"🎬 Open the correct video and paste its link here","مزامن":"Synced","غير مسجل":"Signed out","استخدم رمز البريد أو Apple أو Google لتفعيل المزامنة.":"Use email verification, Apple, or Google to enable sync.","خطأ":"Error","تعذر الاتصال بخدمة المزامنة.":"Could not connect to the sync service.","تعذر تحميل بيانات المزامنة. حاول مرة أخرى لاحقًا.":"Could not load synced data. Try again later.","⚠️ سجل دخول أولاً":"⚠️ Sign in first","جاري رفع البيانات المحلية...":"Uploading local data...","✅ تمت المزامنة بنجاح":"✅ Sync completed successfully","✅ تمت المزامنة":"✅ Synced","⚠️ خدمة الحساب غير متاحة حاليًا":"⚠️ Account service is currently unavailable","⚠️ أدخل بريدًا إلكترونيًا صحيحًا":"⚠️ Enter a valid email address","جاري إرسال الرمز...":"Sending code...","📧 تم إرسال رمز التحقق":"📧 Verification code sent","تعذر إرسال رمز التحقق":"Could not send the verification code","⚠️ أدخل رمز التحقق المكوّن من 6 أرقام":"⚠️ Enter the 6-digit verification code","جاري التحقق...":"Verifying...","✅ تم التحقق وتسجيل الدخول بنجاح.":"✅ Verified and signed in successfully.","✅ تم تسجيل الدخول":"✅ Signed in","رمز التحقق غير صحيح أو انتهت صلاحيته":"The verification code is incorrect or has expired","لم يتم إنشاء رابط تسجيل الدخول":"The sign-in link could not be created","تم تسجيل الخروج. الروابط المحلية باقية على هذا الجهاز.":"Signed out. Local links remain on this device.","تم تسجيل الخروج":"Signed out","رابط تسجيل الدخول لا يحتوي بيانات جلسة صالحة":"The sign-in link does not contain a valid session","✅ تم تسجيل الدخول بنجاح.":"✅ Signed in successfully.","⚠️ تعذر إكمال تسجيل الدخول":"⚠️ Could not complete sign-in","⚠️ ملف النسخة الاحتياطية غير صالح":"⚠️ The backup file is invalid","رابط محفوظ":"Saved link","✅ الرابط محفوظ مسبقًا وتم تحديث بياناته":"✅ The link was already saved and its details were updated","ℹ️ الرابط محفوظ مسبقًا":"ℹ️ The link is already saved","📲 ثبّت LinkVault كتطبيق":"📲 Install LinkVault as an app","تثبيت":"Install","تطبيق آيفون أصلي (native):":"Native iPhone app:","نعم ✅":"Yes ✅","لا ❌ (يبدو إنك بمتصفح ويب عادي)":"No ❌ (this appears to be a regular web browser)","إضافة PendingShare مسجلة بالتطبيق:":"PendingShare plugin registered:","لا ❌":"No ❌","⚠️ توجد بيانات مشاركة لكن تعذر استيرادها.":"⚠️ Shared data exists but could not be imported.","يعني: الـ plugin شغال، لكن لا توجد روابط محفوظة في App Group حاليًا. جرّب مشاركة رابط جديد ثم افتح التطبيق.":"The plugin is working, but there are no links currently stored in the App Group. Share a new link and reopen the app.","⚠️ صار خطأ فعلي أثناء الفحص:":"⚠️ A diagnostic error occurred:","LinkVault — مكتبة الروابط":"LinkVault — Link library","LinkVault — مكتبة روابطك الذكية":"LinkVault — Your smart link library","▤ بطاقات":"▤ Cards","☷ مختصر":"☷ Compact","▦ شبكة":"▦ Grid","🔗 الرابط":"🔗 Link","قائمة النوع":"Type list","التريلر":"Trailer","اضغط لفتح الرابط":"Tap to open link","السبب: PendingSharePlugin غير مسجل داخل Capacitor bridge. تأكد أن البناء الجديد شغّل scripts/add-ios-share-extension.rb وأن Main.storyboard صار يستخدم LinkVaultBridgeViewController.":"Reason: PendingSharePlugin is not registered in the Capacitor bridge. Make sure the new build ran scripts/add-ios-share-extension.rb and Main.storyboard uses LinkVaultBridgeViewController.","✅ تم استيراد الروابط المنتظرة داخل القائمة الآن.":"✅ Pending links were imported into the list."};
+Object.assign(I18N_EN,{
+'أضف رابطك ونظّمه بسهولة':'Save and organize it in seconds',
+'عدّل معلومات الرابط واحفظها':'Update the link information and save it',
+'تعديل الرابط':'Edit link',
+'✨ جلب البيانات':'✨ Fetch details',
+'＋ إضافة صورة':'＋ Add image',
+'تغيير الصورة':'Change image',
+'⌕ بحث':'⌕ Search',
+'يمكنك البحث باسم الفيلم في نافذة مستقلة ثم حفظ رابط التريلر.':'Search by movie name in a separate window, then save the trailer link.',
+'💾 حفظ الرابط':'💾 Save link',
+'💾 حفظ التعديلات':'💾 Save changes',
+'البحث عن تريلر':'Find a trailer',
+'اكتب اسم الفيلم وسيبحث LinkVault في YouTube عن التريلر المناسب.':'Enter the movie name and LinkVault will search YouTube for the right trailer.',
+'اسم الفيلم':'Movie name',
+'مثال: The Dark Knight':'Example: The Dark Knight',
+'⌕ بحث في YouTube':'⌕ Search YouTube',
+'رابط التريلر المختار':'Selected trailer link',
+'الصق رابط الفيديو من YouTube هنا...':'Paste the YouTube video link here...',
+'💾 حفظ التريلر':'💾 Save trailer'
+});
 const I18N_PATTERNS = [
 [/^🔒 النسخة المجانية تسمح بـ (\d+) روابط فقط$/, '🔒 The free version allows only $1 links'],
 [/^🔒 النسخة المجانية تسمح بـ (\d+) أنواع إضافية فقط$/, '🔒 The free version allows only $1 additional types'],
@@ -587,10 +654,14 @@ function extractFirstUrl(text){ const m = String(text || '').match(/https?:\/\/[
 function normalizeLinks(items){ return (items || []).map(x => ({ id:x.id || uid(), title:x.title || '', url:x.url || '', cat:x.cat || x.category_name || 'أخرى', note:x.note || x.notes || '', trailer:x.trailer || x.trailer_url || '', thumbnail:x.thumbnail || x.thumbnail_url || '', platform:x.platform || detectPlatform(x.url || '').label, ts:x.ts || (x.created_at ? new Date(x.created_at).getTime() : Date.now()), updatedAt:x.updatedAt || x.updated_at || nowIso(), favorite:Object.prototype.hasOwnProperty.call(x,'favorite') ? !!x.favorite : !!x.is_favorite })).filter(x => x.url); }
 function normalizeCategories(list){ const seen=[]; (list||[]).map(x=>String(x||'').trim()).filter(Boolean).forEach(c=>{ if(c!==OTHER_CAT && !seen.includes(c)) seen.push(c); }); seen.push(OTHER_CAT); return seen; }
 function accountStoreKey(base,userId){ return base + '_user_' + userId; }
+function currentCategoryStoreKey(userId=cloudUser?.id||activeLocalUserId){ return userId ? accountStoreKey(LS_CURRENT_CAT,userId) : LS_CURRENT_CAT; }
+function validCurrentCategory(value){ return value==='all'||value===FAVORITES_FILTER||cats.includes(value) ? value : 'all'; }
+function persistCurrentCategory(){ STORE.set(currentCategoryStoreKey(),validCurrentCategory(currentCat)); }
+function restoreCurrentCategory(userId=cloudUser?.id||activeLocalUserId){ currentCat=validCurrentCategory(STORE.get(currentCategoryStoreKey(userId),'all')); return currentCat; }
 function persistAccountData(userId){ if(!userId) return; cats=normalizeCategories(cats); STORE.set(accountStoreKey(LS_LINKS,userId),links); STORE.set(accountStoreKey(LS_CATS,userId),cats); STORE.set(accountStoreKey(LS_PROTECTED_CATS,userId),[...protectedCats]); }
-function activateCloudAccount(user){ if(!user?.id) return; const userId=user.id; activeLocalUserId=userId; loadAnalyticsCounters(userId); const saved=STORE.get(accountStoreKey(LS_LINKS,userId),null); if(saved===null){ links=[]; cats=normalizeCategories(DEFAULT_CATS); protectedCats=new Set(DEFAULT_CATS.filter(c=>c!==OTHER_CAT)); } else { links=normalizeLinks(saved); cats=normalizeCategories(STORE.get(accountStoreKey(LS_CATS,userId),DEFAULT_CATS)); protectedCats=new Set(STORE.get(accountStoreKey(LS_PROTECTED_CATS,userId),DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); } persistAccountData(userId); STORE.set(LS_ACTIVE_CLOUD_USER,userId); currentCat='all'; selectedIds.clear(); saveLocal(); renderTabs(); renderList(); }
-function activateGuestAccount(){ activeLocalUserId=''; loadAnalyticsCounters(''); STORE.remove(LS_ACTIVE_CLOUD_USER); links=normalizeLinks(STORE.get(LS_LINKS,[])); cats=normalizeCategories(STORE.get(LS_CATS,DEFAULT_CATS)); protectedCats=new Set(STORE.get(LS_PROTECTED_CATS,DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); currentCat='all'; selectedIds.clear(); renderTabs(); renderList(); }
-function saveLocal(){ cats=normalizeCategories(cats); const localUserId=cloudUser?.id||activeLocalUserId; if(localUserId) persistAccountData(localUserId); else { STORE.set(LS_LINKS,links); STORE.set(LS_CATS,cats); STORE.set(LS_PROTECTED_CATS,[...protectedCats]); } syncCategoriesToNative().catch(()=>{}); scheduleAnalyticsSnapshot('library_changed'); }
+function activateCloudAccount(user){ if(!user?.id) return; const userId=user.id; activeLocalUserId=userId; loadAnalyticsCounters(userId); const saved=STORE.get(accountStoreKey(LS_LINKS,userId),null); if(saved===null){ links=[]; cats=normalizeCategories(DEFAULT_CATS); protectedCats=new Set(DEFAULT_CATS.filter(c=>c!==OTHER_CAT)); } else { links=normalizeLinks(saved); cats=normalizeCategories(STORE.get(accountStoreKey(LS_CATS,userId),DEFAULT_CATS)); protectedCats=new Set(STORE.get(accountStoreKey(LS_PROTECTED_CATS,userId),DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); } persistAccountData(userId); STORE.set(LS_ACTIVE_CLOUD_USER,userId); restoreCurrentCategory(userId); selectedIds.clear(); saveLocal(); renderTabs(); renderList(); }
+function activateGuestAccount(){ activeLocalUserId=''; loadAnalyticsCounters(''); STORE.remove(LS_ACTIVE_CLOUD_USER); links=normalizeLinks(STORE.get(LS_LINKS,[])); cats=normalizeCategories(STORE.get(LS_CATS,DEFAULT_CATS)); protectedCats=new Set(STORE.get(LS_PROTECTED_CATS,DEFAULT_CATS.filter(c=>c!==OTHER_CAT))); restoreCurrentCategory(''); selectedIds.clear(); renderTabs(); renderList(); }
+function saveLocal(){ cats=normalizeCategories(cats); const localUserId=cloudUser?.id||activeLocalUserId; if(localUserId) persistAccountData(localUserId); else { STORE.set(LS_LINKS,links); STORE.set(LS_CATS,cats); STORE.set(LS_PROTECTED_CATS,[...protectedCats]); } persistCurrentCategory(); syncCategoriesToNative().catch(()=>{}); scheduleAnalyticsSnapshot('library_changed'); }
 
 function emptyAnalyticsCounters(){ return { app_open:0, link_added:0, link_opened:0, backup_saved:0, backup_restored:0, sync_success:0, qr_scanned:0, link_opens:{}, category_opens:{}, platform_opens:{}, domain_opens:{} }; }
 function analyticsCounterStorageKey(userId=activeLocalUserId){ return userId ? accountStoreKey(LS_ANALYTICS_COUNTERS,userId) : LS_ANALYTICS_COUNTERS; }
@@ -1097,8 +1168,8 @@ const options = cats.map(c => `<option value="${escapeHtml(c)}" ${selectedType==
 bar.innerHTML = `<div class="type-filter-wrap"><select class="type-filter-select" id="typeFilterSelect" aria-label="قائمة النوع"><option value="all" ${selectedType==='all'?'selected':''}>كل الأنواع</option>${options}</select></div>` +
 `<button class="favorite-filter-btn ${currentCat===FAVORITES_FILTER?'active':''}" id="btnFavoritesFilter">⭐ المفضلة${favCount ? ' ' + favCount : ''}</button>` +
 `<button class="manage-cats-btn" id="btnManageCats" title="إدارة الأنواع" aria-label="إدارة الأنواع">⚙️ إدارة</button>`;
-$('typeFilterSelect').addEventListener('change', e => { currentCat = e.target.value; renderTabs(); renderList(); });
-$('btnFavoritesFilter').addEventListener('click', () => { currentCat = currentCat === FAVORITES_FILTER ? 'all' : FAVORITES_FILTER; renderTabs(); renderList(); });
+$('typeFilterSelect').addEventListener('change', e => { currentCat = e.target.value; persistCurrentCategory(); renderTabs(); renderList(); });
+$('btnFavoritesFilter').addEventListener('click', () => { currentCat = currentCat === FAVORITES_FILTER ? 'all' : FAVORITES_FILTER; persistCurrentCategory(); renderTabs(); renderList(); });
 $('btnManageCats').addEventListener('click', openCatModal);
 }
 function renderList(){
@@ -1120,7 +1191,7 @@ if(e.target.closest('[data-action],a,button,input,textarea,select')) return;
 const id = card.dataset.id;
 if(selectionMode){ toggleSelected(id); return; }
 const l = links.find(x => x.id === id);
-if(l){ trackLinkOpen(l); window.open(l.url, '_blank'); }
+if(l){ trackLinkOpen(l); persistCurrentCategory(); window.open(l.url, '_blank'); }
 }));
 el.querySelectorAll('[data-select-id]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleSelected(btn.dataset.selectId); }));
 el.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', async e => {
@@ -1132,36 +1203,62 @@ const l = links.find(x => x.id === id);
 if(!l) return;
 if(action === 'fav') { l.favorite = !l.favorite; l.updatedAt = nowIso(); saveLocal(); renderTabs(); renderList(); try{ await upsertLinkCloud(l); }catch(e){ console.warn('Cloud favorite update failed', e); } return; }
 if(action === 'share') await shareLink(l);
-if(action === 'trailer') { if(l.trailer) window.open(l.trailer, '_blank'); else { openEdit(id); setTimeout(()=>$('btnTrailer').click(), 150); } }
+if(action === 'trailer') { if(l.trailer){ persistCurrentCategory(); window.open(l.trailer, '_blank'); } else openTrailerSearch(id,false); }
 if(action === 'edit') openEdit(id);
 if(action === 'del') await deleteLink(id);
 }));
 updateSelectionUi();
 }
 function openAddModal(prefill={}){
-editId = null;
-$('sheetTitle').textContent = '➕ إضافة رابط جديد';
-$('inpUrl').value = prefill.url || '';
-$('inpTitle').value = prefill.title || '';
-$('inpTrailer').value = prefill.trailer || '';
-$('inpThumb').value = prefill.thumbnail || '';
-$('inpNote').value = prefill.note || '';
-$('aiStatus').textContent = '';
-populateCatSelect(prefill.cat || suggestCategoryForLink({ url:prefill.url || '', title:prefill.title || '', text:prefill.note || '' }) || cats[0]);
-updatePlatformField();
-$('overlay').classList.add('open');
-setTimeout(() => $('inpTitle').focus(), 150);
+editId=null;
+$('sheetTitle').textContent='إضافة رابط جديد'; $('sheetSubtitle').textContent='أضف رابطك ونظّمه بسهولة';
+$('inpUrl').value=prefill.url||''; $('inpTitle').value=prefill.title||''; $('inpTrailer').value=prefill.trailer||''; $('inpThumb').value=prefill.thumbnail||''; $('inpThumbFile').value=''; $('inpNote').value=prefill.note||''; $('aiStatus').textContent='';
+populateCatSelect(prefill.cat||suggestCategoryForLink({url:prefill.url||'',title:prefill.title||'',text:prefill.note||''})||cats[0]);
+updatePlatformField(); updateEditorPreview(); $('overlay').classList.add('open');
+setTimeout(()=>$('inpTitle').focus(),150);
 }
 function openEdit(id){
-const l = links.find(x => x.id === id); if(!l) return;
-editId = id;
-$('sheetTitle').textContent = '✏️ تعديل الرابط';
-$('inpUrl').value = l.url; $('inpTitle').value = l.title; $('inpTrailer').value = l.trailer || ''; $('inpThumb').value = l.thumbnail || ''; $('inpNote').value = l.note || ''; $('aiStatus').textContent = '';
-populateCatSelect(l.cat); updatePlatformField(); $('overlay').classList.add('open');
+const l=links.find(x=>x.id===id); if(!l) return;
+editId=id;
+$('sheetTitle').textContent='تعديل الرابط'; $('sheetSubtitle').textContent='عدّل معلومات الرابط واحفظها';
+$('inpUrl').value=l.url; $('inpTitle').value=l.title; $('inpTrailer').value=l.trailer||''; $('inpThumb').value=l.thumbnail||''; $('inpThumbFile').value=''; $('inpNote').value=l.note||''; $('aiStatus').textContent='';
+populateCatSelect(l.cat); updatePlatformField(); updateEditorPreview(); $('overlay').classList.add('open');
 }
 function closeModal(){ $('overlay').classList.remove('open'); }
-function populateCatSelect(selected){ $('inpCat').innerHTML = cats.map(c => `<option value="${escapeHtml(c)}" ${c===selected?'selected':''}>${escapeHtml(c)}</option>`).join(''); }
-function updatePlatformField(){ const p = detectPlatform($('inpUrl').value); $('inpPlatform').value = p.label; }
+function populateCatSelect(selected){ $('inpCat').innerHTML=cats.map(c=>{ const label=currentLanguage==='en'?translateUiText(c):c; return '<option value="'+escapeHtml(c)+'" '+(c===selected?'selected':'')+'>'+escapeHtml(label)+'</option>'; }).join(''); }
+function updateEditorPreview(){
+const url=$('inpUrl').value,platform=detectPlatform(url),thumb=$('inpThumb').value.trim();
+$('editorPlatformLogo').innerHTML=platformLogo(url);
+$('editorPlatformBadge').textContent=platform.label;
+const image=$('editorThumbPreview'),placeholder=$('editorThumbPlaceholder'),remove=$('btnRemoveThumb'),choose=$('btnChooseThumb');
+if(thumb){ if(image.getAttribute('src')!==thumb) image.setAttribute('src',thumb); image.hidden=false; placeholder.hidden=true; remove.hidden=false; choose.textContent=currentLanguage==='en'?'Change image':'تغيير الصورة'; }
+else{ image.removeAttribute('src'); image.hidden=true; placeholder.hidden=false; remove.hidden=true; choose.textContent=currentLanguage==='en'?'＋ Add image':'＋ إضافة صورة'; }
+}
+function compressThumbnailFile(file){
+return new Promise((resolve,reject)=>{
+if(!file||!file.type.startsWith('image/')){ reject(new Error('invalid image')); return; }
+if(file.size>18*1024*1024){ reject(new Error('image too large')); return; }
+const objectUrl=URL.createObjectURL(file),image=new Image();
+image.onload=()=>{
+try{
+const maxSide=900,scale=Math.min(1,maxSide/Math.max(image.naturalWidth||1,image.naturalHeight||1));
+const canvas=document.createElement('canvas'); canvas.width=Math.max(1,Math.round(image.naturalWidth*scale)); canvas.height=Math.max(1,Math.round(image.naturalHeight*scale));
+const context=canvas.getContext('2d'); context.drawImage(image,0,0,canvas.width,canvas.height);
+const result=canvas.toDataURL('image/jpeg',.82); URL.revokeObjectURL(objectUrl); resolve(result);
+}catch(error){ URL.revokeObjectURL(objectUrl); reject(error); }
+};
+image.onerror=()=>{ URL.revokeObjectURL(objectUrl); reject(new Error('image decode failed')); };
+image.src=objectUrl;
+});
+}
+async function handleThumbnailFile(event){
+const file=event.target.files?.[0]; if(!file) return;
+const button=$('btnChooseThumb'); button.disabled=true; const old=button.textContent; button.textContent=currentLanguage==='en'?'Preparing...':'جاري التجهيز...';
+try{ $('inpThumb').value=await compressThumbnailFile(file); updateEditorPreview(); toast(currentLanguage==='en'?'✅ Image added':'✅ تمت إضافة الصورة'); }
+catch(error){ toast(currentLanguage==='en'?'⚠️ Could not use this image':'⚠️ تعذر استخدام هذه الصورة'); }
+button.disabled=false; if(!$('inpThumb').value) button.textContent=old; else updateEditorPreview();
+}
+function updatePlatformField(){ const p=detectPlatform($('inpUrl').value); $('inpPlatform').value=p.label; updateEditorPreview(); }
 async function saveLinkFromForm(){
 const url = normalizeUrl($('inpUrl').value);
 let title = $('inpTitle').value.trim();
@@ -1203,7 +1300,6 @@ links.unshift(cloudItem); incrementAnalytics('link_added');
 toast('✅ تم الحفظ');
 }
 }
-currentCat = 'all';
 saveLocal();
 closeModal();
 renderTabs();
@@ -1368,6 +1464,7 @@ try{
 const data = await getMetadata(url);
 if(data.title && !$('inpTitle').value.trim()) $('inpTitle').value = data.title;
 if(data.image && !$('inpThumb').value.trim()) $('inpThumb').value = data.image;
+updateEditorPreview();
 status.textContent = data.title ? '✅ تم جلب العنوان والصورة' : 'ℹ️ لم أجد عنوان واضح، اكتب العنوان يدويًا';
 }catch(e){ status.textContent = '⚠️ تعذر الجلب. لو الرابط من إنستغرام/تيك توك/فيسبوك اكتب العنوان يدويًا.'; }
 btn.disabled = false; btn.innerHTML = '✨ جلب العنوان والصورة';
@@ -1385,19 +1482,44 @@ if(res.ok){ const d = await res.json(); return { title:d.title || '', image:d.th
 }
 return { title:'', image:'', platform:p.label };
 }
-async function fetchTrailer(){
-const title = $('inpTitle').value.trim(); if(!title){ toast('⚠️ أدخل العنوان أولاً'); return; }
-const btn = $('btnTrailer'); const old = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري البحث...';
-try{
-const cfg = getSettings();
-if(cfg.BACKEND_URL){
-const res = await fetch(`${cfg.BACKEND_URL.replace(/\/$/,'')}/api/trailer?title=${encodeURIComponent(title)}`);
-if(res.ok){ const d = await res.json(); if(d.trailerUrl){ $('inpTrailer').value = d.trailerUrl; toast('✅ تم جلب التريلر'); } else if(d.searchUrl){ window.open(d.searchUrl, '_blank'); toast('🎬 افتح النتيجة المناسبة وانسخ الرابط'); } }
-} else {
-window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' trailer official الإعلان الرسمي')}`, '_blank'); toast('🎬 افتح الفيديو المناسب وانسخ رابطه هنا');
+let trailerSearchLinkId='';
+let trailerSearchForEditor=false;
+function openTrailerSearch(linkId='',forEditor=false){
+trailerSearchLinkId=linkId||''; trailerSearchForEditor=!!forEditor;
+const link=trailerSearchLinkId?links.find(item=>item.id===trailerSearchLinkId):null;
+$('trailerMovieName').value=forEditor?$('inpTitle').value.trim():(link?.title||'');
+$('trailerResultUrl').value=forEditor?$('inpTrailer').value.trim():(link?.trailer||'');
+$('trailerSearchStatus').textContent='';
+$('trailerSearchOverlay').classList.add('open');
+setTimeout(()=>$('trailerMovieName').focus(),160);
 }
-}catch(e){ window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' trailer official')}`, '_blank'); }
-btn.disabled = false; btn.innerHTML = old;
+function closeTrailerSearch(){ $('trailerSearchOverlay').classList.remove('open'); trailerSearchLinkId=''; trailerSearchForEditor=false; }
+function youtubeTrailerSearchUrl(title){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(title+' official trailer الإعلان الرسمي'); }
+async function saveTrailerSearchResult(overrideUrl=''){
+const url=normalizeUrl(typeof overrideUrl==='string'&&overrideUrl?overrideUrl:$('trailerResultUrl').value);
+if(!/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(url)){ toast(currentLanguage==='en'?'⚠️ Paste a valid YouTube link':'⚠️ الصق رابط YouTube صحيح'); return false; }
+if(trailerSearchForEditor){ $('inpTrailer').value=url; closeTrailerSearch(); toast(currentLanguage==='en'?'✅ Trailer added':'✅ تمت إضافة التريلر'); return true; }
+const link=links.find(item=>item.id===trailerSearchLinkId); if(!link) return false;
+link.trailer=url; link.updatedAt=nowIso(); saveLocal(); renderList();
+try{ await upsertLinkCloud(link); }catch(error){ console.warn('Trailer cloud save failed',error); }
+closeTrailerSearch(); toast(currentLanguage==='en'?'✅ Trailer saved':'✅ تم حفظ التريلر'); return true;
+}
+async function runTrailerSearch(){
+const title=$('trailerMovieName').value.trim(); if(!title){ toast(currentLanguage==='en'?'⚠️ Enter the movie name':'⚠️ اكتب اسم الفيلم'); return; }
+const button=$('btnRunTrailerSearch'),old=button.innerHTML; button.disabled=true; button.innerHTML='<span class="spinner"></span> '+(currentLanguage==='en'?'Searching...':'جاري البحث...');
+try{
+const cfg=getSettings();
+if(cfg.BACKEND_URL){
+const response=await fetch(cfg.BACKEND_URL.replace(/\/$/,'')+'/api/trailer?title='+encodeURIComponent(title));
+if(response.ok){
+const data=await response.json();
+if(data.trailerUrl){ $('trailerResultUrl').value=data.trailerUrl; await saveTrailerSearchResult(data.trailerUrl); return; }
+persistCurrentCategory(); window.open(data.searchUrl||youtubeTrailerSearchUrl(title),'_blank');
+}else{ persistCurrentCategory(); window.open(youtubeTrailerSearchUrl(title),'_blank'); }
+}else{ persistCurrentCategory(); window.open(youtubeTrailerSearchUrl(title),'_blank'); }
+$('trailerSearchStatus').textContent=currentLanguage==='en'?'Choose the trailer on YouTube, copy its link, then return and paste it here.':'اختر التريلر من YouTube، انسخ رابطه، ثم ارجع والصقه هنا.';
+}catch(error){ persistCurrentCategory(); window.open(youtubeTrailerSearchUrl(title),'_blank'); }
+finally{ button.disabled=false; button.innerHTML=old; }
 }
 function authProviderName(user){
 const provider = String(user?.app_metadata?.provider || user?.app_metadata?.providers?.[0] || user?.identities?.[0]?.provider || 'email').toLowerCase();
@@ -1762,20 +1884,16 @@ CapApp.addListener('resume', () => { setTimeout(consumePendingNativeShare, 250);
 }
 function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2500); }
 function initAppSplash(){
-const splash=$('appSplash'),image=$('appSplashImage');
-if(!splash||!image) return;
-let started=false;
-const startTimer=()=>{
-if(started) return; started=true;
-setTimeout(()=>splash.classList.add('dismissed'),2100);
-setTimeout(()=>splash.remove(),2380);
-};
-if(image.complete&&image.naturalWidth) requestAnimationFrame(startTimer);
-else{
-image.addEventListener('load',startTimer,{once:true});
-image.addEventListener('error',()=>setTimeout(()=>{splash.classList.add('dismissed');setTimeout(()=>splash.remove(),280);},150),{once:true});
-setTimeout(startTimer,900);
-}
+const splash=$('appSplash'),video=$('appSplashVideo'); if(!splash) return;
+let dismissed=false,startTime=Date.now();
+const dismiss=()=>{ if(dismissed) return; dismissed=true; splash.classList.add('dismissed'); setTimeout(()=>splash.remove(),300); };
+const finishAfterMinimum=()=>{ const remaining=Math.max(0,2100-(Date.now()-startTime)); setTimeout(dismiss,remaining); };
+const maximumTimer=setTimeout(dismiss,3000);
+if(!video){ clearTimeout(maximumTimer); setTimeout(dismiss,2300); return; }
+video.muted=true;
+video.addEventListener('ended',()=>{ clearTimeout(maximumTimer); finishAfterMinimum(); },{once:true});
+video.addEventListener('error',()=>{ splash.classList.add('video-failed'); clearTimeout(maximumTimer); setTimeout(dismiss,2700); },{once:true});
+const play=video.play(); if(play&&typeof play.catch==='function') play.catch(()=>{ splash.classList.add('video-failed'); });
 }
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; setTimeout(() => { if(document.querySelector('.install-bar')) return; const bar = document.createElement('div'); bar.className='install-bar'; bar.innerHTML = `<span>📲 ثبّت LinkVault كتطبيق</span><button id="doInstall">تثبيت</button><button class="close-install" id="closeInstall">✕</button>`; document.body.appendChild(bar); setTimeout(()=>bar.classList.add('show'),100); $('doInstall').addEventListener('click',()=>{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>bar.remove()); }); $('closeInstall').addEventListener('click',()=>bar.remove()); }, 3000); });
@@ -1790,8 +1908,19 @@ $('btnCancel').addEventListener('click', closeModal);
 $('overlay').addEventListener('click', e => { if(e.target === $('overlay')) closeModal(); });
 $('btnSave').addEventListener('click', saveLinkFromForm);
 $('inpUrl').addEventListener('input', updatePlatformField);
+$('inpTitle').addEventListener('input', updateEditorPreview);
+$('inpThumb').addEventListener('input', updateEditorPreview);
 $('btnFetch').addEventListener('click', fetchMetadata);
-$('btnTrailer').addEventListener('click', fetchTrailer);
+$('btnChooseThumb').addEventListener('click', () => $('inpThumbFile').click());
+$('inpThumbFile').addEventListener('change', handleThumbnailFile);
+$('btnRemoveThumb').addEventListener('click', () => { $('inpThumb').value=''; $('inpThumbFile').value=''; updateEditorPreview(); });
+$('editorThumbPreview').addEventListener('error', () => { $('editorThumbPreview').hidden=true; $('editorThumbPlaceholder').hidden=false; });
+$('btnOpenTrailerSearch').addEventListener('click', () => openTrailerSearch(editId||'',true));
+$('btnRunTrailerSearch').addEventListener('click', runTrailerSearch);
+$('btnSaveTrailerUrl').addEventListener('click', () => saveTrailerSearchResult());
+$('btnCloseTrailerSearch').addEventListener('click', closeTrailerSearch);
+$('trailerSearchOverlay').addEventListener('click', event => { if(event.target===$('trailerSearchOverlay')) closeTrailerSearch(); });
+document.addEventListener('visibilitychange', () => { if(document.visibilityState==='hidden') persistCurrentCategory(); });
 $('searchInp').addEventListener('input', renderList);
 $('btnClearSearch').addEventListener('click', () => { $('searchInp').value=''; renderList(); $('searchInp').focus(); });
 $('btnCancelCat').addEventListener('click', () => $('catOverlay').classList.remove('open'));
@@ -1834,7 +1963,7 @@ $('btnRestoreMerge').addEventListener('click', () => applyRestore('merge'));
 document.getElementById('btnRestoreReplace').hidden=true;
 $('btnRestoreCancel').addEventListener('click', closeRestoreChoice);
 $('restoreOverlay').addEventListener('click', e => { if(e.target === $('restoreOverlay')) closeRestoreChoice(); });
-initAppSplash(); loadAnalyticsCounters(activeLocalUserId); incrementAnalytics('app_open'); applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); renderAuthUI(); if(pendingOtpEmail){ $('authEmail').value=pendingOtpEmail;setOtpPanelVisible(true);const wait=otpCooldownRemaining();if(wait)startOtpCooldown(wait); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
+initAppSplash(); loadAnalyticsCounters(activeLocalUserId); incrementAnalytics('app_open'); applyTheme(currentTheme, false); initLanguage(); upgradeExistingOtherCategories(); restoreCurrentCategory(activeLocalUserId); saveLocal(); renderTabs(); renderList(); translateTree(document.body, true); renderAuthUI(); if(pendingOtpEmail){ $('authEmail').value=pendingOtpEmail;setOtpPanelVisible(true);const wait=otpCooldownRemaining();if(wait)startOtpCooldown(wait); } checkShareTarget(); captureBrowserAuthCallback(); initNativeDeepLinks(); initPendingNativeShare(); initSupabase(); initRevenueCat();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
