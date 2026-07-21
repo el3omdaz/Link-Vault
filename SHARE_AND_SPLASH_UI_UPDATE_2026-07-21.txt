@@ -1,0 +1,8 @@
+Applied on 2026-07-21
+
+- Removed the splash preview image and fallback GIF so the startup overlay uses only the MP4 video.
+- Replaced the mandatory native iOS launch artwork with a plain dark background so no logo/image appears before the video.
+- Removed the shared-link preview bar from the iOS Share Extension.
+- Moved Save as link / Add to trailers and type controls above the title and notes.
+- Added visible title and notes labels.
+- Added automatic scrolling so the notes editor stays visible above the keyboard.

@@ -96,12 +96,12 @@ html[dir="ltr"] .signup-analytics-consent{text-align:left}
 <style id="animated-app-splash-style">
 .app-splash{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;opacity:1;visibility:visible;pointer-events:auto;transition:opacity .28s ease,visibility .28s ease}
 .app-splash.dismissed{opacity:0;visibility:hidden;pointer-events:none}
-.app-splash img,.app-splash video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;user-select:none;-webkit-user-drag:none}.app-splash img{z-index:0}.app-splash video{z-index:1;background:#000;visibility:hidden;opacity:0;transition:opacity .18s ease}.app-splash.video-ready video{visibility:visible;opacity:1}.app-splash.video-failed video{display:none}
+.app-splash video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;background:#000;user-select:none;-webkit-user-drag:none}
 </style>
 <style id="trailer-library-grid-fix">.links-container.view-grid .card-actions{grid-template-columns:repeat(4,1fr)}</style>
 </head>
 <body>
-<div class="app-splash" id="appSplash" aria-hidden="true"><img id="appSplashPoster" src="assets/LinkVault_splash_FHD_ultra_clear_preview.png" alt=""><video id="appSplashVideo" autoplay muted playsinline preload="auto" poster="assets/LinkVault_splash_FHD_ultra_clear_preview.png"><source src="assets/LinkVault_splash_FHD_original_logo_ultra_clear.mp4" type="video/mp4"></video></div>
+<div class="app-splash" id="appSplash" aria-hidden="true"><video id="appSplashVideo" autoplay muted playsinline preload="auto"><source src="assets/LinkVault_splash_FHD_original_logo_ultra_clear.mp4" type="video/mp4"></video></div>
 
 <div class="header">
 <div class="header-logo"><img class="app-logo-img" src="icon-192.png" alt="LinkVault"></div>
@@ -1918,21 +1918,16 @@ CapApp.addListener('resume', () => { setTimeout(consumePendingNativeShare, 250);
 }
 function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2500); }
 function initAppSplash(){
-const splash=$('appSplash'),video=$('appSplashVideo'),poster=$('appSplashPoster');if(!splash)return;
+const splash=$('appSplash'),video=$('appSplashVideo');if(!splash)return;
 let dismissed=false,startTime=Date.now();
 const dismiss=()=>{if(dismissed)return;dismissed=true;if(video)video.pause();splash.classList.add('dismissed');setTimeout(()=>splash.remove(),300);};
 const finishAfterMinimum=()=>{const remaining=Math.max(0,2100-(Date.now()-startTime));setTimeout(dismiss,remaining);};
 const maximumTimer=setTimeout(dismiss,3000);
-if(poster)poster.addEventListener('error',()=>{if(!poster.src.includes('LinkVault_splash_white_glow_fixed.gif'))poster.src='assets/LinkVault_splash_white_glow_fixed.gif';},{once:true});
-if(!video){clearTimeout(maximumTimer);setTimeout(dismiss,2300);return;}
+if(!video){clearTimeout(maximumTimer);dismiss();return;}
 video.muted=true;
-const showVideo=()=>splash.classList.add('video-ready');
-video.addEventListener('loadeddata',showVideo,{once:true});
-video.addEventListener('canplay',showVideo,{once:true});
 video.addEventListener('ended',()=>{clearTimeout(maximumTimer);finishAfterMinimum();},{once:true});
-video.addEventListener('error',()=>{splash.classList.add('video-failed');clearTimeout(maximumTimer);setTimeout(dismiss,2700);},{once:true});
-if(video.readyState>=2)showVideo();
-const play=video.play();if(play&&typeof play.catch==='function')play.catch(()=>splash.classList.add('video-failed'));
+video.addEventListener('error',()=>{clearTimeout(maximumTimer);setTimeout(dismiss,150);},{once:true});
+const play=video.play();if(play&&typeof play.catch==='function')play.catch(()=>{clearTimeout(maximumTimer);setTimeout(dismiss,150);});
 }
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; setTimeout(() => { if(document.querySelector('.install-bar')) return; const bar = document.createElement('div'); bar.className='install-bar'; bar.innerHTML = `<span>📲 ثبّت LinkVault كتطبيق</span><button id="doInstall">تثبيت</button><button class="close-install" id="closeInstall">✕</button>`; document.body.appendChild(bar); setTimeout(()=>bar.classList.add('show'),100); $('doInstall').addEventListener('click',()=>{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>bar.remove()); }); $('closeInstall').addEventListener('click',()=>bar.remove()); }, 3000); });

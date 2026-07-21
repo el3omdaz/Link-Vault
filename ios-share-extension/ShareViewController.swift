@@ -1,7 +1,7 @@
 import UIKit
 import UniformTypeIdentifiers
 
-final class ShareViewController: UIViewController, UITextViewDelegate {
+final class ShareViewController: UIViewController, UITextViewDelegate, UIGestureRecognizerDelegate {
     private let appGroupId = "group.com.linkvaultq8.shared"
     private let pendingSharesKey = "linkvault.pendingShares.v2"
     private let categoriesKey = "linkvault.categories.v1"
@@ -116,6 +116,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
 
         let dismissTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissTap.cancelsTouchesInView = false
+        dismissTap.delegate = self
         view.addGestureRecognizer(dismissTap)
 
         cardView.translatesAutoresizingMaskIntoConstraints = false
@@ -127,7 +128,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         view.addSubview(cardView)
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.alwaysBounceVertical = false
+        scrollView.alwaysBounceVertical = true
         scrollView.keyboardDismissMode = .interactive
         scrollView.showsVerticalScrollIndicator = false
         cardView.addSubview(scrollView)
@@ -156,29 +157,21 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         activityIndicator.color = appAccent
         activityIndicator.startAnimating()
 
-        previewBox.backgroundColor = appCard
-        previewBox.layer.cornerRadius = 14
-        previewBox.layer.borderWidth = 1
-        previewBox.layer.borderColor = appBorder.cgColor
-        previewBox.translatesAutoresizingMaskIntoConstraints = false
-
-        previewTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        // Keep the extracted preview values internally, but do not show a URL preview bar.
         previewTitleLabel.text = tr("جاري قراءة الرابط...", "Reading link...")
-        previewTitleLabel.textAlignment = isArabic ? .right : .left
-        previewTitleLabel.textColor = appText
-        previewTitleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        previewTitleLabel.numberOfLines = 2
-
-        previewURLLabel.translatesAutoresizingMaskIntoConstraints = false
         previewURLLabel.text = ""
-        previewURLLabel.textAlignment = .right
-        previewURLLabel.textColor = appMuted
-        previewURLLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        previewURLLabel.numberOfLines = 2
-        previewURLLabel.semanticContentAttribute = .forceLeftToRight
 
-        previewBox.addSubview(previewTitleLabel)
-        previewBox.addSubview(previewURLLabel)
+        let titleInputLabel = UILabel()
+        titleInputLabel.text = tr("اكتب العنوان", "Enter the title")
+        titleInputLabel.textAlignment = isArabic ? .right : .left
+        titleInputLabel.textColor = appText
+        titleInputLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+
+        let noteInputLabel = UILabel()
+        noteInputLabel.text = tr("الملاحظات", "Notes")
+        noteInputLabel.textAlignment = isArabic ? .right : .left
+        noteInputLabel.textColor = appText
+        noteInputLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
 
         titleField.translatesAutoresizingMaskIntoConstraints = false
         titleField.attributedPlaceholder = NSAttributedString(
@@ -231,7 +224,7 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         noteWrap.addSubview(noteTextView)
         noteWrap.addSubview(notePlaceholder)
 
-        [titleLabel, subtitleLabel, activityIndicator, previewBox, titleField, destinationSegment, mediaTypeSegment, categoryStack, noteWrap].forEach {
+        [titleLabel, subtitleLabel, activityIndicator, destinationSegment, mediaTypeSegment, categoryStack, titleInputLabel, titleField, noteInputLabel, noteWrap].forEach {
             formStack.addArrangedSubview($0)
         }
 
@@ -292,15 +285,6 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
             formStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             formStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            previewBox.heightAnchor.constraint(greaterThanOrEqualToConstant: 78),
-            previewTitleLabel.topAnchor.constraint(equalTo: previewBox.topAnchor, constant: 12),
-            previewTitleLabel.leadingAnchor.constraint(equalTo: previewBox.leadingAnchor, constant: 12),
-            previewTitleLabel.trailingAnchor.constraint(equalTo: previewBox.trailingAnchor, constant: -12),
-            previewURLLabel.topAnchor.constraint(equalTo: previewTitleLabel.bottomAnchor, constant: 5),
-            previewURLLabel.leadingAnchor.constraint(equalTo: previewBox.leadingAnchor, constant: 12),
-            previewURLLabel.trailingAnchor.constraint(equalTo: previewBox.trailingAnchor, constant: -12),
-            previewURLLabel.bottomAnchor.constraint(lessThanOrEqualTo: previewBox.bottomAnchor, constant: -12),
-
             titleField.heightAnchor.constraint(equalToConstant: 48),
             categoryStack.heightAnchor.constraint(greaterThanOrEqualToConstant: 46),
 
@@ -352,13 +336,45 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
         let curveValue = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 7
         let options = UIView.AnimationOptions(rawValue: curveValue << 16)
-        UIView.animate(withDuration: duration, delay: 0, options: options) {
-            self.view.layoutIfNeeded()
-        }
+        UIView.animate(
+            withDuration: duration,
+            delay: 0,
+            options: options,
+            animations: {
+                self.view.layoutIfNeeded()
+            },
+            completion: { _ in
+                self.scrollActiveEditorIntoView(animated: true)
+            }
+        )
+    }
+
+    private func scrollActiveEditorIntoView(animated: Bool) {
+        guard noteTextView.isFirstResponder else { return }
+        scrollView.layoutIfNeeded()
+        let noteRect = noteTextView.convert(noteTextView.bounds, to: scrollView).insetBy(dx: 0, dy: -18)
+        scrollView.scrollRectToVisible(noteRect, animated: animated)
     }
 
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let touchedView = touch.view else { return true }
+
+        // Do not let the background keyboard-dismiss gesture consume taps on controls.
+        // This keeps Save working on the first tap while a text field is active.
+        if touchedView is UIControl ||
+            touchedView.isDescendant(of: saveButton) ||
+            touchedView.isDescendant(of: cancelButton) ||
+            touchedView.isDescendant(of: destinationSegment) ||
+            touchedView.isDescendant(of: mediaTypeSegment) ||
+            touchedView.isDescendant(of: categoryButton) {
+            return false
+        }
+
+        return true
     }
 
     private func configureDestinationPicker() {
@@ -664,8 +680,15 @@ final class ShareViewController: UIViewController, UITextViewDelegate {
         completeOnce()
     }
 
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        DispatchQueue.main.async { [weak self] in
+            self?.scrollActiveEditorIntoView(animated: true)
+        }
+    }
+
     func textViewDidChange(_ textView: UITextView) {
         notePlaceholder.isHidden = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        scrollActiveEditorIntoView(animated: false)
     }
 
     private func appendPayloadToAppGroup(_ payload: SharedPayload) -> Bool {
